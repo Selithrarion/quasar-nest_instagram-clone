@@ -1,0 +1,64 @@
+{
+  "name": "frontend",
+  "version": "0.0.1",
+  "description": "Jira Clone with Quasar & Nest",
+  "productName": "Jira Clone",
+  "author": "Selithrarion <sergey.maltsev2004@yandex.ru>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --fix --ext .js,.ts,.vue ./",
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
+    "test:unit": "jest --updateSnapshot",
+    "test:unit:ci": "jest --ci",
+    "test:unit:coverage": "jest --coverage",
+    "test:unit:watch": "jest --watch",
+    "test:unit:watchAll": "jest --watchAll",
+    "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
+    "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\"",
+    "test:unit:ui": "majestic",
+    "test:e2e": "cross-env E2E_TEST=true start-test \"quasar dev\" http-get://localhost:8080 \"cypress open\"",
+    "test:e2e:ci": "cross-env E2E_TEST=true start-test \"quasar dev\" http-get://localhost:8080 \"cypress run\""
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.21.2",
+    "core-js": "^3.6.5",
+    "date-fns": "^2.23.0",
+    "dotenv": "^10.0.0",
+    "lodash.camelcase": "^4.3.0",
+    "lodash.upperfirst": "^4.3.1",
+    "quasar": "^2.0.0",
+    "socket.io-client": "^4.2.0",
+    "vue-3-socket.io": "^1.0.4",
+    "vue-i18n": "^9.2.0-beta.9",
+    "vue3-google-oauth2": "^1.0.4",
+    "vuex": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app": "^3.0.0",
+    "@types/node": "^10.17.15",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^7.0.0",
+    "prettier": "^2.3.1"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
