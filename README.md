@@ -19,7 +19,7 @@ TODO
 
 #### Backend
 
-1. Nest.js
+1. Node.js (Nest.js)
 2. Typescript
 3. PostgreSQL + TypeORM (database)
 4. Swagger, Swagger UI (docs)
