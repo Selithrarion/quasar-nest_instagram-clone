@@ -1,8 +1,6 @@
 import { BaseModel } from 'src/models/common/base.model';
-import { IssueModel } from 'src/models/project/issue.model';
-import { PublicFileModel } from '../common/public.file.model';
-import { TeamModel } from 'src/models/user/team.model';
-import { ProjectModel } from 'src/models/project/project.model';
+import { PublicFileModel } from 'src/models/common/public.file.model';
+import { PostModel } from 'src/models/post/post.model';
 
 export interface UserModel extends BaseModel {
   name: string;
@@ -10,6 +8,7 @@ export interface UserModel extends BaseModel {
   password: string;
   email: string;
   locale: string;
+  phone?: string;
 
   isActive: boolean;
   isEmailConfirmed: boolean;
@@ -18,22 +17,11 @@ export interface UserModel extends BaseModel {
 
   color: string;
   avatar: PublicFileModel | null;
-  header: PublicFileModel | null;
 
-  assignedIssues?: IssueModel[];
-  watchingIssues?: IssueModel[];
+  posts?: PostModel[];
 
-  projects?: ProjectModel[];
-  projectsIDs: number[];
-  favoriteProjectsIDs: number[];
-  teams?: TeamModel[];
-  teamsLeader?: TeamModel[];
-  teamsLeaderIDs: number[];
-
-  position: string;
-  department: string;
-  organisation: string;
-  location: string;
+  isViewerFollowed?: boolean;
+  isViewerBlocked?: boolean;
 
   accessToken?: string;
   refreshToken?: string;
@@ -43,11 +31,8 @@ export interface UserDTO {
   username?: string;
   name?: string;
   avatar?: PublicFileModel;
-  header?: PublicFileModel;
-  position?: string;
-  department?: string;
-  organisation?: string;
   location?: string;
+  phone?: string;
 }
 
 export interface UserLoginDTO {
