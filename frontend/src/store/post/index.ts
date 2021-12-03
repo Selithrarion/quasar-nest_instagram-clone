@@ -1,11 +1,11 @@
 import { Module } from 'vuex';
 import { StateInterface } from '../index';
-import state, { ProjectStateInterface } from './state';
+import state, { PostStateInterface } from './state';
 import actions from './actions';
 import getters from './getters';
 import mutations from './mutations';
 
-const projectModule: Module<ProjectStateInterface, StateInterface> = {
+const projectModule: Module<PostStateInterface, StateInterface> = {
   namespaced: true,
   actions,
   getters,
