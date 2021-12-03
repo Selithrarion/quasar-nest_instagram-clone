@@ -46,7 +46,7 @@ Github actions CI pipeline
 - JWT access (1d exp) and refresh (30d exp) tokens, auto relogin if access token expired ❌
 
 #### Feed
-- View all recent posts from subscriptions / friends ❌
+- View all recent posts (photos/videos) from subscriptions with preload ❌
 - View posts with some tags ❌
 ##### Post
 - Posts CRUD ❌
