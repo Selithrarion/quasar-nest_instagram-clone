@@ -34,7 +34,7 @@ Github actions CI pipeline
 ❌ === not implemented yet
 #### Global
 - English lanugage
-- User notifications
+- User notifications ❌
 
 #### Auth
 - Login / Register / Forgot password ❌
