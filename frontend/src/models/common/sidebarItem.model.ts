@@ -7,6 +7,6 @@ export interface SidebarItemModel {
   dialog?: boolean;
   separator?: boolean;
 
-  hideHeaderTitleRowActions?: boolean
-  hideHeaderActions?: boolean
+  hideHeaderTitleRowActions?: boolean;
+  hideHeaderActions?: boolean;
 }
