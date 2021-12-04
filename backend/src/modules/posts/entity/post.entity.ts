@@ -1,17 +1,6 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
-import { PublicFileEntity } from '../../files/entity/public-file.entity';
 import { CommentEntity } from './comment.entity';
 
 @Entity()
@@ -30,7 +19,7 @@ export class PostEntity extends BaseEntity {
   @JoinColumn({ name: 'authorID' })
   author: UserEntity;
 
-  @ManyToMany(() => UserEntity, (user) => user.likes, {
+  @ManyToMany(() => UserEntity, (user) => user.likedPosts, {
     cascade: true,
   })
   @JoinTable()
@@ -41,6 +30,6 @@ export class PostEntity extends BaseEntity {
   })
   comments: CommentEntity[];
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   isVideo: boolean;
 }
