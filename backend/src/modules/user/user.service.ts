@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 
 import { CreateUserDTO } from './dto';
 import { UserEntity } from './entity/user.entity';
-import { ProjectEntity } from '../projects/entity/project.entity';
+import { PostEntity } from '../posts/entity/project.entity';
 import { BoardEntity } from '../boards/entity/board.entity';
 
 import * as sharp from 'sharp';
@@ -184,7 +184,7 @@ export class UserService {
     return true;
   }
 
-  async getFavoriteProjects(id: number): Promise<ProjectEntity[]> {
+  async getFavoriteProjects(id: number): Promise<PostEntity[]> {
     const user = await this.users.findOneOrFail(id, { relations: ['favoriteProjects'] });
     return user.favoriteProjects;
   }

@@ -15,7 +15,7 @@ import { IsEmail } from 'class-validator';
 
 import { BaseEntity } from '../../../common/types/base.entity';
 import { IssueEntity } from '../../issues/entity/issue.entity';
-import { ProjectEntity } from '../../projects/entity/project.entity';
+import { PostEntity } from '../../posts/entity/project.entity';
 import { BoardEntity } from '../../boards/entity/board.entity';
 import { Exclude } from 'class-transformer';
 import { TeamEntity } from '../../teams/entity/team.entity';
@@ -128,18 +128,18 @@ export class UserEntity extends BaseEntity {
   @ManyToMany(() => IssueEntity, (issue) => issue.watchers)
   watchingIssues: IssueEntity[];
 
-  @ManyToMany(() => ProjectEntity, (project) => project.users, {
+  @ManyToMany(() => PostEntity, (project) => project.users, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
   @JoinTable()
-  projects: ProjectEntity[];
+  projects: PostEntity[];
   @RelationId('projects')
   projectIDs: number[];
 
-  @ManyToMany(() => ProjectEntity, (project) => project.users)
+  @ManyToMany(() => PostEntity, (project) => project.users)
   @JoinTable()
-  favoriteProjects: ProjectEntity[];
+  favoriteProjects: PostEntity[];
   @RelationId('favoriteProjects')
   favoriteProjectIDs: number[];
 

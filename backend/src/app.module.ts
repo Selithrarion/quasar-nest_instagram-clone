@@ -3,7 +3,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ProjectsModule } from './modules/projects/projects.module';
+import { ProjectsModule } from './modules/posts/projects.module';
 import { UserModule } from './modules/user/user.module';
 import { TeamModule } from './modules/teams/team.module';
 import { BoardsModule } from './modules/boards/boards.module';
