@@ -160,8 +160,8 @@ export class UserService {
   }
 
   async getLikedPosts(id: number): Promise<PostEntity[]> {
-    const user = await this.users.findOneOrFail(id, { relations: ['postLikes'] });
-    return user.postLikes;
+    const user = await this.users.findOneOrFail(id, { relations: ['likedPosts'] });
+    return user.likedPosts;
   }
   async getNotifications(id: number): Promise<NotificationEntity[]> {
     const user = await this.users

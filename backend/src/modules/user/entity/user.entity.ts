@@ -12,17 +12,15 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { IsEmail } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 import { BaseEntity } from '../../../common/types/base.entity';
-import { IssueEntity } from '../../issues/entity/issue.entity';
-import { PostEntity } from '../../posts/entity/project.entity';
-import { BoardEntity } from '../../boards/entity/board.entity';
-import { Exclude } from 'class-transformer';
-import { TeamEntity } from '../../teams/entity/team.entity';
-import { CommentEntity } from '../../issues/entity/comment.entity';
 import { PublicFileEntity } from '../../files/entity/public-file.entity';
-import stringToHslColor from '../../../common/utils/stringToHslColor';
 import { NotificationEntity } from '../../notifications/entity/notification.entity';
+import { CommentEntity } from '../../posts/entity/comment.entity';
+import { PostEntity } from '../../posts/entity/post.entity';
+
+import stringToHslColor from '../../../common/utils/stringToHslColor';
 
 export interface UserGoogleData {
   email: string;
@@ -72,7 +70,7 @@ export class UserEntity extends BaseEntity {
     if (this.password) this.password = await bcrypt.hash(this.password, 10);
   }
   async validatePassword(password: string): Promise<boolean> {
-    if (!this.isOAuthAccount) return true;
+    if (this.isOAuthAccount) return true;
     return bcrypt.compare(password, this.password);
   }
 
@@ -116,39 +114,6 @@ export class UserEntity extends BaseEntity {
   @JoinColumn()
   avatar: PublicFileEntity;
 
-  @OneToOne(() => PublicFileEntity, {
-    eager: true,
-    nullable: true,
-  })
-  @JoinColumn()
-  header: PublicFileEntity;
-
-  @OneToMany(() => IssueEntity, (issue) => issue.assigned)
-  assignedIssues: IssueEntity[];
-  @ManyToMany(() => IssueEntity, (issue) => issue.watchers)
-  watchingIssues: IssueEntity[];
-
-  @ManyToMany(() => PostEntity, (project) => project.users, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  @JoinTable()
-  projects: PostEntity[];
-  @RelationId('projects')
-  projectIDs: number[];
-
-  @ManyToMany(() => PostEntity, (project) => project.users)
-  @JoinTable()
-  favoriteProjects: PostEntity[];
-  @RelationId('favoriteProjects')
-  favoriteProjectIDs: number[];
-
-  @ManyToMany(() => BoardEntity, (board) => board.users)
-  @JoinTable()
-  favoriteBoards: BoardEntity[];
-  @RelationId('favoriteBoards')
-  favoriteBoardIDs: number[];
-
   @Column({ nullable: true })
   position: string;
   @Column({ nullable: true })
@@ -158,26 +123,30 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   location: string;
 
+  @ManyToMany(() => PostEntity, (post) => post.likes, {
+    cascade: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  likedPosts: PostEntity[];
+  @RelationId('likedPosts')
+  likedPostsIDs: number[];
+
+  @ManyToMany(() => CommentEntity, (comment) => comment.likes, {
+    cascade: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  likedComments: CommentEntity[];
+  @RelationId('likedComments')
+  likedCommentsIDs: number[];
+
   @OneToMany(() => CommentEntity, (comment) => comment.author, {
     cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
   comments: CommentEntity[];
-
-  @ManyToMany(() => TeamEntity, (team) => team.users, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  teams: TeamEntity[];
-
-  @ManyToOne(() => TeamEntity, (team) => team.leader, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  teamsLeader: TeamEntity[];
-  @RelationId('teamsLeader')
-  teamsLeaderIDs: number[];
 
   @OneToMany(() => NotificationEntity, (notification) => notification.user, {
     onUpdate: 'CASCADE',
