@@ -19,7 +19,7 @@ TODO
 
 #### Backend
 
-1. Nest.js
+1. Node.js (Nest.js)
 2. Typescript
 3. PostgreSQL + TypeORM (database)
 4. Swagger, Swagger UI (docs)
@@ -31,33 +31,35 @@ TODO
 Github actions CI pipeline
 
 ### App Features
-
+❌ === not implemented yet
 #### Global
 - English lanugage
-- User notifications
+- User notifications ❌
 
 #### Auth
-- Login / Register / Forgot password 
-- OAuth with Google / Github
-- Unique username / email validation  
+- Login / Register / Forgot password ❌
+- OAuth with Google / Github ❌
+- Unique username / email validation ❌
 
-- Send email verification mail 
-- Automaticly redirect to requested page after login (/auth?redirect=/profile/1)  
-- JWT access (1d exp) and refresh (30d exp) tokens, auto relogin if access token expired  
+- Send email verification mail ❌
+- Automaticly redirect to requested page after login (/auth?redirect=/profile/1) ❌
+- JWT access (1d exp) and refresh (30d exp) tokens, auto relogin if access token expired ❌
 
 #### Feed
-- View all recent posts from subscriptions / friends
+- View all recent posts (photos/videos) from subscriptions with preload ❌
+- View posts with some tags ❌
 ##### Post
-- Posts CRUD
-- Dbclick to like post or like with button
-- Comments CRUD, comment reply
-- Share (?)
-- Bookmark (?)
+- Posts CRUD ❌
+- Tags suggestion ❌
+- Dbclick to like post or like with button ❌
+- Comments CRUD, comment reply ❌
+- Share (?) ❌
+- Bookmark (?) ❌
 
 #### Profile page
-- View all own photos/videos
-- Edit info - change username / name / email / about etc...
-- Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp))
+- View all own photos/videos ❌
+- Edit info - change username / name / email / about etc... ❌
+- Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp)) ❌
   
 do you like stars? 🤩😊  
 anyway, glad to any PRs  
