@@ -23,7 +23,7 @@ export class CommentEntity extends BaseEntity {
   @JoinColumn({ name: 'authorID' })
   author: UserEntity;
 
-  @OneToMany(() => UserEntity, (user) => user.comments, {
+  @OneToMany(() => UserEntity, (user) => user.likedComments, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
