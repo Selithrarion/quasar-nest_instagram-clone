@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePostDTO, UpdatePostDTO } from './dto';
@@ -24,7 +24,7 @@ export class PostsService {
     const { items, meta } = await paginate<PostEntity>(this.posts, query, { order: { createdAt: 'DESC' } });
     const formattedPosts = items.map((p) => ({
       ...p,
-      favorite: currentUser.favoritePostIDs.includes(p.id),
+      isLike: currentUser.likedPostsIDs.includes(p.id),
     })) as PostEntity[];
     return { items: formattedPosts, meta };
   }
@@ -36,8 +36,7 @@ export class PostsService {
   async create(payload: CreatePostDTO, user: UserEntity): Promise<PostEntity> {
     return await this.posts.save({
       ...payload,
-      leader: user,
-      users: [user],
+      author: user,
     });
   }
 
@@ -53,16 +52,16 @@ export class PostsService {
   }
 
   async toggleLike(postID: number, userID: number): Promise<void> {
-    const userFavoritePosts = await this.userService.getFavoritePosts(userID);
-    const postIndex = userFavoritePosts.findIndex((p) => p.id === postID);
+    const userLikedPosts = await this.userService.getLikedPosts(userID);
+    const postIndex = userLikedPosts.findIndex((p) => p.id === postID);
 
     if (postIndex !== -1) {
-      userFavoritePosts.splice(postIndex, 1);
+      userLikedPosts.splice(postIndex, 1);
     } else {
       const post = await this.posts.findOne(postID);
-      userFavoritePosts.push(post);
+      userLikedPosts.push(post);
     }
 
-    await this.userService.update(userID, { favoritePosts: userFavoritePosts });
+    await this.userService.update(userID, { likedPosts: userLikedPosts });
   }
 }
