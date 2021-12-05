@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -56,9 +57,13 @@ export interface UserJwtPayload {
 export class UserEntity extends BaseEntity {
   @Column({ length: 64 })
   name: string;
+
   @Column({ length: 24, unique: true })
+  @Index()
   username: string;
+
   @Column({ unique: true })
+  @Index()
   @IsEmail()
   email: string;
 
