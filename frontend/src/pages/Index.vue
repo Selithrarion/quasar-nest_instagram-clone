@@ -10,15 +10,10 @@ import { useI18n } from 'vue-i18n';
 import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
 
-import CommonPageTitle from 'components/common/CommonPageTitle.vue';
 import userRepository from 'src/repositories/userRepository';
 
 export default defineComponent({
   name: 'FeedIndex',
-
-  components: {
-    CommonPageTitle,
-  },
 
   setup() {
     const router = useRouter();

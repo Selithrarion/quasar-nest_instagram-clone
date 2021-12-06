@@ -25,15 +25,15 @@
             />
           </q-tabs>
 
-          <BaseButton
-            v-if="isShowCreateIssueButton"
-            class="flex-shrink-0"
-            :label="t('common.createIssue')"
-            color="primary"
-            padding="4px 12px"
-            unelevated
-            @click="dialog.open('createIssue')"
-          />
+<!--          <BaseButton-->
+<!--            v-if="isShowCreateIssueButton"-->
+<!--            class="flex-shrink-0"-->
+<!--            :label="t('common.createIssue')"-->
+<!--            color="primary"-->
+<!--            padding="4px 12px"-->
+<!--            unelevated-->
+<!--            @click="dialog.open('createIssue')"-->
+<!--          />-->
         </div>
 
         <div class="flex-center gap-4">
@@ -76,8 +76,6 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-
-    <ProjectBoardDialogCreateIssue v-if="dialog.openedName.value === 'createIssue'" @close="dialog.close" />
   </q-layout>
 </template>
 
@@ -93,7 +91,6 @@ import useLocalStorage from 'src/composables/common/useLocalStorage';
 
 import LayoutNotifications from 'components/layout/LayoutNotifications.vue';
 import CommonSearch from 'components/common/CommonSearch.vue';
-import ProjectBoardDialogCreateIssue from 'components/project/board/dialog/ProjectBoardDialogCreateIssue.vue';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -101,7 +98,6 @@ export default defineComponent({
   components: {
     LayoutNotifications,
     CommonSearch,
-    ProjectBoardDialogCreateIssue,
   },
 
   setup() {
@@ -182,8 +178,6 @@ export default defineComponent({
       });
     }
 
-    const isShowCreateIssueButton = computed(() => route.path.includes('/projects/'));
-
     const currentUser = computed(() => store.state.user.currentUser);
 
     async function openProfilePage() {
@@ -213,8 +207,6 @@ export default defineComponent({
       availableTabs,
       availableLanguages,
       setLanguage,
-
-      isShowCreateIssueButton,
 
       currentUser,
 
