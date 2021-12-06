@@ -1,8 +1,8 @@
 {
   "name": "frontend",
   "version": "0.0.1",
-  "description": "Jira Clone with Quasar & Nest",
-  "productName": "Jira Clone",
+  "description": "Instagram Clone with Quasar & Nest",
+  "productName": "Instagram Clone",
   "author": "Selithrarion <sergey.maltsev2004@yandex.ru>",
   "private": true,
   "scripts": {

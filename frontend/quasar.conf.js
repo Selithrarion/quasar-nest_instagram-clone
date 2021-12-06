@@ -120,9 +120,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'Jira Clone',
-        short_name: 'Jira Clone',
-        description: 'Jira Clone with Quasar & Nest',
+        name: 'Instagram Clone',
+        short_name: 'Instagram Clone',
+        description: 'Instagram Clone with Quasar & Nest',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
