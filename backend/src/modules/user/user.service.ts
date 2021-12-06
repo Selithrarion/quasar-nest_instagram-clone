@@ -58,9 +58,7 @@ export class UserService {
     if (isUserAlreadyExist) throw new HttpException('USER_ALREADY_EXIST', HttpStatus.BAD_REQUEST);
 
     const user = await this.users.create(payload);
-    const createdUser = await this.users.save(user);
-
-    return createdUser;
+    return await this.users.save(user);
   }
   async createWithGoogle(email: string): Promise<UserEntity> {
     // TODO: need to get google username and name
