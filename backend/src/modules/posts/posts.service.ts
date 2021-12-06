@@ -24,7 +24,7 @@ export class PostsService {
     const { items, meta } = await paginate<PostEntity>(this.posts, query, { order: { createdAt: 'DESC' } });
     const formattedPosts = items.map((p) => ({
       ...p,
-      isLike: currentUser.likedPostsIDs.includes(p.id),
+      isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
     })) as PostEntity[];
     return { items: formattedPosts, meta };
   }

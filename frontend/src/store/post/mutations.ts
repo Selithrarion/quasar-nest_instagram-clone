@@ -23,7 +23,7 @@ const mutation: MutationTree<PostStateInterface> = {
   },
   TOGGLE_FAVORITE(state: PostStateInterface, id: number) {
     const post = state.posts?.find((p) => p.id === id);
-    if (post) post.favorite = !post.favorite;
+    if (post) post.isViewerLiked = !post.isViewerLiked;
   },
 };
 
