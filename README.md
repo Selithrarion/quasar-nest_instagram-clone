@@ -60,14 +60,12 @@ Github actions CI pipeline
 - View all own photos/videos ❌
 - Edit info - change username / name / email / about etc... ❌
 - Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp)) ❌
-  
-do you like stars? 🤩😊  
-anyway, glad to any PRs  
 
 ### Install  
 1. Clone project  
 2. Terminal #1 "docker compose up"  
 3. Terminal #2 "cd .\frontend\" and "quasar dev"  
 4. Terminal #3 "cd .\backend\" and "yarn start:dev" 
+5. do you like stars? 🤩😊 anyway, glad to any PRs  
 
 
