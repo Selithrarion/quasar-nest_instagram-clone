@@ -7,9 +7,9 @@ import { CommentEntity } from './comment.entity';
 export class PostEntity extends BaseEntity {
   @Column()
   title: string;
-  @Column()
+  @Column({ nullable: true })
   description: string;
-  @Column()
+  @Column('text', { array: true, nullable: true })
   tags: string[];
 
   @ManyToOne(() => UserEntity, {
