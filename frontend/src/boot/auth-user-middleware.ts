@@ -16,7 +16,7 @@ export default boot(({ router }) => {
         next('/auth');
       } else next();
     } else if (isNeedGuest) {
-      if (userToken) next('/projects');
+      if (userToken) next('/');
       next();
     } else {
       next();
