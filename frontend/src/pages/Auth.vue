@@ -1,14 +1,17 @@
 <template>
-  <q-page class="column flex-center gap-6 q-pa-lg" style="background: linear-gradient(to left, #f6f6fb, #f1f6ff)">
-    <h6 class="no-margin">{{ authTypes[type].title }}</h6>
-
+  <q-page class="column flex-center gap-6 q-pa-lg" style="background: #fafafa">
     <q-form class="row items-center full-width" @submit="authTypes[type].action">
-      <q-card class="col-xs-12 col-sm-8 col-md-4 col-lg-3 shadow-10">
+      <q-card class="col-xs-12 col-sm-8 col-md-4 col-lg-3 shadow-0" bordered>
         <q-card-section v-if="loading.active.value">
           <BaseLoader class="q-my-xl" />
         </q-card-section>
 
         <div v-else>
+          <div class="auth__instagram-image" />
+          <h6 v-if="authTypes[type].title" class="text-center q-mx-md q-my-sm text-blue-grey-4">
+            {{ authTypes[type].title }}
+          </h6>
+
           <div v-show="step === AuthStepEnum.AUTH">
             <q-card-section class="column gap-3">
               <q-input
@@ -18,7 +21,7 @@
                 :rules="[rules.required, rules.max64]"
                 hide-bottom-space
                 lazy-rules
-                filled
+                outlined
               />
               <q-input
                 v-if="authTypes[type].fields.includes('username')"
@@ -28,7 +31,7 @@
                 :rules="[rules.required, rules.max24, type === 'register' ? rules.uniqueUsername : null]"
                 hide-bottom-space
                 lazy-rules
-                filled
+                outlined
               />
               <q-input
                 v-if="authTypes[type].fields.includes('email')"
@@ -38,7 +41,7 @@
                 :rules="[rules.required, rules.email, type === 'register' ? rules.uniqueEmail : null]"
                 hide-bottom-space
                 lazy-rules
-                filled
+                outlined
               />
 
               <q-input
@@ -49,7 +52,7 @@
                 :rules="[rules.required, rules.max128]"
                 hide-bottom-space
                 lazy-rules
-                filled
+                outlined
               >
                 <template #append>
                   <q-icon
@@ -66,7 +69,7 @@
                 :type="isHidePassword ? 'password' : 'text'"
                 :rules="[rules.required, equalPasswords]"
                 hide-bottom-space
-                filled
+                outlined
               >
                 <template #append>
                   <q-icon
@@ -82,13 +85,38 @@
               <BaseButton
                 class="full-width"
                 type="submit"
+                color="primary"
                 :label="authTypes[type].actionWord"
                 :loading="loading.active.value"
+                unelevated
               />
               <div v-if="type === 'login'" class="flex-center gap-2 q-mt-sm">
-                <BaseButton label="Google" @click="signInWithGoogle" />
-                <BaseButton label="Github" @click="signInWithGithub" />
+                <BaseButton type="button" label="Google" unelevated @click="signInWithGoogle" />
+                <BaseButton type="button" label="Github" unelevated @click="signInWithGithub" />
               </div>
+            </q-card-section>
+
+            <q-card-section class="text-center text-caption text-blue-grey-4">
+              By signing up, you agree to our
+              <BaseButton
+                type="button"
+                label="Terms"
+                plain-style
+                @click="openInNewTab('https://help.instagram.com/581066165581870')"
+              />,
+              <BaseButton
+                type="button"
+                label="Data Policy"
+                plain-style
+                @click="openInNewTab('https://help.instagram.com/519522125107875')"
+              />
+              and
+              <BaseButton
+                type="button"
+                label="Cookies Policy"
+                plain-style
+                @click="openInNewTab('https://www.instagram.com/legal/cookies/')"
+              />.
             </q-card-section>
           </div>
 
@@ -210,14 +238,13 @@ export default defineComponent({
       login: {
         fields: ['email', 'password'],
         buttons: ['register', 'forgotPassword'],
-        title: t('auth.signInJira'),
         actionWord: t('auth.signIn'),
         action: login,
       },
       register: {
         fields: ['name', 'username', 'email', 'password', 'passwordRepeat'],
         buttons: ['login'],
-        title: t('auth.registerJiraAccount'),
+        title: t('auth.registerAccount'),
         actionWord: t('auth.register'),
         action: register,
       },
@@ -324,7 +351,7 @@ export default defineComponent({
     }
 
     async function redirectToRequestedOrDefaultPage() {
-      const url = (route.query.redirect as string) || '/projects';
+      const url = (route.query.redirect as string) || '/';
       await router.replace(url);
       router.go(0);
     }
@@ -387,6 +414,10 @@ export default defineComponent({
       }
     }
 
+    function openInNewTab(url: string) {
+      window.open(url, '_blank');
+    }
+
     return {
       t,
       rules,
@@ -421,6 +452,8 @@ export default defineComponent({
 
       signInWithGoogle,
       signInWithGithub,
+
+      openInNewTab,
     };
   },
 });
@@ -432,6 +465,13 @@ export default defineComponent({
     width: 200px;
     height: 200px;
     border: 1px solid $grey-5;
+  }
+  &__instagram-image {
+    background: url('src/assets/img/instagram_logo_text.png') center no-repeat;
+    background-size: 100%;
+    width: 200px;
+    height: 70px;
+    margin: 24px auto 6px auto;
   }
 }
 </style>

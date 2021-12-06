@@ -40,23 +40,22 @@ export default {
   },
 
   user: {
-    displayName: 'Display name',
+    displayName: 'Name and surname',
     username: 'Username',
     email: 'Email',
     password: 'Password',
     confirmPassword: 'Confirm password',
     profile: 'Profile',
-    displayNameUsernameOrEmail: 'Their display name, username or email',
+    displayNameUsernameOrEmail: 'Their name, surname, username or email',
     max10Users: 'You can invite no more than 10 users at a time.',
   },
 
   auth: {
     register: 'Register',
-    registerJiraAccount: 'Create new Jira account',
+    registerAccount: 'Sign up to see photos and videos from your friends.',
     resetPassword: 'Reset password',
     signIn: 'Sign in',
     signOut: 'Sign out',
-    signInJira: 'Sign in Jira',
     scanQrCode: 'Scan the QR code using the Google Authenticator app and enter the code in the field below',
     enter2FaCode: 'Enter the code from the Google Authenticator app',
     incorrect2FaCode: 'Invalid code, try again',
