@@ -129,7 +129,6 @@ export class UserEntity extends BaseEntity {
   location: string;
 
   @ManyToMany(() => PostEntity, (post) => post.likes, {
-    cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
@@ -138,7 +137,6 @@ export class UserEntity extends BaseEntity {
   likedPostsIDs: number[];
 
   @ManyToMany(() => CommentEntity, (comment) => comment.likes, {
-    cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

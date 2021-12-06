@@ -24,6 +24,7 @@ export class CommentEntity extends BaseEntity {
   author: UserEntity;
 
   @OneToMany(() => UserEntity, (user) => user.likedComments, {
+    cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
