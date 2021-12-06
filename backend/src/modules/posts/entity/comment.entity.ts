@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, RelationId } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { PostEntity } from './post.entity';
@@ -23,14 +23,13 @@ export class CommentEntity extends BaseEntity {
   @JoinColumn({ name: 'authorID' })
   author: UserEntity;
 
-  @OneToMany(() => UserEntity, (user) => user.likedComments, {
+  @ManyToMany(() => UserEntity, (user) => user.likedComments, {
     cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'issueID' })
+  @JoinTable()
   likes: UserEntity[];
-
   @RelationId('likes')
   likesNumber: number;
 }
