@@ -1,12 +1,5 @@
 <template>
-  <component
-    :is="currentComponent"
-    class="base-button"
-    :class="computedClasses"
-    :no-wrap="noWrap"
-    no-caps
-    v-bind="$attrs"
-  >
+  <component :is="currentComponent" class="base-button" :class="classes" :no-wrap="noWrap" no-caps v-bind="$attrs">
     <BaseTooltip v-if="tooltip" :label="tooltip" />
     <slot> {{ label }} </slot>
   </component>
@@ -39,13 +32,11 @@ export default defineComponent({
   },
 
   setup(props) {
-    const computedClasses = computed(() => {
-      const classes = [];
-
-      if (props.secondaryColor) classes.push('base-button--secondary');
-      if (props.plainStyle) classes.push('base-button--plain-style');
-
-      return classes;
+    const classes = computed(() => {
+      return {
+        'base-button--secondary': props.secondaryColor,
+        'base-button--plain-style': props.plainStyle,
+      };
     });
 
     const currentComponent = computed(() => {
@@ -53,7 +44,7 @@ export default defineComponent({
     });
 
     return {
-      computedClasses,
+      classes,
       currentComponent,
     };
   },
