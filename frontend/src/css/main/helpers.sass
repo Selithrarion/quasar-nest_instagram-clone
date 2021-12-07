@@ -96,3 +96,36 @@
   position: sticky
   top: 0
   z-index: 1
+
+.container,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl
+  width: 100%
+  margin-right: auto
+  margin-left: auto
+@media (min-width: $breakpoint-xs-min)
+.container,
+.container-sm
+  max-width: 540px
+@media (min-width: $breakpoint-sm-min)
+.container,
+.container-sm,
+.container-md
+  max-width: 920px
+@media (min-width: $breakpoint-md-min)
+.container,
+.container-sm,
+.container-md,
+.container-lg
+  max-width: 975px
+@media (min-width: $breakpoint-lg-min)
+.container,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl
+  max-width: 975px
+
+
