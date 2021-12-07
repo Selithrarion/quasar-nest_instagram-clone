@@ -11,7 +11,10 @@
             <CommonLogo />
           </div>
 
-          <h6 v-if="authTypes[type].title" class="text-center q-mx-md q-my-sm text-blue-grey-4">
+          <h6
+            v-if="authTypes[type].title && step === AuthStepEnum.AUTH"
+            class="text-center q-mx-md q-my-sm text-blue-grey-4"
+          >
             {{ authTypes[type].title }}
           </h6>
 
@@ -166,7 +169,7 @@
         </div>
       </q-card>
 
-      <div v-show="step === AuthStepEnum.AUTH" class="column flex-center text-blue-grey-5">
+      <div v-show="step === AuthStepEnum.AUTH && !loading.active.value" class="column flex-center text-blue-grey-5">
         {{ t('common.or') }}
         <BaseButton
           v-if="authTypes[type].buttons.includes('register')"
@@ -289,9 +292,11 @@ export default defineComponent({
         const authResponse = (await store.dispatch('user/login', payload)) as UserAuthResponse;
         is2FaEnabled.value = !authResponse.user;
 
-        if (is2FaEnabled.value) step.value = AuthStepEnum.QR_CODE;
-        else await redirectToRequestedOrDefaultPage();
-      } finally {
+        if (is2FaEnabled.value) {
+          step.value = AuthStepEnum.QR_CODE;
+          loading.stop();
+        } else await redirectToRequestedOrDefaultPage();
+      } catch (e) {
         loading.stop();
       }
     }
