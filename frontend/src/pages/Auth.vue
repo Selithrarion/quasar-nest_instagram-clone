@@ -7,7 +7,10 @@
         </q-card-section>
 
         <div v-else>
-          <div class="auth__instagram-image" />
+          <div class="flex-center q-mt-lg q-mb-md">
+            <CommonLogo />
+          </div>
+
           <h6 v-if="authTypes[type].title" class="text-center q-mx-md q-my-sm text-blue-grey-4">
             {{ authTypes[type].title }}
           </h6>
@@ -200,6 +203,8 @@ import { useRouter, useRoute } from 'vue-router';
 import useLoading from 'src/composables/common/useLoading';
 import useFormValidation from 'src/composables/form/useFormValidation';
 
+import CommonLogo from 'components/common/CommonLogo.vue';
+
 import authRepository from 'src/repositories/authRepository';
 import { UserAuthResponse } from 'src/models/user/user.model';
 
@@ -215,6 +220,10 @@ enum AuthStepEnum {
 
 export default defineComponent({
   name: 'AuthPage',
+
+  components: {
+    CommonLogo,
+  },
 
   setup() {
     const q = useQuasar();
@@ -465,13 +474,6 @@ export default defineComponent({
     width: 200px;
     height: 200px;
     border: 1px solid $grey-5;
-  }
-  &__instagram-image {
-    background: url('src/assets/img/instagram_logo_text.png') center no-repeat;
-    background-size: 100%;
-    width: 200px;
-    height: 70px;
-    margin: 24px auto 6px auto;
   }
 }
 </style>
