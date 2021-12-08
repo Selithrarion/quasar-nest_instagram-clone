@@ -1,5 +1,17 @@
 <template>
-  <q-page> </q-page>
+  <q-page class="row gap-4 q-px-md">
+    <div class="feed">
+      <FeedStoryList>
+        <FeedStory v-for="story of 20" :key="story" :story="story" />
+      </FeedStoryList>
+
+      <FeedPostList>
+        <FeedPost v-for="post of 30" :key="post" :post="post" />
+      </FeedPostList>
+    </div>
+
+    <FeedSidebar />
+  </q-page>
 </template>
 
 <script lang="ts">
@@ -10,10 +22,24 @@ import { useI18n } from 'vue-i18n';
 import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
 
+import FeedStoryList from 'components/feed/story/FeedStoryList.vue';
+import FeedStory from 'components/feed/story/FeedStory.vue';
+import FeedPostList from 'components/feed/post/FeedPostList.vue';
+import FeedPost from 'components/feed/post/FeedPost.vue';
+import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
+
 import userRepository from 'src/repositories/userRepository';
 
 export default defineComponent({
   name: 'FeedIndex',
+
+  components: {
+    FeedStoryList,
+    FeedStory,
+    FeedPostList,
+    FeedPost,
+    FeedSidebar,
+  },
 
   setup() {
     const router = useRouter();
@@ -39,3 +65,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.feed {
+  max-width: 672px;
+}
+</style>
