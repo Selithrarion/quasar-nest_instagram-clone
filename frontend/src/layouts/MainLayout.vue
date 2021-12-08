@@ -1,8 +1,8 @@
 <template>
   <q-layout view="hHh Lpr lFf">
     <q-header class="bg-white text-blue-grey-7 shadow-3">
-      <q-toolbar class="container justify-between gap-4" style="min-height: 60px">
-        <div class="flex-center-between cursor-pointer flex-grow-1" @click="goToMainPage">
+      <q-toolbar class="container layout__toolbar" style="min-height: 60px">
+        <div class="layout__logo" @click="goToMainPage">
           <CommonLogo />
         </div>
 
@@ -56,3 +56,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.layout__toolbar {
+  justify-content: space-between;
+  gap: 16px;
+  @media screen and (max-width: 1000px) {
+    flex-grow: 1;
+  }
+}
+.layout__logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  flex-grow: 1;
+}
+</style>
