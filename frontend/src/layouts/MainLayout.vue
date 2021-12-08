@@ -6,7 +6,7 @@
           <CommonLogo />
         </div>
 
-        <CommonSearch v-model="searchValue" prepend-icon @search="search" />
+        <CommonSearch v-model="searchValue" class="mobile-hide" prepend-icon @search="search" />
 
         <LayoutTabs />
       </q-toolbar>
