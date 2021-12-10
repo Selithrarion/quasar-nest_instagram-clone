@@ -1,10 +1,10 @@
 <template>
   <div class="feed-story-list">
-    <CommonNavigationButton type="previous" />
+    <CommonNavigationButton class="navigation--previous" type="previous" />
 
     <slot />
 
-    <CommonNavigationButton type="next" />
+    <CommonNavigationButton class="navigation--next" type="next" />
   </div>
 </template>
 
@@ -27,11 +27,29 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .feed-story-list {
+  position: relative;
   display: flex;
+  gap: 16px;
   align-items: center;
   justify-content: center;
+
   padding: 16px 0;
-  //width: 100%;
   overflow: hidden;
+  background: white;
+  border: solid 1px $blue-grey-3;
+  %navigation {
+    position: absolute;
+    margin: auto 0;
+    z-index: 1;
+    background: white;
+  }
+  .navigation--previous {
+    @extend %navigation;
+    left: 16px;
+  }
+  .navigation--next {
+    @extend %navigation;
+    right: 16px;
+  }
 }
 </style>
