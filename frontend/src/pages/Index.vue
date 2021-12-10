@@ -68,6 +68,9 @@ export default defineComponent({
 
 <style lang="scss">
 .feed {
-  max-width: 672px;
+  display: flex;
+  flex-flow: column;
+  gap: 32px;
+  max-width: 655px;
 }
 </style>
