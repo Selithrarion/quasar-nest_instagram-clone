@@ -12,8 +12,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container class="container">
-      <router-view />
+    <q-page-container class="bg-app-background--light">
+      <router-view class="container" style="padding-top: 38px" />
     </q-page-container>
   </q-layout>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="column flex-center gap-6 q-pa-lg" style="background: #fafafa">
+  <q-page class="column flex-center gap-6 q-pa-lg">
     <q-form class="row items-center full-width" @submit="authTypes[type].action">
       <q-card class="col-xs-12 col-sm-8 col-md-4 col-lg-3 shadow-0" bordered>
         <q-card-section v-if="loading.active.value">
