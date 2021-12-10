@@ -1,5 +1,12 @@
 <template>
-  <q-item v-ripple="clickable" class="base-item" :clickable="clickable" v-bind="$attrs">
+  <q-item
+    v-ripple="clickable"
+    class="base-item"
+    :class="{ 'text-red-6 text-weight-medium': danger }"
+    :style="{ minWidth }"
+    :clickable="clickable"
+    v-bind="$attrs"
+  >
     <BaseLoader v-if="loading" class="flex-center" gray-color medium />
 
     <slot v-else>
@@ -28,6 +35,12 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true,
+    },
+    danger: Boolean,
+
+    minWidth: {
+      type: [Number, String],
+      default: null,
     },
 
     loading: Boolean,
