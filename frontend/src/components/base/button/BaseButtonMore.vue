@@ -1,6 +1,7 @@
 <template>
   <BaseButton icon="more_horiz" :round="round" :flat="flat" v-bind="$attrs">
     <slot />
+    <BaseTooltip label="More actions" />
   </BaseButton>
 </template>
 
