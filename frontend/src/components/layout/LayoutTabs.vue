@@ -2,7 +2,7 @@
   <div class="flex-center gap-4">
     <BaseButton icon="home" size="18px" tooltip="Feed" unelevated dense round />
 
-    <BaseButton class="send-rotated" icon="send" size="16px" tooltip="Messages" unelevated disabled dense round />
+    <CommonIconMessages tooltip="Messages" disabled />
 
     <BaseButton icon="add_box" size="18px" tooltip="Add post" unelevated dense round />
 
@@ -34,12 +34,14 @@ import { useRouter } from 'vue-router';
 import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
 
+import CommonIconMessages from 'components/common/CommonIconMessages.vue';
 import LayoutNotifications from 'components/layout/LayoutNotifications.vue';
 
 export default defineComponent({
   name: 'LayoutTabs',
 
   components: {
+    CommonIconMessages,
     LayoutNotifications,
   },
 
@@ -78,11 +80,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.send-rotated {
-  transform: rotate(-30deg);
-  padding-bottom: 4px;
-  padding-left: 8px;
-}
-</style>
