@@ -8,7 +8,7 @@ import { russianPluralization } from 'src/localization/ru';
 const vueI18n = createI18n({
   legacy: false,
   locale: 'en-US',
-  fallbackLocale: 'ru',
+  fallbackLocale: 'en-US',
   pluralRules: {
     ru: russianPluralization,
   },

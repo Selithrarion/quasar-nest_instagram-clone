@@ -102,11 +102,11 @@ export default {
   },
 
   date: {
-    secondsAgo: '0 секунд назад | {n} секунду назад | {n} секунды назад | {n} секунд назад',
-    minutesAgo: '0 минут назад | {n} минуту назад | {n} минуты назад | {n} минут назад',
-    hoursAgo: '0 час назад | {n} час назад | {n} часа назад | {n} часов назад',
-    daysAgo: '0 день назад| {n} день назад | {n} дня назад | {n} дней назад',
-    monthsAgo: '0 месяц назад | {n} месяц назад | {n} месяца назад | {n} месяцев назад',
+    secondsAgo: '0 seconds ago | {n} second ago | {n} seconds ago',
+    minutesAgo: '0 minutes ago | {n} minute ago | {n} minutes ago',
+    hoursAgo: '0 hours ago | {n} hour ago | {n} hours ago',
+    daysAgo: '0 days ago| {n} day ago | {n} days ago',
+    monthsAgo: '0 months ago | {n} month ago | {n} months ago',
 
     today: 'Today',
     yesterday: 'Yesterday',
