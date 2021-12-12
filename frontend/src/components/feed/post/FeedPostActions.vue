@@ -10,7 +10,16 @@
         round
         @click="toggleLike"
       />
-      <BaseButton icon="forum" size="16px" tooltip="Show comments" unelevated dense round @click="openPostDetail" />
+      <BaseButton
+        class="icon--post-detail"
+        icon="forum"
+        size="16px"
+        tooltip="Show comments"
+        unelevated
+        dense
+        round
+        @click="openPostDetail"
+      />
       <CommonIconMessages tooltip="Share" />
     </div>
 
@@ -51,9 +60,14 @@ export default defineComponent({
 
     return {
       toggleLike,
+      openPostDetail,
     };
   },
 });
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.icon--post-detail ::v-deep i {
+  padding-top: 4px;
+}
+</style>
