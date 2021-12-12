@@ -1,5 +1,5 @@
 <template>
-  <div class="column gap-2 q-pl-md q-pr-sm q-pb-sm">
+  <div class="column gap-2 q-pl-md q-pr-sm q-pb-md">
     <b class="text-subtitle2 text-weight-bold">{{ likes }} likes</b>
     <div class="column gap-1">
       <FeedPostComment v-for="comment in 10" :key="comment" :comment="comment" minimized />
