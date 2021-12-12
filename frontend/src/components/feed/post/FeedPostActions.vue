@@ -3,6 +3,7 @@
     <div>
       <BaseButton
         size="16px"
+        :text-color="isViewerLiked ? 'red' : ''"
         :icon="isViewerLiked ? 'favorite' : 'favorite_border'"
         :tooltip="isViewerLiked ? 'Remove like' : 'Like'"
         unelevated
