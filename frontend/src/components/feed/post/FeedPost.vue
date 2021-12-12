@@ -14,6 +14,9 @@
           : 'https://via.placeholder.com/1080x1080/eee?text=1:1'
       "
     />
+
+    <FeedPostActions />
+    <FeedPostInfo :description="'124124124'" :likes="5" :comments="[]" :created-at="Date.now()" />
   </div>
 </template>
 
@@ -21,6 +24,8 @@
 import { defineComponent, PropType } from 'vue';
 
 import FeedPostHeader from 'components/feed/post/FeedPostHeader.vue';
+import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
+import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
 
 import { PostModel } from 'src/models/post/post.model';
 
@@ -29,6 +34,8 @@ export default defineComponent({
 
   components: {
     FeedPostHeader,
+    FeedPostInfo,
+    FeedPostActions,
   },
 
   props: {
