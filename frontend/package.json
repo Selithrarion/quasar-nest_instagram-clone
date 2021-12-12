@@ -20,6 +20,7 @@
     "test:e2e:ci": "cross-env E2E_TEST=true start-test \"quasar dev\" http-get://localhost:8080 \"cypress run\""
   },
   "dependencies": {
+    "@joeattardi/emoji-button": "^4.6.2",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.2",
     "core-js": "^3.6.5",
