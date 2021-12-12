@@ -17,6 +17,7 @@
 
     <FeedPostActions />
     <FeedPostInfo :description="'124124124'" :likes="5" :comments="[]" :created-at="Date.now()" />
+    <FeedPostCommentInput />
   </div>
 </template>
 
@@ -26,6 +27,7 @@ import { defineComponent, PropType } from 'vue';
 import FeedPostHeader from 'components/feed/post/FeedPostHeader.vue';
 import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
 import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
+import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue';
 
 import { PostModel } from 'src/models/post/post.model';
 
@@ -36,6 +38,7 @@ export default defineComponent({
     FeedPostHeader,
     FeedPostInfo,
     FeedPostActions,
+    FeedPostCommentInput,
   },
 
   props: {
