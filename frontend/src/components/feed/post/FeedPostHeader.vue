@@ -2,7 +2,7 @@
   <div class="flex-center-between gap-4 q-pl-md q-pr-sm q-py-sm">
     <div class="flex-center gap-3">
       <BaseAvatar size="32px" :src="avatar" :item-name="username" :item-color="color" />
-      <div class="text-weight-medium">{{ username }}</div>
+      <b>{{ username }}</b>
     </div>
 
     <BaseButtonMore flat>
