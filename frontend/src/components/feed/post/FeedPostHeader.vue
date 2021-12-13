@@ -1,8 +1,8 @@
 <template>
   <div class="flex-center-between gap-4 q-pl-md q-pr-sm q-py-sm">
-    <div class="flex-center gap-3">
-      <BaseAvatar size="32px" :src="avatar" :item-name="username" :item-color="color" />
-      <b>{{ username }}</b>
+    <div class="flex-center gap-3 cursor-pointer" @click="openUserPage">
+      <BaseAvatar size="32px" :src="avatar" :item-name="username" :item-color="color" clickable />
+      <BaseButton class="text-weight-bold" :label="username" plain-style />
     </div>
 
     <BaseButtonMore flat>
@@ -21,11 +21,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import BaseMenu from 'components/base/BaseMenu.vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'FeedPostHeader',
-  components: { BaseMenu },
+
   props: {
     avatar: {
       type: String,
@@ -40,6 +40,18 @@ export default defineComponent({
       required: true,
     },
     isViewerFollowed: Boolean,
+  },
+
+  setup(props) {
+    const router = useRouter();
+
+    async function openUserPage() {
+      await router.push(`/${props.username}`);
+    }
+
+    return {
+      openUserPage,
+    };
   },
 });
 </script>
