@@ -1,6 +1,6 @@
 <template>
   <div class="feed-sidebar-footer column gap-2 text-caption">
-    <div class="row gap-1 wrap">
+    <div class="row gap-2 wrap">
       <BaseButton
         v-for="link in links"
         :key="link.label"
