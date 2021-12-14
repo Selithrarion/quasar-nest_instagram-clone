@@ -4,7 +4,9 @@
 
     <CommonIconMessages tooltip="Messages" disabled />
 
-    <BaseButton icon="add_box" size="18px" tooltip="Add post" unelevated dense round />
+    <BaseButton icon="add_box" size="18px" tooltip="Add post" disabled unelevated dense round />
+
+    <BaseButton icon="explore" size="18px" tooltip="Explore" disabled unelevated dense round />
 
     <LayoutNotifications />
 
