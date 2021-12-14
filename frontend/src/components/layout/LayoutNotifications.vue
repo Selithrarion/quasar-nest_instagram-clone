@@ -1,5 +1,5 @@
 <template>
-  <BaseButton icon="notifications" size="18px" :tooltip="t('notification.notifications')" unelevated dense round>
+  <BaseButton icon="favorite" size="18px" :tooltip="t('notification.notifications')" unelevated dense round>
     <q-menu style="height: calc(100vh - 100px)" auto-close>
       <q-list class="layout-notifications">
         <div class="column sticky-position bg-white">
