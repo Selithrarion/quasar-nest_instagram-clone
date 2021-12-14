@@ -1,7 +1,7 @@
 <template>
   <BaseItem>
     <q-item-section side>
-      <BaseAvatar size="56px" :src="avatar" :item-name="username" :item-color="color" />
+      <BaseAvatar :size="size" :src="avatar" :item-name="username" :item-color="color" />
     </q-item-section>
 
     <q-item-section>
@@ -40,6 +40,12 @@ export default defineComponent({
     color: {
       type: String,
       required: true,
+    },
+
+    size: {
+      type: [Number, String],
+      required: false,
+      default: '56px',
     },
   },
 
