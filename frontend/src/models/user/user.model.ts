@@ -35,6 +35,13 @@ export interface UserDTO {
   phone?: string;
 }
 
+export interface UserSuggestionModel {
+  id: number;
+  color: string;
+  avatar?: PublicFileModel | null;
+  username: string;
+}
+
 export interface UserLoginDTO {
   email: string;
   password: string;
