@@ -22,6 +22,7 @@ import { CommentEntity } from '../../posts/entity/comment.entity';
 import { PostEntity } from '../../posts/entity/post.entity';
 
 import stringToHslColor from '../../../common/utils/stringToHslColor';
+import { PublicFileModel } from "../../../../../frontend/src/models/common/public.file.model";
 
 export interface UserGoogleData {
   email: string;
@@ -51,6 +52,13 @@ export interface UserJwtPayload {
   readonly id: number;
   readonly email: string;
   readonly is2FAEnabled: boolean;
+}
+
+export interface UserSuggestion {
+  id: number;
+  color: string;
+  avatar?: PublicFileModel | null;
+  username: string;
 }
 
 @Entity()
