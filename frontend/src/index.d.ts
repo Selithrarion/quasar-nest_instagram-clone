@@ -5,3 +5,7 @@ declare module 'vue-mention' {
 declare module 'vuedraggable' {
   export default function Draggable(): void;
 }
+
+declare module 'vue-cropperjs' {
+  export default function VueCropper(): void;
+}
