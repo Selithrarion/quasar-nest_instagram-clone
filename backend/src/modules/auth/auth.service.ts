@@ -16,7 +16,7 @@ import { CreateUserDTO } from '../user/dto';
 
 import { google, Auth } from 'googleapis';
 import { EmailVerificationService } from '../email-verification/email-verification.service';
-import { CreateUserGithubDTO } from '../user/dto/create-user-github.dto';
+import { CreateUserGithubDTO } from '../user/dto';
 
 @Injectable()
 export class AuthService {

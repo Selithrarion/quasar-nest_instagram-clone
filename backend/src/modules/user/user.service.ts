@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { extname } from 'path';
 import { FilesService } from '../files/files.service';
 import { PublicFileEntity } from '../files/entity/public-file.entity';
-import { CreateUserGithubDTO } from './dto/create-user-github.dto';
+import { CreateUserGithubDTO } from './dto';
 import { NotificationEntity } from '../notifications/entity/notification.entity';
 
 @Injectable()
