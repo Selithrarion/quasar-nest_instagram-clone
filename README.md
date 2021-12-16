@@ -46,10 +46,11 @@ Github actions CI pipeline
 - JWT access (1d exp) and refresh (30d exp) tokens, auto relogin if access token expired ❌
 
 #### Feed
-- View all recent posts (photos/videos) from subscriptions with preload ❌
+- View all recent posts (photos/videos) from subscriptions or trends ❌
 - View posts with some tags ❌
 ##### Post
 - Posts CRUD ❌
+- Images crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme) ❌
 - Tags suggestion ❌
 - Dbclick to like post or like with button ❌
 - Comments CRUD, comment reply ❌
