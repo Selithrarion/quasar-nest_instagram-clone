@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { EmailScheduleService } from './email-schedule.service';
-import { EmailScheduleDTO } from './dto/email-schedule.dto';
+import { EmailScheduleDTO } from './dto';
 
 @Controller('email-schedule')
 export class EmailScheduleController {
