@@ -1,5 +1,5 @@
 import { BaseModel } from 'src/models/common/base.model';
-import { PublicFileModel } from 'src/models/common/public.file.model';
+import { PublicFileModel } from 'src/models/common/public-file.model';
 import { PostModel } from 'src/models/post/post.model';
 
 export interface UserModel extends BaseModel {

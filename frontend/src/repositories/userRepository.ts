@@ -1,7 +1,7 @@
 import { http } from 'boot/axios';
 import { UserDTO, UserModel } from 'src/models/user/user.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
-import { PublicFileModel } from 'src/models/common/public.file.model';
+import { PublicFileModel } from 'src/models/common/public-file.model';
 
 export default {
   async searchUsers(search = ''): Promise<UserModel[]> {
