@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onBeforeMount } from 'vue';
+import { defineComponent, computed, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'src/store';
 import { useI18n } from 'vue-i18n';
@@ -27,8 +27,6 @@ import FeedStory from 'components/feed/story/FeedStory.vue';
 import FeedPostList from 'components/feed/post/FeedPostList.vue';
 import FeedPost from 'components/feed/post/FeedPost.vue';
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
-
-import userRepository from 'src/repositories/userRepository';
 
 export default defineComponent({
   name: 'FeedIndex',
