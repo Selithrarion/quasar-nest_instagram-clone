@@ -78,7 +78,7 @@
 import { defineComponent, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import CommonPageTitle from 'components/common/CommonPageTitle.vue';
+import CommonPageTitle from 'components/common/page/CommonPageTitle.vue';
 import CommonSearch from 'components/common/CommonSearch.vue';
 
 export default defineComponent({
