@@ -1,47 +1,43 @@
 <template>
   <div>
-    <div class="header">
-      <h2>Vue CropperJS</h2>
-      <a href="https://github.com/Agontuk/vue-cropperjs">Github</a>
-    </div>
-    <hr />
-
     <input ref="input" type="file" name="image" accept="image/*" @change="setImage" />
 
-    <div class="content">
+    <div class="column gap-2">
+      <div v-if="!modelValue" class="flex-center column gap-6">
+        <q-icon name="photo_library" size="64px" />
+        <div class="text-h6 text-weight-light">Drag photos and videos here</div>
+      </div>
+
       <section class="cropper-area">
         <div class="img-cropper">
-          <vue-cropper ref="cropper" :aspect-ratio="16 / 9" :src="imgSrc" preview=".preview" />
-        </div>
-        <div class="actions">
-          <a href="#" role="button" @click.prevent="zoom(0.2)"> Zoom In </a>
-          <a href="#" role="button" @click.prevent="zoom(-0.2)"> Zoom Out </a>
-          <a href="#" role="button" @click.prevent="move(-10, 0)"> Move Left </a>
-          <a href="#" role="button" @click.prevent="move(10, 0)"> Move Right </a>
-          <a href="#" role="button" @click.prevent="move(0, -10)"> Move Up </a>
-          <a href="#" role="button" @click.prevent="move(0, 10)"> Move Down </a>
-          <a href="#" role="button" @click.prevent="rotate(90)"> Rotate +90deg </a>
-          <a href="#" role="button" @click.prevent="rotate(-90)"> Rotate -90deg </a>
-          <a ref="flipX" href="#" role="button" @click.prevent="flipX"> Flip X </a>
-          <a ref="flipY" href="#" role="button" @click.prevent="flipY"> Flip Y </a>
-          <a href="#" role="button" @click.prevent="cropImage"> Crop </a>
-          <a href="#" role="button" @click.prevent="reset"> Reset </a>
-          <a href="#" role="button" @click.prevent="getData"> Get Data </a>
-          <a href="#" role="button" @click.prevent="setData"> Set Data </a>
-          <a href="#" role="button" @click.prevent="getCropBoxData"> Get CropBox Data </a>
-          <a href="#" role="button" @click.prevent="setCropBoxData"> Set CropBox Data </a>
-          <a href="#" role="button" @click.prevent="showFileChooser"> Upload Image </a>
+          <vue-cropper ref="cropper" :aspect-ratio="Number(selectedAspectRatio)" :src="imgSrc" />
         </div>
 
-        <textarea v-model="data" />
-      </section>
-      <section class="preview-area">
-        <p>Preview</p>
-        <div class="preview" />
-        <p>Cropped Image</p>
-        <div class="cropped-image">
-          <img v-if="cropImg" :src="cropImg" alt="Cropped Image" />
-          <div v-else class="crop-placeholder" />
+        <div class="actions">
+          <div v-if="modelValue" class="row gap-1">
+            <BaseButton icon="aspect_ratio" unelevated round>
+              <BaseMenu>
+                <BaseItem
+                  v-for="ratio in availableAspectRatios"
+                  :key="ratio.key"
+                  class="ratio-item"
+                  :class="{ 'ratio-item--selected': selectedAspectRatio === ratio.key }"
+                  :label="ratio.label"
+                  :append-icon="ratio.icon"
+                  @click="selectedAspectRatio = ratio.key"
+                />
+              </BaseMenu>
+            </BaseButton>
+            <BaseButton icon="zoom_in" unelevated round @click.prevent="zoom(0.2)" />
+            <BaseButton icon="zoom_out" unelevated round @click.prevent="zoom(-0.2)" />
+          </div>
+
+          <!--          <BaseButton @click.prevent="cropImage"> Crop </>BaseButton>-->
+          <!--          <BaseButton @click.prevent="getData"> Get Data </>BaseButton>-->
+          <!--          <BaseButton @click.prevent="setData"> Set Data </>BaseButton>-->
+          <!--          <BaseButton @click.prevent="getCropBoxData"> Get CropBox Data </>BaseButton>-->
+          <!--          <BaseButton @click.prevent="setCropBoxData"> Set CropBox Data </>BaseButton>-->
+          <BaseButton label="Select from computer" color="primary" @click="showFileChooser" />
         </div>
       </section>
     </div>
@@ -51,7 +47,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
-import 'cropperjs/dist/cropper.value.css';
+import 'cropperjs/dist/cropper.css';
 
 export default defineComponent({
   name: 'CommonImageCropper',
@@ -60,7 +56,16 @@ export default defineComponent({
     VueCropper,
   },
 
-  setup() {
+  props: {
+    modelValue: {
+      type: String,
+      default: null,
+    },
+  },
+
+  emits: ['update:model-value'],
+
+  setup(props, { emit }) {
     interface VueCropperModel {
       getCroppedCanvas: () => HTMLCanvasElement;
       getCropBoxData: () => string;
@@ -74,21 +79,18 @@ export default defineComponent({
     const cropper = ref<VueCropperModel | null>(null);
     const input = ref<HTMLInputElement | null>(null);
     const imgSrc = ref('');
-    const cropImg = ref('');
     const data = ref('');
 
     function cropImage() {
+      console.log('CROP IMAGE', cropper.value?.getCroppedCanvas(), cropper.value?.getCroppedCanvas().toDataURL());
       // get image data for post processing, e.g. upload or setting image src
-      cropImg.value = cropper.value?.getCroppedCanvas().toDataURL() || '';
+      emit('update:model-value', cropper.value?.getCroppedCanvas().toDataURL());
     }
     function getCropBoxData() {
       data.value = JSON.stringify(cropper.value?.getCropBoxData(), null, 4);
     }
     function getData() {
       data.value = JSON.stringify(cropper.value?.getData(), null, 4);
-    }
-    function move(offsetX: number, offsetY: number) {
-      cropper.value?.move(offsetX, offsetY);
     }
 
     function setCropBoxData() {
@@ -98,6 +100,10 @@ export default defineComponent({
     function setData() {
       if (!data.value) return;
       cropper.value?.setData(JSON.parse(data.value));
+    }
+
+    function showFileChooser() {
+      input.value?.click();
     }
     function setImage(e: Event) {
       const file = (<HTMLInputElement>e.target)?.files?.[0];
@@ -112,7 +118,7 @@ export default defineComponent({
         reader.onload = (event: Event) => {
           const target = event.target as EventTarget & { result: string };
           imgSrc.value = target.result;
-          // rebuild cropperjs with the updated source
+          // rebuild cropper js with the updated source
           cropper.value?.replace(target.result);
         };
         reader.readAsDataURL(file);
@@ -120,19 +126,79 @@ export default defineComponent({
         alert('Sorry, FileReader API not supported');
       }
     }
-    function showFileChooser() {
-      input.value?.click();
-    }
+
     function zoom(percent: string) {
       cropper.value?.relativeZoom(percent);
     }
 
-    return {};
+    const selectedAspectRatio = ref('1/1');
+    const availableAspectRatios = [
+      {
+        label: 'Original',
+        key: 'original',
+        icon: 'crop_original',
+      },
+      {
+        label: '1:1',
+        key: '1/1',
+        icon: 'crop_square',
+      },
+      {
+        label: '4:5',
+        key: '4/5',
+        icon: 'crop_portrait',
+      },
+      {
+        label: '16:9',
+        key: '16/9',
+        icon: 'crop_landscape',
+      },
+    ];
+
+    return {
+      cropper,
+      input,
+      imgSrc,
+      data,
+
+      cropImage,
+      getCropBoxData,
+      getData,
+
+      setCropBoxData,
+      setData,
+      showFileChooser,
+      setImage,
+      zoom,
+
+      selectedAspectRatio,
+      availableAspectRatios,
+    };
   },
 });
 </script>
 
 <style lang="scss" scoped>
+.ratio-item {
+  opacity: 0.6;
+  &:hover {
+    opacity: 0.8;
+  }
+  &:active {
+    opacity: 0.85;
+  }
+
+  &--selected {
+    opacity: 1;
+    &:hover {
+      opacity: 1;
+    }
+    &:active {
+      opacity: 1;
+    }
+  }
+}
+
 input[type='file'] {
   display: none;
 }
