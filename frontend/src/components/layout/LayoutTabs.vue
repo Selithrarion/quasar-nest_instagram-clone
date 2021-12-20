@@ -1,10 +1,18 @@
 <template>
-  <div class="flex-center gap-4">
+  <div class="flex-center gap-1">
     <BaseButton icon="home" size="18px" tooltip="Feed" unelevated dense round />
 
     <CommonIconMessages tooltip="Messages" disabled />
 
-    <BaseButton icon="add_box" size="18px" tooltip="Add post" disabled unelevated dense round />
+    <BaseButton
+      icon="add_box"
+      size="18px"
+      tooltip="Add post"
+      unelevated
+      dense
+      round
+      @click="dialog.open('createPost')"
+    />
 
     <BaseButton icon="explore" size="18px" tooltip="Explore" disabled unelevated dense round />
 
@@ -26,6 +34,8 @@
         </q-list>
       </q-menu>
     </BaseButton>
+
+    <LayoutPostCreate :model-value="dialog.openedName.value === 'createPost'" @close="dialog.close" />
   </div>
 </template>
 
@@ -38,6 +48,7 @@ import useLoading from 'src/composables/common/useLoading';
 
 import CommonIconMessages from 'components/common/CommonIconMessages.vue';
 import LayoutNotifications from 'components/layout/LayoutNotifications.vue';
+import LayoutPostCreate from 'components/layout/LayoutPostCreate.vue';
 
 export default defineComponent({
   name: 'LayoutTabs',
@@ -45,6 +56,7 @@ export default defineComponent({
   components: {
     CommonIconMessages,
     LayoutNotifications,
+    LayoutPostCreate,
   },
 
   setup() {
