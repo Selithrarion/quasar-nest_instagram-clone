@@ -3,9 +3,6 @@
 ### Video  
 TODO
 
-### Project structure
-TODO
-
 ### Stack
 #### Frontend
 
@@ -47,7 +44,7 @@ Github actions CI pipeline
 
 #### Feed
 - View all recent posts (photos/videos) from subscriptions or trends ❌
-- View posts with some tags ❌
+- Search posts with selected tags ❌
 ##### Post
 - Posts CRUD ❌
 - Images crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme) ❌
