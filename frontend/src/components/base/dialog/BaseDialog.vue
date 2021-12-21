@@ -31,10 +31,10 @@
             </div>
           </q-card-section>
 
-          <q-card-section
+          <BaseDialogActions
             v-if="actions && !contentLoading"
-            class="dialog-action-buttons"
-            :class="[{ 'dialog-action-buttons--dense': type === 'delete' }, { 'fixed-section': fixedFooter }]"
+            :class="{ 'fixed-section': fixedFooter }"
+            :dense="type === 'delete'"
           >
             <BaseButton
               v-if="showBackButton"
@@ -62,7 +62,7 @@
               :disabled="confirmDisabled"
               unelevated
             />
-          </q-card-section>
+          </BaseDialogActions>
         </q-form>
       </slot>
     </q-card>
