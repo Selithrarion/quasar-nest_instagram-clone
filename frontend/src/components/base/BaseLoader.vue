@@ -7,7 +7,7 @@
     <q-circular-progress
       :size="computedSize"
       :color="computedColor"
-      :thickness="thickness"
+      :thickness="Number(thickness)"
       indeterminate
       v-bind="$attrs"
     />
