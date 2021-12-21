@@ -211,5 +211,17 @@ export default defineComponent({
   input[type='file'] {
     display: none;
   }
+
+  ::v-deep .cropper-container {
+    .cropper-view-box {
+      outline-color: $primary;
+    }
+    .cropper-line {
+      background-color: $primary;
+    }
+    .cropper-point {
+      background-color: $primary;
+    }
+  }
 }
 </style>
