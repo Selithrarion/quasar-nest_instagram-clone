@@ -1,6 +1,6 @@
 <template>
   <div class="common-image-filter row no-wrap gap-2">
-    <q-img fit="scale-down" :src="image" :style="styles" />
+    <q-img fit="scale-down" :src="modelValue" :style="styles" />
     <div class="common-image-filter__items column gap-1 w-full q-pl-md">
       <CommonImageFilterItem v-model="filter.brightness" label="Brightness" :max="2" />
       <CommonImageFilterItem v-model="filter.contrast" label="Contrast" :max="2" />
@@ -25,11 +25,13 @@ export default defineComponent({
   },
 
   props: {
-    image: {
+    modelValue: {
       type: String,
-      required: true,
+      default: null,
     },
   },
+
+  emits: ['update:model-value'],
 
   setup() {
     const filter = ref<Record<string, number>>({
