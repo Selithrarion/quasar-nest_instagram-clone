@@ -11,10 +11,10 @@
     @confirm="nextStep"
   >
     <div v-if="step === CreatePostEnum.SELECT" class="flex-center column gap-6 text-center">
-      <CommonImageCropper ref="cropper" v-model="form.image" />
+      <CommonImageCropper ref="cropper" v-model="form.image" v-model:selected-raw="form.rawImage" />
     </div>
     <div v-else-if="step === CreatePostEnum.EDIT">
-      <CommonImageFilter v-model="form.image" :image="form.image" />
+      <CommonImageFilter v-model="form.image" />
     </div>
   </BaseDialog>
 </template>
@@ -61,6 +61,10 @@ export default defineComponent({
     function close() {
       emit('close');
       step.value = CreatePostEnum.SELECT;
+      form.value = {
+        rawImage: null,
+        image: null,
+      };
     }
 
     const title = computed(() => {
@@ -71,6 +75,7 @@ export default defineComponent({
     });
 
     const form = ref({
+      rawImage: null,
       image: null,
     });
 
