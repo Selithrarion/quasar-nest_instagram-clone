@@ -51,7 +51,6 @@ Github actions CI pipeline
 - Images crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
 - Change aspect ratio (1:1, 4:5, 16:9, original)
 - Images css filters
-- Save prev steps crop/fitlers data and load it if user returned
 - Tags suggestion ❌
 - Dbclick to like post or like with button ❌
 - Comments CRUD, comment reply ❌
