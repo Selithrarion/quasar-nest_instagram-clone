@@ -100,10 +100,11 @@ export default defineComponent({
       removeDragListeners();
     });
 
-    function cropImage() {
-      console.log('CROP IMAGE', cropper.value?.getCroppedCanvas(), cropper.value?.getCroppedCanvas().toDataURL());
-      // get image data for post processing, e.g. upload or setting image src
-      emit('update:model-value', cropper.value?.getCroppedCanvas().toDataURL());
+    function getCroppedImageBlob() {
+      // i use blob instead of base64 coz base64 takes up about 33% more space than the original
+      cropper.value?.getCroppedCanvas({ fillColor: '#fff' }).toBlob((blob) => {
+        emit('update:model-value', blob);
+      }, 'image/png');
     }
     // function getCropBoxData() {
     //   data.value = JSON.stringify(cropper.value?.getCropBoxData(), null, 4);
@@ -124,8 +125,8 @@ export default defineComponent({
     function showFileChooser() {
       input.value?.click();
     }
-    function setRawImage(e: Event) {
-      const file = (<HTMLInputElement>e.target)?.files?.[0];
+    function setRawImage($event: Event) {
+      const file = (<HTMLInputElement>$event.target)?.files?.[0];
 
       if (!file) return;
       if (file.type.indexOf('image/') === -1) {
@@ -135,8 +136,8 @@ export default defineComponent({
       if (typeof FileReader !== 'function') alert('Sorry, FileReader API not supported');
 
       const reader = new FileReader();
-      reader.onload = (event: Event) => {
-        const target = event.target as EventTarget & { result: string };
+      reader.onload = ($readerEvent: Event) => {
+        const target = $readerEvent.target as EventTarget & { result: string };
 
         imgSrc.value = target.result;
         emit('update:selected-raw', target.result);
@@ -239,7 +240,7 @@ export default defineComponent({
       imgSrc,
       data,
 
-      cropImage,
+      getCroppedImageBlob,
       // getCropBoxData,
       // setCropBoxData,
       //
