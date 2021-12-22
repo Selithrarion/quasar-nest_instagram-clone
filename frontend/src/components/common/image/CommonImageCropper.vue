@@ -57,6 +57,28 @@ import { defineComponent, onBeforeMount, onMounted, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 
+interface VueCropperModel {
+  getCroppedCanvas: (options?: GetCroppedCanvasOptions) => HTMLCanvasElement;
+  getCropBoxData: () => string;
+  setCropBoxData: (v: string) => void;
+  getData: () => string;
+  setData: (v: string) => void;
+  replace: (v: string) => void;
+  relativeZoom: (v: string) => void;
+  move: (x: number, y: number) => void;
+}
+interface GetCroppedCanvasOptions {
+  width?: number;
+  height?: number;
+  minWidth?: number;
+  minHeight?: number;
+  maxWidth?: number;
+  maxHeight?: number;
+  fillColor?: string;
+  imageSmoothingEnabled?: boolean;
+  imageSmoothingQuality?: string;
+}
+
 export default defineComponent({
   name: 'CommonImageCropper',
 
@@ -78,16 +100,6 @@ export default defineComponent({
   emits: ['update:model-value', 'update:selected-raw'],
 
   setup(props, { emit }) {
-    interface VueCropperModel {
-      getCroppedCanvas: () => HTMLCanvasElement;
-      getCropBoxData: () => string;
-      getData: () => string;
-      setData: (v: string) => void;
-      replace: (v: string) => void;
-      relativeZoom: (v: string) => void;
-      move: (x: number, y: number) => void;
-      setCropBoxData: (v: string) => void;
-    }
     const cropper = ref<VueCropperModel | null>(null);
     const input = ref<HTMLInputElement | null>(null);
     const imgSrc = ref('');
