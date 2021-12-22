@@ -11,7 +11,7 @@
     @back="prevStep"
     @confirm="nextStep"
   >
-    <div v-if="step === CreatePostEnum.SELECT" class="flex-center column gap-6 text-center">
+    <div v-show="step === CreatePostEnum.SELECT" class="flex-center column gap-6 text-center">
       <CommonImageCropper
         ref="cropper"
         v-model="form.imageBlob"
@@ -19,7 +19,7 @@
         v-model:image-crop-data="form.imageCropData"
       />
     </div>
-    <div v-else-if="step === CreatePostEnum.EDIT">
+    <div v-show="step === CreatePostEnum.EDIT">
       <CommonImageFilter v-model="imageBlobURL" />
     </div>
   </BaseDialog>
