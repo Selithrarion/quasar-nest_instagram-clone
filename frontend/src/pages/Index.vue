@@ -1,5 +1,5 @@
 <template>
-  <q-page class="row gap-4 q-px-md">
+  <q-page class="row gap-4 q-px-md no-wrap">
     <div class="feed">
       <FeedStoryList>
         <FeedStory v-for="story of 20" :key="story" :story="story" />
