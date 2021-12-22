@@ -1,5 +1,12 @@
 <template>
-  <div class="common-image-cropper">
+  <div
+    class="common-image-cropper"
+    :class="{ 'common-image-cropper--dragging': isDrag }"
+    @drop="handleFileDrop"
+    @dragenter="handleDragEnter"
+    @dragleave="handleDragLeave"
+    @dragover.stop.prevent
+  >
     <input ref="input" type="file" name="image" accept="image/*" @change="setRawImage" />
 
     <div class="column gap-6">
@@ -46,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onBeforeMount, onMounted, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 
@@ -85,6 +92,13 @@ export default defineComponent({
     const input = ref<HTMLInputElement | null>(null);
     const imgSrc = ref('');
     const data = ref('');
+
+    onMounted(() => {
+      addDragListeners();
+    });
+    onBeforeMount(() => {
+      removeDragListeners();
+    });
 
     function cropImage() {
       console.log('CROP IMAGE', cropper.value?.getCroppedCanvas(), cropper.value?.getCroppedCanvas().toDataURL());
@@ -165,6 +179,60 @@ export default defineComponent({
       },
     ];
 
+    const isDrag = ref(false);
+    const isDragAllowed = ref(true);
+    function handleFileDrop($event: DragEvent) {
+      $event.stopPropagation();
+      $event.preventDefault();
+
+      if (!isDragAllowed.value) enableFilesDrag();
+      isDrag.value = false;
+
+      const files = $event.dataTransfer?.files;
+      if (!files || !files.length) return;
+
+      console.log(files);
+    }
+    function handleDragEnter() {
+      if (isDragAllowed.value) isDrag.value = true;
+    }
+    function handleDragLeave($event: DragEvent) {
+      const isTrueLeave = !$event.pageY && !$event.pageY;
+      if (isTrueLeave) isDrag.value = false;
+    }
+    function handleDragOver($event: DragEvent) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+
+    function enableFilesDrag() {
+      isDragAllowed.value = true;
+    }
+    function disableFilesDrag() {
+      isDrag.value = false;
+      isDragAllowed.value = false;
+    }
+    function addDragListeners() {
+      window.addEventListener('dragenter', handleDragEnter);
+      window.addEventListener('dragleave', handleDragLeave);
+      window.addEventListener('dragover', handleDragOver);
+
+      window.addEventListener('drop', handleFileDrop);
+
+      document.addEventListener('mousedown', disableFilesDrag);
+      document.addEventListener('mouseup', enableFilesDrag);
+    }
+    function removeDragListeners() {
+      window.removeEventListener('dragenter', handleDragEnter);
+      window.removeEventListener('dragleave', handleDragLeave);
+      window.removeEventListener('dragover', handleDragOver);
+
+      window.removeEventListener('drop', handleFileDrop);
+
+      document.removeEventListener('mousedown', disableFilesDrag);
+      document.removeEventListener('mouseup', enableFilesDrag);
+    }
+
     return {
       cropper,
       input,
@@ -183,6 +251,8 @@ export default defineComponent({
 
       selectedAspectRatio,
       availableAspectRatios,
+
+      isDrag,
     };
   },
 });
@@ -190,6 +260,24 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .common-image-cropper {
+  &--dragging::after {
+    content: 'Drop files';
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-size: 24px;
+    background-color: rgba(114, 202, 198, 0.35);
+  }
+
   &__cropper {
     max-height: 60vh;
   }
