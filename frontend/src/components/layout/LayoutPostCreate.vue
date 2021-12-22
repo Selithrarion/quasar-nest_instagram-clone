@@ -3,6 +3,7 @@
     :confirm-text="step === CreatePostEnum.UPLOAD ? 'Upload' : 'Next'"
     :show-back-button="step !== CreatePostEnum.SELECT"
     :hide-close-button="step !== CreatePostEnum.SELECT"
+    :hide-confirm-button="!form.imageRaw"
     :title="title"
     large
     v-bind="$attrs"
@@ -11,10 +12,10 @@
     @confirm="nextStep"
   >
     <div v-if="step === CreatePostEnum.SELECT" class="flex-center column gap-6 text-center">
-      <CommonImageCropper ref="cropper" v-model="form.image" v-model:selected-raw="form.rawImage" />
+      <CommonImageCropper ref="cropper" v-model="form.imageBlob" v-model:selected-raw="form.imageRaw" />
     </div>
     <div v-else-if="step === CreatePostEnum.EDIT">
-      <CommonImageFilter v-model="form.image" />
+      <CommonImageFilter v-model="imageBlobURL" />
     </div>
   </BaseDialog>
 </template>
@@ -51,7 +52,7 @@ export default defineComponent({
     function nextStep() {
       if (step.value === CreatePostEnum.SELECT) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        cropper.value?.cropImage();
+        cropper.value?.getCroppedImageBlob();
         step.value = CreatePostEnum.EDIT;
       } else if (step.value === CreatePostEnum.EDIT) step.value = CreatePostEnum.UPLOAD;
       else if (step.value === CreatePostEnum.UPLOAD) {
@@ -62,8 +63,8 @@ export default defineComponent({
       emit('close');
       step.value = CreatePostEnum.SELECT;
       form.value = {
-        rawImage: null,
-        image: null,
+        imageRaw: null,
+        imageBlob: null,
       };
     }
 
@@ -75,8 +76,13 @@ export default defineComponent({
     });
 
     const form = ref({
-      rawImage: null,
-      image: null,
+      imageRaw: null,
+      imageBlob: null,
+    });
+    const imageBlobURL = computed(() => {
+      const blob = form.value.imageBlob;
+      if (!blob) return null;
+      return URL.createObjectURL(blob);
     });
 
     return {
@@ -91,6 +97,7 @@ export default defineComponent({
       title,
 
       form,
+      imageBlobURL,
     };
   },
 });
