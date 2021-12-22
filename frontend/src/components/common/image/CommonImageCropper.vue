@@ -14,6 +14,7 @@
       <template v-else>
         <vue-cropper
           ref="cropper"
+          class="common-image-cropper__cropper"
           :key="selectedAspectRatio"
           :aspect-ratio="selectedAspectRatio"
           :src="imgSrc"
@@ -189,6 +190,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .common-image-cropper {
+  &__cropper {
+    max-height: 60vh;
+  }
+
   &__ratio-item {
     opacity: 0.6;
     &:hover {
