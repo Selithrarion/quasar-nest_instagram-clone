@@ -47,6 +47,7 @@ Github actions CI pipeline
 - Search posts with selected tags ❌
 ##### Post
 - Posts CRUD ❌
+- Dragndrop or browse image
 - Images crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
 - Change aspect ratio (1:1, 4:5, 16:9, original)
 - Images css filters
