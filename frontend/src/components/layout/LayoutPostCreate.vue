@@ -12,7 +12,12 @@
     @confirm="nextStep"
   >
     <div v-if="step === CreatePostEnum.SELECT" class="flex-center column gap-6 text-center">
-      <CommonImageCropper ref="cropper" v-model="form.imageBlob" v-model:selected-raw="form.imageRaw" />
+      <CommonImageCropper
+        ref="cropper"
+        v-model="form.imageBlob"
+        v-model:image-raw="form.imageRaw"
+        v-model:image-crop-data="form.imageCropData"
+      />
     </div>
     <div v-else-if="step === CreatePostEnum.EDIT">
       <CommonImageFilter v-model="imageBlobURL" />
@@ -53,6 +58,8 @@ export default defineComponent({
       if (step.value === CreatePostEnum.SELECT) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         cropper.value?.getCroppedImageBlob();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        cropper.value?.getCroppedImageData();
         step.value = CreatePostEnum.EDIT;
       } else if (step.value === CreatePostEnum.EDIT) step.value = CreatePostEnum.UPLOAD;
       else if (step.value === CreatePostEnum.UPLOAD) {
@@ -65,6 +72,7 @@ export default defineComponent({
       form.value = {
         imageRaw: null,
         imageBlob: null,
+        imageCropData: null,
       };
     }
 
@@ -78,6 +86,7 @@ export default defineComponent({
     const form = ref({
       imageRaw: null,
       imageBlob: null,
+      imageCropData: null,
     });
     const imageBlobURL = computed(() => {
       const blob = form.value.imageBlob;

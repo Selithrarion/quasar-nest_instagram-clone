@@ -10,7 +10,7 @@
     <input ref="input" type="file" name="image" accept="image/*" @change="setRawImage" />
 
     <div class="column gap-6">
-      <template v-if="!selectedRaw">
+      <template v-if="!imageRaw">
         <div class="flex-center column gap-4">
           <q-icon name="photo_library" size="64px" />
           <div class="text-h6 text-weight-light">Drag photos and videos here</div>
@@ -26,6 +26,7 @@
           :aspect-ratio="selectedAspectRatio"
           :src="imgSrc"
           :background="false"
+          @ready="setCroppedImageData"
         />
 
         <div class="row gap-4">
@@ -53,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 
@@ -91,48 +92,47 @@ export default defineComponent({
       type: String,
       default: null,
     },
-    selectedRaw: {
+    imageRaw: {
+      type: String,
+      default: null,
+    },
+    imageCropData: {
       type: String,
       default: null,
     },
   },
 
-  emits: ['update:model-value', 'update:selected-raw'],
+  emits: ['update:model-value', 'update:image-raw', 'update:image-crop-data'],
 
   setup(props, { emit }) {
     const cropper = ref<VueCropperModel | null>(null);
     const input = ref<HTMLInputElement | null>(null);
-    const imgSrc = ref(props.selectedRaw);
+    const imgSrc = ref(props.imageRaw);
     const data = ref('');
 
     onMounted(() => {
       addDragListeners();
     });
-    onBeforeMount(() => {
+    onBeforeUnmount(() => {
       removeDragListeners();
     });
 
     function getCroppedImageBlob() {
-      // i use blob instead of base64 coz base64 takes up about 33% more space than the original
+      // i use .toBlob instead of .toDataURL coz base64 takes up about 33% more space than the original and blob
       cropper.value?.getCroppedCanvas({ fillColor: '#fff' }).toBlob((blob) => {
         emit('update:model-value', blob);
       }, 'image/png');
     }
-    // function getCropBoxData() {
-    //   data.value = JSON.stringify(cropper.value?.getCropBoxData(), null, 4);
-    // }
-    // function setCropBoxData() {
-    //   if (!data.value) return;
-    //   cropper.value?.setCropBoxData(JSON.parse(data.value));
-    // }
-
-    // function getData() {
-    //   data.value = JSON.stringify(cropper.value?.getData(), null, 4);
-    // }
-    // function setData() {
-    //   if (!data.value) return;
-    //   cropper.value?.setData(JSON.parse(data.value));
-    // }
+    function getCroppedImageData() {
+      const cropperData = cropper.value?.getData();
+      const cropperDataString = JSON.stringify(cropperData, null, 4);
+      emit('update:image-crop-data', cropperDataString);
+    }
+    function setCroppedImageData() {
+      if (!props.imageCropData) return;
+      const parsedData = JSON.parse(props.imageCropData) as string;
+      cropper.value?.setData(parsedData);
+    }
 
     function showFileChooser() {
       input.value?.click();
@@ -152,7 +152,7 @@ export default defineComponent({
         const target = $readerEvent.target as EventTarget & { result: string };
 
         imgSrc.value = target.result;
-        emit('update:selected-raw', target.result);
+        emit('update:image-raw', target.result);
 
         // rebuild cropper js with the updated source
         cropper.value?.replace(target.result);
@@ -253,11 +253,9 @@ export default defineComponent({
       data,
 
       getCroppedImageBlob,
-      // getCropBoxData,
-      // setCropBoxData,
-      //
-      // getData,
-      // setData,
+      getCroppedImageData,
+      setCroppedImageData,
+
       showFileChooser,
       setRawImage,
       zoom,
