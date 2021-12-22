@@ -102,7 +102,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const cropper = ref<VueCropperModel | null>(null);
     const input = ref<HTMLInputElement | null>(null);
-    const imgSrc = ref('');
+    const imgSrc = ref(props.selectedRaw);
     const data = ref('');
 
     onMounted(() => {
