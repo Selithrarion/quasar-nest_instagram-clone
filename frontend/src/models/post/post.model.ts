@@ -3,9 +3,7 @@ import { UserModel } from 'src/models/user/user.model';
 import { CommentModel } from 'src/models/post/comment.model';
 
 export interface PostModel extends BaseModel {
-  title: string;
   description: string;
-  tags: string[];
 
   author: UserModel;
   likes: UserModel[];
@@ -24,7 +22,6 @@ export interface PostModel extends BaseModel {
 }
 
 export interface PostDTO {
-  title: string;
+  image: Blob;
   description: string;
-  tags: string[];
 }

@@ -2,13 +2,14 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { CommentEntity } from './comment.entity';
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class PostEntity extends BaseEntity {
-  @Column()
-  title: string;
   @Column({ nullable: true })
   description: string;
+
+  @Exclude()
   @Column('text', { array: true, nullable: true })
   tags: string[];
 
