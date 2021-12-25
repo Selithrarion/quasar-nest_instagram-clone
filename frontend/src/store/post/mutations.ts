@@ -8,9 +8,6 @@ const mutation: MutationTree<PostStateInterface> = {
     state.posts = projects.items;
     state.postsMeta = projects.meta;
   },
-  ADD_POST(state: PostStateInterface, project: PostModel) {
-    state.posts?.unshift(project);
-  },
   UPDATE_POST(state: PostStateInterface, post: PostModel) {
     if (!state.posts) return;
     const index = state.posts.findIndex((d) => d.id === post.id);

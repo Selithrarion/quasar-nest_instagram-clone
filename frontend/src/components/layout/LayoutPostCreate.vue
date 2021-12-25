@@ -5,6 +5,7 @@
     :hide-close-button="step !== CreatePostEnum.SELECT"
     :hide-confirm-button="!form.imageRaw"
     :title="title"
+    :confirm-loading="loading.active.value"
     large
     v-bind="$attrs"
     @close="close"
@@ -48,11 +49,13 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'src/store';
+import useLoading from 'src/composables/common/useLoading';
 
 import CommonImageCropper from 'components/common/image/CommonImageCropper.vue';
 import CommonImageFilter from 'components/common/image/CommonImageFilter.vue';
 import CommonUser from 'components/common/CommonUser.vue';
-import postRepository from "src/repositories/postRepository";
+
+import postRepository from 'src/repositories/postRepository';
 
 enum CreatePostEnum {
   SELECT = 'selectFile',
@@ -73,6 +76,8 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const store = useStore();
+    const loading = useLoading();
+
     const cropper = ref<InstanceType<typeof CommonImageCropper>>();
     const filter = ref<InstanceType<typeof CommonImageFilter>>();
 
@@ -93,7 +98,7 @@ export default defineComponent({
         filter.value?.getFilteredImageBlob();
         step.value = CreatePostEnum.UPLOAD;
       } else if (step.value === CreatePostEnum.UPLOAD) {
-        uploadPost()
+        void uploadPost();
       }
     }
     function close() {
@@ -134,9 +139,27 @@ export default defineComponent({
       return URL.createObjectURL(blob);
     });
 
+    async function uploadPost() {
+      try {
+        loading.start();
+
+        const formData = new FormData();
+        formData.append('image', form.value.imageBlobWithFilter || '');
+        formData.append('description', form.value.description);
+        await postRepository.create(formData);
+
+        close();
+        await store.dispatch('post/getAll');
+      } finally {
+        loading.stop();
+      }
+    }
+
     const currentUser = computed(() => store.state.user.currentUser);
 
     return {
+      loading,
+
       cropper,
       filter,
 

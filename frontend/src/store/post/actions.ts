@@ -15,11 +15,6 @@ const actions: ActionTree<PostStateInterface, StateInterface> = {
     const data = await postRepository.getByID(id);
     commit('SET_POST_DETAIL', data);
   },
-  async create({ commit }, payload: PostDTO) {
-    const data = await postRepository.create(payload);
-    commit('ADD_POST', data);
-    return data;
-  },
   async update({ commit }, { id, payload }: { id: number; payload: PostDTO }) {
     const data = await postRepository.update(id, payload);
     commit('UPDATE_POST', data);
