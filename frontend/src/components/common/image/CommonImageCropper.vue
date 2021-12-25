@@ -118,7 +118,6 @@ export default defineComponent({
     });
 
     function getCroppedImageBlob() {
-      // i use .toBlob instead of .toDataURL coz base64 takes up about 33% more space than the original and blob
       cropper.value?.getCroppedCanvas({ fillColor: '#fff' }).toBlob((blob) => {
         emit('update:model-value', blob);
       }, 'image/png');
