@@ -1,12 +1,12 @@
 <template>
-  <BaseItem>
+  <BaseItem :clickable="clickable">
     <q-item-section side>
       <BaseAvatar :size="size" :src="avatar" :item-name="username" :item-color="color" />
     </q-item-section>
 
     <q-item-section>
       <q-item-label>{{ username }}</q-item-label>
-      <q-item-label caption>
+      <q-item-label v-if="$slots.name || name" caption>
         <slot name="name" :user-name="name">
           {{ name }}
         </slot>
@@ -30,7 +30,8 @@ export default defineComponent({
     },
     name: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
 
     avatar: {
@@ -46,6 +47,11 @@ export default defineComponent({
       type: [Number, String],
       required: false,
       default: '56px',
+    },
+    clickable: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
 
