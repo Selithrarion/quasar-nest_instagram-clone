@@ -19,16 +19,40 @@
         v-model:image-crop-data="form.imageCropData"
       />
     </div>
+
     <div v-show="step === CreatePostEnum.EDIT">
-      <CommonImageFilter v-model="imageBlobURL" />
+      <CommonImageFilter
+        ref="filter"
+        :model-value="imageBlobURL"
+        @update:model-value="form.imageBlobWithFilter = $event"
+      />
+    </div>
+
+    <div v-show="step === CreatePostEnum.UPLOAD" class="row gap-4 no-wrap">
+      <q-img class="w-66 flex-shrink-0" style="max-height: 60vh" fit="scale-down" :src="imageBlobWithFilterURL" />
+      <div class="w-33 flex-shrink-0">
+        <CommonUser
+          class="q-pl-none"
+          size="28px"
+          :username="currentUser.username"
+          :avatar="currentUser.avatar"
+          :color="currentUser.color"
+          :clickable="false"
+        />
+        <q-input v-model="form.description" label="Description" :counter="2200" autogrow />
+      </div>
     </div>
   </BaseDialog>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
+import { useStore } from 'src/store';
+
 import CommonImageCropper from 'components/common/image/CommonImageCropper.vue';
 import CommonImageFilter from 'components/common/image/CommonImageFilter.vue';
+import CommonUser from 'components/common/CommonUser.vue';
+import postRepository from "src/repositories/postRepository";
 
 enum CreatePostEnum {
   SELECT = 'selectFile',
@@ -42,12 +66,15 @@ export default defineComponent({
   components: {
     CommonImageCropper,
     CommonImageFilter,
+    CommonUser,
   },
 
   emits: ['close'],
 
   setup(props, { emit }) {
+    const store = useStore();
     const cropper = ref<InstanceType<typeof CommonImageCropper>>();
+    const filter = ref<InstanceType<typeof CommonImageFilter>>();
 
     const step = ref<CreatePostEnum>(CreatePostEnum.SELECT);
     function prevStep() {
@@ -61,9 +88,12 @@ export default defineComponent({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         cropper.value?.getCroppedImageData();
         step.value = CreatePostEnum.EDIT;
-      } else if (step.value === CreatePostEnum.EDIT) step.value = CreatePostEnum.UPLOAD;
-      else if (step.value === CreatePostEnum.UPLOAD) {
-        close();
+      } else if (step.value === CreatePostEnum.EDIT) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        filter.value?.getFilteredImageBlob();
+        step.value = CreatePostEnum.UPLOAD;
+      } else if (step.value === CreatePostEnum.UPLOAD) {
+        uploadPost()
       }
     }
     function close() {
@@ -72,7 +102,9 @@ export default defineComponent({
       form.value = {
         imageRaw: null,
         imageBlob: null,
+        imageBlobWithFilter: null,
         imageCropData: null,
+        description: '',
       };
     }
 
@@ -86,16 +118,27 @@ export default defineComponent({
     const form = ref({
       imageRaw: null,
       imageBlob: null,
+      imageBlobWithFilter: null,
       imageCropData: null,
+
+      description: '',
     });
     const imageBlobURL = computed(() => {
       const blob = form.value.imageBlob;
       if (!blob) return null;
       return URL.createObjectURL(blob);
     });
+    const imageBlobWithFilterURL = computed(() => {
+      const blob = form.value.imageBlobWithFilter;
+      if (!blob) return null;
+      return URL.createObjectURL(blob);
+    });
+
+    const currentUser = computed(() => store.state.user.currentUser);
 
     return {
       cropper,
+      filter,
 
       CreatePostEnum,
       step,
@@ -107,6 +150,9 @@ export default defineComponent({
 
       form,
       imageBlobURL,
+      imageBlobWithFilterURL,
+
+      currentUser,
     };
   },
 });
