@@ -11,8 +11,8 @@ export default {
     const { data }: ApiResponseModel<PostModel> = await http.get(`/posts/${id}`);
     return data;
   },
-  async create(postData: PostDTO): Promise<PostModel> {
-    const { data }: ApiResponseModel<PostModel> = await http.post('/posts', postData);
+  async create(payload: PostDTO): Promise<PostModel> {
+    const { data }: ApiResponseModel<PostModel> = await http.post('/posts', payload);
     return data;
   },
   async update(id: number, postData: Partial<PostDTO>): Promise<PostModel> {
