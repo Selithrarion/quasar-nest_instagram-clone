@@ -2,13 +2,16 @@ import { store } from 'quasar/wrappers';
 import { InjectionKey } from 'vue';
 import { createStore, Store as VuexStore, useStore as vuexUseStore } from 'vuex';
 
+import app from 'src/store/app';
 import post from 'src/store/post';
 import user from 'src/store/user';
 
+import { AppStateInterface } from 'src/store/app/state';
 import { PostStateInterface } from 'src/store/post/state';
 import { UserStateInterface } from 'src/store/user/state';
 
 export interface StateInterface {
+  app: AppStateInterface;
   post: PostStateInterface;
   user: UserStateInterface;
 }
@@ -25,6 +28,7 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-ke
 export default store(function (/* { ssrContext } */) {
   const Store = createStore<StateInterface>({
     modules: {
+      app,
       post,
       user,
     },
