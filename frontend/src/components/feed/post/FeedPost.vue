@@ -1,5 +1,5 @@
 <template>
-  <div class="feed-post">
+  <q-card class="feed-post" bordered flat>
     <FeedPostHeader
       avatar="https://cdn.quasar.dev/img/avatar.png"
       :username="'username'"
@@ -18,7 +18,7 @@
     <FeedPostActions />
     <FeedPostInfo :description="'124124124'" :likes="5" :comments="[]" :created-at="Date.now()" />
     <FeedPostCommentInput />
-  </div>
+  </q-card>
 </template>
 
 <script lang="ts">
@@ -57,7 +57,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .feed-post {
   background: white;
-  border: solid 1px $blue-grey-3;
   width: 100%;
 }
 </style>
