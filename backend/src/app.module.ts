@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserModule } from './modules/user/user.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guard/jwt-auth.guard';
@@ -14,6 +15,7 @@ import { EmailVerificationModule } from './modules/email-verification/email-veri
 
 import { EmailModule } from './services/email/email.module';
 import { TwoFactorAuthModule } from './modules/two-factor-auth/two-factor-auth.module';
+import { PostsModule } from './modules/posts/posts.module';
 
 @Global()
 @Module({
@@ -32,7 +34,10 @@ import { TwoFactorAuthModule } from './modules/two-factor-auth/two-factor-auth.m
       synchronize: true,
     }),
 
+    PostsModule,
+
     UserModule,
+    NotificationsModule,
     AuthModule,
 
     ScheduleModule.forRoot(),
