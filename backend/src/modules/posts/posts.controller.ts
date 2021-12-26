@@ -15,7 +15,7 @@ import {
 import { CreatePostDTO, UpdatePostDTO } from './dto';
 import { PostEntity } from './entity/post.entity';
 import { PostsService } from './posts.service';
-import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate/index';
+import { IPaginationOptions, Pagination } from "nestjs-typeorm-paginate";
 
 @Controller('posts')
 export class PostsController {
@@ -32,8 +32,8 @@ export class PostsController {
   }
 
   @Post()
-  async create(@Body() postData: CreatePostDTO, @Request() req): Promise<PostEntity> {
-    return await this.postsService.create(postData, req.user.id);
+  async create(@Body() payload: CreatePostDTO, @Request() req): Promise<PostEntity> {
+    return await this.postsService.create(payload, req.user.id);
   }
 
   @Patch(':id')
