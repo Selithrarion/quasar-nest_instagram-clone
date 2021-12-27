@@ -151,6 +151,22 @@ export class UserEntity extends BaseEntity {
   @RelationId('likedComments')
   likedCommentsIDs: number[];
 
+  @ManyToMany(() => UserEntity, (user) => user.followedUsers, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  followers: UserEntity[];
+  @RelationId('followers')
+  followersIDs: number[];
+
+  @ManyToMany(() => UserEntity, (user) => user.followers, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  followedUsers: UserEntity[];
+  @RelationId('followedUsers')
+  followedUsersIDs: number[];
+
   @OneToMany(() => CommentEntity, (comment) => comment.author, {
     cascade: true,
     onUpdate: 'CASCADE',
