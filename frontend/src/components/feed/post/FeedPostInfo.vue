@@ -1,6 +1,7 @@
 <template>
   <div class="column gap-2 q-pl-md q-pr-sm q-pb-md">
     <b class="text-subtitle2 text-weight-bold">{{ likes }} likes</b>
+    <div><b>authorName</b> {{ description }}</div>
     <div class="column gap-1">
       <FeedPostComment v-for="comment in 10" :key="comment" :comment="comment" minimized />
     </div>
@@ -20,6 +21,10 @@ export default defineComponent({
   components: { FeedPostComment },
 
   props: {
+    authorName: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: false,
