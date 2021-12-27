@@ -8,8 +8,10 @@ import { PaginationApiPayload } from 'src/models/common/pagination.model';
 
 const actions: ActionTree<PostStateInterface, StateInterface> = {
   async getAll({ commit }, payload: PaginationApiPayload) {
+    commit('SET_LOADING', true, { root: true });
     const data = await postRepository.getAll(payload);
     commit('SET_POSTS', data);
+    commit('SET_LOADING', false, { root: true });
   },
   async getByID({ commit }, id: number) {
     const data = await postRepository.getByID(id);
