@@ -21,7 +21,7 @@
         </FeedStoryList>
 
         <FeedPostList>
-          <FeedPost v-for="post of 30" :key="post" :post="post" />
+          <FeedPost v-for="post of availablePosts" :key="post" :post="post" />
         </FeedPostList>
       </div>
 
