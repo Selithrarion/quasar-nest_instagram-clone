@@ -7,9 +7,6 @@ import { CreateUserDTO } from './dto';
 import { UserEntity } from './entity/user.entity';
 import { PostEntity } from '../posts/entity/post.entity';
 
-import * as sharp from 'sharp';
-import { v4 as uuidv4 } from 'uuid';
-import { extname } from 'path';
 import { FilesService } from '../files/files.service';
 import { PublicFileEntity } from '../files/entity/public-file.entity';
 import { CreateUserGithubDTO } from './dto';
@@ -94,17 +91,6 @@ export class UserService {
   }
 
   async setUserImage(file: Express.Multer.File, field: 'avatar', id: number): Promise<PublicFileEntity> {
-    const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    const validImageSize = 1024 * 1024 * 20;
-    const isInvalidType = !validImageTypes.includes(file.mimetype);
-
-    if (isInvalidType) throw new HttpException('INVALID_FILE_TYPE', HttpStatus.UNPROCESSABLE_ENTITY);
-    if (validImageSize < file.size) throw new HttpException('INVALID_FILE_SIZE', HttpStatus.UNPROCESSABLE_ENTITY);
-
-    const quality = field === 'avatar' ? 5 : 20;
-    const fileBuffer = await sharp(file.buffer).webp({ quality }).toBuffer();
-    const filename = uuidv4() + extname(file.originalname);
-
     const user = await this.users.findOneOrFail(id);
     const isAlreadyHaveFieldImage = Boolean(user[field]);
 
@@ -115,8 +101,12 @@ export class UserService {
       });
       await this.filesService.deletePublicFile(user[field].id);
     }
-
-    const uploadedFile = await this.filesService.uploadPublicFile(fileBuffer, filename);
+    const uploadedFile = await this.filesService.uploadPublicFile({
+      file,
+      quality: field === 'avatar' ? 5 : 20,
+      imageMaxSizeMB: 20,
+      type: 'image',
+    });
     const updatedUser = await this.users.save({
       ...user,
       [field]: uploadedFile,
