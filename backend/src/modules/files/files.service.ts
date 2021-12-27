@@ -1,8 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
-import { PublicFileEntity } from './entity/public-file.entity';
+
+import { PublicFileEntity, UploadFileOptions } from './entity/public-file.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { extname } from 'path';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class FilesService {
@@ -11,7 +15,18 @@ export class FilesService {
     private readonly files: Repository<PublicFileEntity>
   ) {}
 
-  async uploadPublicFile(fileBuffer: Buffer, filename: string): Promise<PublicFileEntity> {
+  async uploadPublicFile(options: UploadFileOptions): Promise<PublicFileEntity> {
+    const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const validImageSize = 1024 * 1024 * options.imageMaxSizeMB;
+    const isInvalidType = !validImageTypes.includes(options.file.mimetype);
+
+    if (isInvalidType) throw new HttpException('INVALID_FILE_TYPE', HttpStatus.UNPROCESSABLE_ENTITY);
+    if (validImageSize < options.file.size)
+      throw new HttpException('INVALID_FILE_SIZE', HttpStatus.UNPROCESSABLE_ENTITY);
+
+    const fileBuffer = await sharp(options.file.buffer).webp({ quality: options.quality }).toBuffer();
+    const filename = uuidv4() + extname(options.file.originalname);
+
     const Bucket = process.env.AWS_PUBLIC_S3_BUCKET_NAME;
     const ACL = 'public-read';
 
