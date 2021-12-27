@@ -3,6 +3,7 @@ import { UserModel } from 'src/models/user/user.model';
 import { CommentModel } from 'src/models/post/comment.model';
 
 export interface PostModel extends BaseModel {
+  fileURL: string;
   description: string;
 
   author: UserModel;
@@ -22,6 +23,6 @@ export interface PostModel extends BaseModel {
 }
 
 export interface PostDTO {
-  image: Blob;
+  file: Blob;
   description: string;
 }
