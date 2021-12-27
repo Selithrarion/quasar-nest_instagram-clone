@@ -7,7 +7,8 @@ export interface PostModel extends BaseModel {
   description: string;
 
   author: UserModel;
-  likes: UserModel[];
+  likes?: UserModel[];
+  likesNumber: number;
 
   comments: CommentModel;
   commentsNumber: number;
@@ -17,6 +18,7 @@ export interface PostModel extends BaseModel {
   // isPaidPartnership: boolean;
   isVideo: boolean;
 
+  isViewerFollowed: boolean;
   isViewerLiked: boolean;
   isViewerSaved: boolean;
   isViewerInPhoto: boolean;
