@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { CommentEntity } from './comment.entity';
-import { Exclude } from "class-transformer";
+import { Exclude } from 'class-transformer';
+import { PublicFileEntity } from '../../files/entity/public-file.entity';
 
 @Entity()
 export class PostEntity extends BaseEntity {
@@ -33,4 +34,11 @@ export class PostEntity extends BaseEntity {
 
   @Column({ type: 'boolean', default: false })
   isVideo: boolean;
+
+  @OneToOne(() => PublicFileEntity, {
+    eager: true,
+    nullable: true,
+  })
+  @JoinColumn()
+  file: PublicFileEntity;
 }
