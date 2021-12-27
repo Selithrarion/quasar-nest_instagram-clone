@@ -10,12 +10,15 @@ import {
   Post,
   Query,
   Request,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { CreatePostDTO, UpdatePostDTO } from './dto';
 import { PostEntity } from './entity/post.entity';
 import { PostsService } from './posts.service';
-import { IPaginationOptions, Pagination } from "nestjs-typeorm-paginate";
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('posts')
 export class PostsController {
@@ -31,9 +34,14 @@ export class PostsController {
     return await this.postsService.getByID(id);
   }
 
+  @UseInterceptors(FileInterceptor('file'))
   @Post()
-  async create(@Body() payload: CreatePostDTO, @Request() req): Promise<PostEntity> {
-    return await this.postsService.create(payload, req.user.id);
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() payload: CreatePostDTO,
+    @Request() req
+  ): Promise<PostEntity> {
+    return await this.postsService.create(file, payload, req.user.id);
   }
 
   @Patch(':id')

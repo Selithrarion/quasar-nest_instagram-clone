@@ -7,6 +7,7 @@ import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginat
 import { PostEntity } from './entity/post.entity';
 import { UserEntity } from '../user/entity/user.entity';
 
+import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -14,6 +15,9 @@ export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
     private posts: Repository<PostEntity>,
+
+    @Inject(FilesService)
+    private readonly filesService: FilesService,
 
     @Inject(UserService)
     private readonly userService: UserService
@@ -24,6 +28,7 @@ export class PostsService {
     const { items, meta } = await paginate<PostEntity>(this.posts, query, { order: { createdAt: 'DESC' } });
     const formattedPosts = items.map((p) => ({
       ...p,
+      fileURL: p.file.url,
       isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
     })) as PostEntity[];
     return { items: formattedPosts, meta };
@@ -33,9 +38,16 @@ export class PostsService {
     return await this.posts.findOneOrFail(id, { relations: ['users'] });
   }
 
-  async create(payload: CreatePostDTO, user: UserEntity): Promise<PostEntity> {
+  async create(file: Express.Multer.File, payload: CreatePostDTO, user: UserEntity): Promise<PostEntity> {
+    const uploadedFile = await this.filesService.uploadPublicFile({
+      file,
+      quality: 90,
+      imageMaxSizeMB: 20,
+      type: 'image',
+    });
     return await this.posts.save({
       ...payload,
+      file: uploadedFile,
       author: user,
     });
   }
