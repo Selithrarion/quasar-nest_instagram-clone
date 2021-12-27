@@ -144,9 +144,10 @@ export default defineComponent({
         loading.start();
 
         const formData = new FormData();
-        formData.append('image', form.value.imageBlobWithFilter || '');
+        formData.append('file', form.value.imageBlobWithFilter || '');
         formData.append('description', form.value.description);
         await postRepository.create(formData);
+        loading.stop();
 
         close();
         await store.dispatch('post/getAll');
