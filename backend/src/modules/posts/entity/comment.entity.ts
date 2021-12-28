@@ -31,5 +31,5 @@ export class CommentEntity extends BaseEntity {
   @JoinTable()
   likes: UserEntity[];
   @RelationId('likes')
-  likesNumber: number;
+  likesUserIDs: number[];
 }

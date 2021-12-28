@@ -5,5 +5,5 @@ export interface CommentModel extends BaseModel {
   text: string;
   author: UserModel;
   likes: UserModel[];
-  likesNumber: number;
+  likesUserIDs: number;
 }
