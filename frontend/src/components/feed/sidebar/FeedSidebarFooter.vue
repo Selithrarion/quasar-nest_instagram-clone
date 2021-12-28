@@ -9,7 +9,7 @@
         @click="openExternalPage(link.url)"
       />
     </div>
-    <div class="opacity-60">© {{ new Date().getFullYear() }} INSTAGRAM CLONE FROM SERGEY MALTSEV</div>
+    <div class="opacity-60">© {{ new Date().getFullYear() }} INSTAGRAM CLONE BY SERGEY MALTSEV</div>
   </div>
 </template>
 
