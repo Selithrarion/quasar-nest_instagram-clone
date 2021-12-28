@@ -1,6 +1,12 @@
 <template>
   <div class="column gap-2 q-pl-md q-pr-sm q-pb-md">
-    <BaseButton class="text-subtitle2 text-weight-bold" @click="dialog.open('postLikes')">
+    <BaseButton
+      class="text-subtitle2 text-weight-bold w-fit-content"
+      style="margin-left: -4px"
+      dense
+      flat
+      @click="dialog.open('postLikes')"
+    >
       {{ likes }} likes
     </BaseButton>
 
