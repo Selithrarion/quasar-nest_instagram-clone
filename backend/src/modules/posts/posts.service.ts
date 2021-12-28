@@ -25,11 +25,17 @@ export class PostsService {
 
   async getAll(query: IPaginationOptions = { page: 1, limit: 10 }, userID: number): Promise<Pagination<PostEntity>> {
     const currentUser = await this.userService.getByID(userID);
-    const { items, meta } = await paginate<PostEntity>(this.posts, query, { order: { createdAt: 'DESC' } });
+    const { items, meta } = await paginate<PostEntity>(this.posts, query, {
+      order: { createdAt: 'DESC' },
+      relations: ['author', 'file'],
+    });
     const formattedPosts = items.map((p) => ({
       ...p,
-      fileURL: p.file.url,
+      fileURL: p.file?.url,
+      isViewerFollowed: currentUser.followedUsersIDs.includes(p.author.id),
       isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
+      isViewerSaved: false,
+      isViewerInPhoto: false,
     })) as PostEntity[];
     return { items: formattedPosts, meta };
   }
