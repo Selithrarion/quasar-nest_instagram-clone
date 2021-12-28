@@ -13,7 +13,7 @@
     <FeedPostInfo
       :author-name="post.author.username"
       :description="post.description"
-      :likes="post.likes"
+      :likes="post.likesUserIDs.length"
       :comments="post.comments"
       :created-at="post.createdAt"
     />
