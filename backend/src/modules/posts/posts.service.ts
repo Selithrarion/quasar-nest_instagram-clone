@@ -41,7 +41,7 @@ export class PostsService {
   async create(file: Express.Multer.File, payload: CreatePostDTO, user: UserEntity): Promise<PostEntity> {
     const uploadedFile = await this.filesService.uploadPublicFile({
       file,
-      quality: 90,
+      quality: 95,
       imageMaxSizeMB: 20,
       type: 'image',
     });
