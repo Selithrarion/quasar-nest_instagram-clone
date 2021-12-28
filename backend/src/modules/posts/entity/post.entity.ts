@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, RelationId } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { CommentEntity } from './comment.entity';
@@ -26,6 +26,8 @@ export class PostEntity extends BaseEntity {
   })
   @JoinTable()
   likes: UserEntity[];
+  @RelationId('likes')
+  likesUserIDs: number[];
 
   @OneToMany(() => CommentEntity, (comment) => comment.post, {
     cascade: true,
