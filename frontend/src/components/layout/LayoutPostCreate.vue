@@ -18,6 +18,7 @@
         v-model="form.imageBlob"
         v-model:image-raw="form.imageRaw"
         v-model:image-crop-data="form.imageCropData"
+        v-model:aspect-ratio="form.imageAspectRatio"
       />
     </div>
 
@@ -30,7 +31,13 @@
     </div>
 
     <div v-show="step === CreatePostEnum.UPLOAD" class="row gap-4 no-wrap">
-      <q-img class="w-66 flex-shrink-0" style="max-height: 60vh" fit="scale-down" :src="imageBlobWithFilterURL" />
+      <q-img
+        class="w-66 flex-shrink-0"
+        style="max-height: 60vh"
+        fit="scale-down"
+        :src="imageBlobWithFilterURL"
+        :ratio="form.imageAspectRatio"
+      />
       <div class="w-33 flex-shrink-0">
         <CommonUser
           class="q-pl-none"
@@ -106,6 +113,7 @@ export default defineComponent({
       step.value = CreatePostEnum.SELECT;
       form.value = {
         imageRaw: null,
+        imageAspectRatio: null,
         imageBlob: null,
         imageBlobWithFilter: null,
         imageCropData: null,
@@ -122,6 +130,7 @@ export default defineComponent({
 
     const form = ref({
       imageRaw: null,
+      imageAspectRatio: null,
       imageBlob: null,
       imageBlobWithFilter: null,
       imageCropData: null,

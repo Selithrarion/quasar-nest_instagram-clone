@@ -39,7 +39,7 @@
                 :class="{ 'common-image-cropper__ratio-item--selected': selectedAspectRatio === ratio.value }"
                 :label="ratio.label"
                 :append-icon="ratio.icon"
-                @click="selectedAspectRatio = ratio.value"
+                @click="setSelectedAspectRatio(ratio.value)"
               />
             </BaseMenu>
           </BaseButton>
@@ -100,9 +100,13 @@ export default defineComponent({
       type: String,
       default: null,
     },
+    aspectRatio: {
+      type: Number,
+      default: 1,
+    },
   },
 
-  emits: ['update:model-value', 'update:image-raw', 'update:image-crop-data'],
+  emits: ['update:model-value', 'update:image-raw', 'update:image-crop-data', 'update:aspect-ratio'],
 
   setup(props, { emit }) {
     const cropper = ref<VueCropperModel | null>(null);
@@ -190,6 +194,10 @@ export default defineComponent({
         icon: 'crop_landscape',
       },
     ];
+    function setSelectedAspectRatio(value: number) {
+      selectedAspectRatio.value = value;
+      emit('update:aspect-ratio', value);
+    }
 
     const isDrag = ref(false);
     const isDragAllowed = ref(true);
@@ -261,6 +269,7 @@ export default defineComponent({
 
       selectedAspectRatio,
       availableAspectRatios,
+      setSelectedAspectRatio,
 
       isDrag,
     };
