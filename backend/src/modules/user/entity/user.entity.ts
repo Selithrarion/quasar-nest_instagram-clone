@@ -155,6 +155,7 @@ export class UserEntity extends BaseEntity {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
+  @JoinTable()
   followers: UserEntity[];
   @RelationId('followers')
   followersIDs: number[];
