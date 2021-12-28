@@ -1,24 +1,37 @@
 <template>
   <div class="column gap-2 q-pl-md q-pr-sm q-pb-md">
-    <b class="text-subtitle2 text-weight-bold">{{ likes }} likes</b>
-    <div><b>authorName</b> {{ description }}</div>
+    <BaseButton class="text-subtitle2 text-weight-bold" @click="dialog.open('postLikes')">
+      {{ likes }} likes
+    </BaseButton>
+
+    <div>
+      <b>authorName</b>
+      {{ description }}
+    </div>
+
     <div class="column gap-1">
       <FeedPostComment v-for="comment in 10" :key="comment" :comment="comment" minimized />
     </div>
+
     <div class="text-caption text-blue-grey-4">{{ formatDate(createdAt, DateTypes.DIFF) }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import useDialog from 'src/composables/common/useDialog';
 import { useFormat, DateTypes } from 'src/composables/format/useFormat';
-import { CommentModel } from 'src/models/post/comment.model';
+
 import FeedPostComment from 'components/feed/post/FeedPostComment.vue';
+
+import { CommentModel } from 'src/models/post/comment.model';
 
 export default defineComponent({
   name: 'FeedPostInfo',
 
-  components: { FeedPostComment },
+  components: {
+    FeedPostComment,
+  },
 
   props: {
     authorName: {
@@ -45,6 +58,7 @@ export default defineComponent({
   },
 
   setup() {
+    const dialog = useDialog();
     const { formatDate } = useFormat();
 
     function toggleLike() {
@@ -52,6 +66,7 @@ export default defineComponent({
     }
 
     return {
+      dialog,
       formatDate,
       DateTypes,
 
