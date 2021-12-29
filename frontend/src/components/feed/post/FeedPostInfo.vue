@@ -15,9 +15,20 @@
       {{ description }}
     </div>
 
-    <div class="column gap-1">
-      <FeedPostComment v-for="comment in 10" :key="comment" :comment="comment" minimized />
-    </div>
+    <template v-if="comments.length">
+      <div class="column gap-1">
+        <FeedPostComment v-for="comment in comments" :key="comment" :comment="comment" minimized />
+      </div>
+      <BaseButton
+        class="text-subtitle2 text-blue-grey-4 w-fit-content"
+        style="margin-left: -4px"
+        dense
+        flat
+        @click="$emit('open-post')"
+      >
+        View all comments ({{ comments.length }})
+      </BaseButton>
+    </template>
 
     <div class="text-caption text-blue-grey-4">{{ formatDate(createdAt, DateTypes.DIFF) }}</div>
   </div>
@@ -62,6 +73,8 @@ export default defineComponent({
       required: true,
     },
   },
+
+  emits: ['open-post'],
 
   setup() {
     const dialog = useDialog();
