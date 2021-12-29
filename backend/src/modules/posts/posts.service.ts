@@ -27,8 +27,11 @@ export class PostsService {
     const currentUser = await this.userService.getByID(userID);
     const { items, meta } = await paginate<PostEntity>(this.posts, query, {
       order: { createdAt: 'DESC' },
-      relations: ['author', 'file'],
+      relations: ['author', 'file', 'comments'],
     });
+    // TODO: comments. i think we need to send only 2-3 comments and load the rest only on separate page with pagination
+    // if user wants to see them all
+    // coz if post have 10000+ comments it may be bad
     const formattedPosts = items.map((p) => ({
       ...p,
       fileURL: p.file?.url,
