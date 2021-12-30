@@ -58,7 +58,6 @@ export default defineComponent({
       ctx.drawImage(imageEl.value, 0, 0, canvas.width, canvas.height);
 
       return canvas.toBlob((blob) => {
-        console.log(blob);
         emit('update:model-value', blob);
       }, 'image/png');
     }
