@@ -19,7 +19,7 @@
         unelevated
         dense
         round
-        @click="openPostDetail"
+        @click="$emit('open-post')"
       />
       <CommonIconMessages tooltip="Share" />
     </div>
@@ -55,13 +55,9 @@ export default defineComponent({
     function toggleLike() {
       //
     }
-    function openPostDetail() {
-      //
-    }
 
     return {
       toggleLike,
-      openPostDetail,
     };
   },
 });

@@ -21,7 +21,12 @@
         </FeedStoryList>
 
         <FeedPostList>
-          <FeedPost v-for="post of availablePosts" :key="post" :post="post" />
+          <FeedPost
+            v-for="post of availablePosts"
+            :key="post"
+            :post="post"
+            @open-post="dialog.open('postDetail', { item: post })"
+          />
         </FeedPostList>
       </div>
 

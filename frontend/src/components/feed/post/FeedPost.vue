@@ -9,13 +9,14 @@
 
     <q-img :src="post.fileURL" />
 
-    <FeedPostActions />
+    <FeedPostActions @open-post="$emit('open-post')" />
     <FeedPostInfo
       :author-name="post.author.username"
       :description="post.description"
       :likes="post.likesUserIDs.length"
       :comments="post.comments"
       :created-at="post.createdAt"
+      @open-post="$emit('open-post')"
     />
     <FeedPostCommentInput />
   </q-card>
@@ -47,6 +48,8 @@ export default defineComponent({
       required: true,
     },
   },
+
+  emits: ['open-post'],
 
   setup() {
     return {};
