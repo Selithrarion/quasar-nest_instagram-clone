@@ -32,6 +32,12 @@
 
       <FeedSidebar />
     </template>
+
+    <FeedPostDetailDialog
+      :model-value="dialog.openedName.value === 'postDetail'"
+      :post="dialog.openedItem.value"
+      @close="dialog.close"
+    />
   </q-page>
 </template>
 
@@ -54,6 +60,8 @@ import FeedPostSkeleton from 'components/feed/post/FeedPostSkeleton.vue';
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
 import FeedSidebarSkeleton from 'components/feed/sidebar/FeedSidebarSkeleton.vue';
 
+import FeedPostDetailDialog from 'components/feed/post/FeedPostDetailDialog.vue';
+
 export default defineComponent({
   name: 'FeedIndex',
 
@@ -66,6 +74,7 @@ export default defineComponent({
     FeedPostSkeleton,
     FeedSidebar,
     FeedSidebarSkeleton,
+    FeedPostDetailDialog,
   },
 
   setup() {
