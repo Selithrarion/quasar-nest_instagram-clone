@@ -14,6 +14,8 @@
     </q-item-section>
 
     <slot name="append" />
+
+    <BaseTooltip :label="tooltip" />
   </BaseItem>
 </template>
 
@@ -41,6 +43,12 @@ export default defineComponent({
     color: {
       type: String,
       required: true,
+    },
+
+    tooltip: {
+      type: String,
+      required: false,
+      default: null,
     },
 
     size: {
