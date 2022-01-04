@@ -7,7 +7,7 @@
       :is-viewer-followed="post.isViewerFollowed"
     />
 
-    <q-img :src="post.fileURL" />
+    <FeedPostImage :src="post.fileURL" />
 
     <FeedPostActions @open-post="$emit('open-post')" />
     <FeedPostInfo
@@ -26,6 +26,7 @@
 import { defineComponent, PropType } from 'vue';
 
 import FeedPostHeader from 'components/feed/post/FeedPostHeader.vue';
+import FeedPostImage from 'components/feed/post/FeedPostImage.vue';
 import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
 import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
 import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue';
@@ -37,6 +38,7 @@ export default defineComponent({
 
   components: {
     FeedPostHeader,
+    FeedPostImage,
     FeedPostInfo,
     FeedPostActions,
     FeedPostCommentInput,

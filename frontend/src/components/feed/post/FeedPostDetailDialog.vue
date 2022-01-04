@@ -2,7 +2,7 @@
   <BaseDialog large v-bind="$attrs" @close="close">
     <template #content>
       <div class="row">
-        <q-img class="w-half" :src="post.fileURL" />
+        <FeedPostImage class="w-half" :src="post.fileURL" />
 
         <div class="w-half">
           <div class="flex-center-between q-py-md q-px-sm ">
@@ -41,6 +41,7 @@ import { defineComponent, PropType, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import CommonUser from 'components/common/CommonUser.vue';
+import FeedPostImage from 'components/feed/post/FeedPostImage.vue';
 import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
 import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
 import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue';
@@ -53,6 +54,7 @@ export default defineComponent({
 
   components: {
     CommonUser,
+    FeedPostImage,
     FeedPostActions,
     FeedPostInfo,
     FeedPostCommentInput,
