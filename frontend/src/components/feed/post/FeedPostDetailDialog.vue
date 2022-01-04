@@ -5,14 +5,15 @@
         <q-img class="w-half" :src="post.fileURL" />
 
         <div class="w-half">
-          <div class="flex-center-between q-py-md q-px-sm">
+          <div class="flex-center-between q-py-md q-px-sm ">
             <CommonUser
               class="full-width q-px-xs"
               size="32px"
-              tooltip="Open user profile"
+              tooltip="Open author profile"
               :avatar="post.author?.avatar?.url"
               :color="post.author.color"
               :username="post.author.username"
+              @click="openAuthorProfile"
             />
             <FeedPostMoreButton />
           </div>
@@ -37,6 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import CommonUser from 'components/common/CommonUser.vue';
 import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
@@ -64,20 +66,25 @@ export default defineComponent({
     },
   },
 
-  setup() {
-    const commentInput = ref<InstanceType<typeof FeedPostCommentInput>>();
+  setup(props) {
+    const router = useRouter();
 
+    const commentInput = ref<InstanceType<typeof FeedPostCommentInput>>();
     function focusCommentInput() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       commentInput.value?.focusInput();
     }
 
+    async function openAuthorProfile() {
+      await router.push(`/${props.post.author.username}`);
+    }
+
     return {
       commentInput,
       focusCommentInput,
+
+      openAuthorProfile,
     };
   },
 });
 </script>
-
-<style scoped></style>
