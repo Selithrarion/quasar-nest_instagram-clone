@@ -5,26 +5,21 @@
       <BaseButton class="text-weight-bold" :label="username" plain-style />
     </div>
 
-    <BaseButtonMore flat>
-      <BaseMenu>
-        <BaseItem label="Report" danger />
-        <BaseItem :label="isViewerFollowed ? 'Unfollow' : 'Follow'" :danger="isViewerFollowed" />
-        <BaseItem label="Go to post" />
-        <BaseItem label="Share to..." />
-        <BaseItem label="Copy link" />
-        <BaseItem label="Embed" />
-        <BaseItem label="Cancel" />
-      </BaseMenu>
-    </BaseButtonMore>
+    <FeedPostMoreButton />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
+import FeedPostMoreButton from 'components/feed/post/FeedPostMoreButton.vue';
 
 export default defineComponent({
   name: 'FeedPostHeader',
+
+  components: {
+    FeedPostMoreButton,
+  },
 
   props: {
     avatar: {
