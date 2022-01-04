@@ -1,24 +1,92 @@
 <template>
-  <q-img :src="url" />
+  <div class="feed-post-image relative-position" @dblclick="toggleLike">
+    <q-img :src="src" />
+    <div class="feed-post-image__like" :key="isLikeLocalAnimationKey">
+      <q-icon color="white" name="favorite" size="128px" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import postRepository from 'src/repositories/postRepository';
 
 export default defineComponent({
   name: 'FeedPostImage',
 
   props: {
-    url: {
+    postId: {
+      type: Number,
+      required: true,
+    },
+    src: {
       type: String,
-      default: null,
+      required: true,
+    },
+    isViewerLiked: {
+      type: Boolean,
+      required: true,
     },
   },
 
-  setup() {
-    return {};
+  setup(props) {
+    const isLikeLocalAnimationKey = ref(props.isViewerLiked);
+    function toggleLike() {
+      isLikeLocalAnimationKey.value = !isLikeLocalAnimationKey.value;
+      if (!props.isViewerLiked) void postRepository.toggleLike(props.postId);
+    }
+
+    return {
+      isLikeLocalAnimationKey,
+      toggleLike,
+    };
   },
 });
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.feed-post-image {
+  &__like {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: post-like 1s ease-in-out;
+    opacity: 0;
+    .q-icon {
+      filter: drop-shadow(4px 4px 6px rgba(118, 125, 139, 0.88));
+    }
+  }
+
+  @keyframes post-like {
+    0% {
+      transform: scale(0.75, 0.75);
+      opacity: 0;
+    }
+    30% {
+      transform: scale(1.25, 1.25);
+      opacity: 1;
+    }
+    40% {
+      transform: scale(1, 1);
+    }
+    70% {
+      transform: scale(1.15, 1.15);
+    }
+    80% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0, 0);
+    }
+  }
+}
+</style>

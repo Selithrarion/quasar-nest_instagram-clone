@@ -2,10 +2,10 @@
   <BaseDialog large v-bind="$attrs" @close="close">
     <template #content>
       <div class="row">
-        <FeedPostImage class="w-half" :src="post.fileURL" />
+        <FeedPostImage class="w-half" :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
 
         <div class="w-half">
-          <div class="flex-center-between q-py-md q-px-sm ">
+          <div class="flex-center-between q-py-md q-px-sm">
             <CommonUser
               class="full-width q-px-xs"
               size="32px"

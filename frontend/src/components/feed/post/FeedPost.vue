@@ -7,7 +7,7 @@
       :is-viewer-followed="post.isViewerFollowed"
     />
 
-    <FeedPostImage :src="post.fileURL" />
+    <FeedPostImage :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
 
     <FeedPostActions @open-post="$emit('open-post')" />
     <FeedPostInfo
