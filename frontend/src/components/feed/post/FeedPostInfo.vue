@@ -11,7 +11,7 @@
     </BaseButton>
 
     <div>
-      <b>authorName</b>
+      <b>{{ authorName }}</b>
       {{ description }}
     </div>
 
