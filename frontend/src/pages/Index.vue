@@ -34,7 +34,7 @@
       <FeedSidebar />
     </template>
 
-    <FeedPostDetailDialog
+    <FeedPostDialogDetail
       :model-value="dialog.openedName.value === 'postDetail'"
       :post="dialog.openedItem.value"
       @share="dialog.open('share', { item: dialog.openedItem.value })"
