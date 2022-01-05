@@ -1,10 +1,12 @@
 <template>
   <q-card class="feed-post" bordered flat>
     <FeedPostHeader
+      :post-id="post.id"
       :avatar="post.author?.avatar?.url"
       :username="post.author.username"
       :color="post.author.color"
       :is-viewer-followed="post.isViewerFollowed"
+      @share="$emit('share')"
     />
 
     <FeedPostImage :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
@@ -56,7 +58,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['open-post'],
+  emits: ['open-post', 'share'],
 
   setup() {
     return {};

@@ -15,7 +15,7 @@
               :username="post.author.username"
               @click="openAuthorProfile"
             />
-            <FeedPostMoreButton />
+            <FeedPostMoreButton :post-id="post.id" @share="$emit('share')" />
           </div>
           <div class="q-px-md q-pb-md q-pt-sm">
             {{ post.description }}
@@ -55,7 +55,7 @@ import FeedPostMoreButton from 'components/feed/post/FeedPostMoreButton.vue';
 import { PostModel } from 'src/models/post/post.model';
 
 export default defineComponent({
-  name: 'FeedPostDetailDialog',
+  name: 'FeedPostDialogDetail',
 
   components: {
     CommonUser,
@@ -72,6 +72,8 @@ export default defineComponent({
       default: null,
     },
   },
+
+  emits: ['close', 'share'],
 
   setup(props) {
     const router = useRouter();

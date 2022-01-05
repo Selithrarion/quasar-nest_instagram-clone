@@ -25,6 +25,7 @@
             v-for="post of availablePosts"
             :key="post"
             :post="post"
+            @share="dialog.open('share', { item: post })"
             @open-post="dialog.open('postDetail', { item: post })"
           />
         </FeedPostList>
@@ -36,6 +37,7 @@
     <FeedPostDetailDialog
       :model-value="dialog.openedName.value === 'postDetail'"
       :post="dialog.openedItem.value"
+      @share="dialog.open('share', { item: dialog.openedItem.value })"
       @close="dialog.close"
     />
   </q-page>
