@@ -1,7 +1,7 @@
 <template>
   <div class="feed-post-image relative-position" @dblclick="toggleLike">
     <q-img :src="src" />
-    <div class="feed-post-image__like" :key="isLikeLocalAnimationKey">
+    <div v-show="likeLocalAnimationKey > 0" class="feed-post-image__like" :key="likeLocalAnimationKey">
       <q-icon color="white" name="favorite" size="128px" />
     </div>
   </div>
@@ -32,14 +32,14 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
 
-    const isLikeLocalAnimationKey = ref(props.isViewerLiked);
+    const likeLocalAnimationKey = ref(0);
     function toggleLike() {
-      isLikeLocalAnimationKey.value = !isLikeLocalAnimationKey.value;
+      likeLocalAnimationKey.value++;
       if (!props.isViewerLiked) void store.dispatch('post/toggleLike', props.postId);
     }
 
     return {
-      isLikeLocalAnimationKey,
+      likeLocalAnimationKey,
       toggleLike,
     };
   },
