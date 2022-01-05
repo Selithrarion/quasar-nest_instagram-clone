@@ -16,15 +16,19 @@ export default defineComponent({
   props: {
     text: {
       type: String,
-      required: true,
+      default: '',
     },
+    copyUrl: Boolean,
   },
 
   setup(props) {
     const q = useQuasar();
 
     async function copyToClipboard() {
-      await navigator.clipboard.writeText(props.text);
+      const text = props.copyUrl ? window.location.href : props.text;
+      if (!text) return;
+
+      await navigator.clipboard.writeText(text);
       q.notify({
         message: 'Copied to clipboard',
         type: 'info',
