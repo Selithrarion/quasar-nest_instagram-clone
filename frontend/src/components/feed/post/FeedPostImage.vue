@@ -58,7 +58,7 @@ export default defineComponent({
     animation: post-like 1s ease-in-out;
     opacity: 0;
     .q-icon {
-      filter: drop-shadow(4px 4px 6px rgba(118, 125, 139, 0.88));
+      filter: drop-shadow(2px 4px 6px rgba(174, 175, 242, 0.6));
     }
   }
 
