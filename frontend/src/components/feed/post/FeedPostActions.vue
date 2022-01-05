@@ -6,6 +6,7 @@
         :text-color="isViewerLiked ? 'red' : ''"
         :icon="isViewerLiked ? 'favorite' : 'favorite_border'"
         :tooltip="isViewerLiked ? 'Remove like' : 'Like'"
+        tooltip-top-position
         unelevated
         dense
         round
@@ -16,18 +17,20 @@
         icon="forum"
         size="16px"
         tooltip="Show comments"
+        tooltip-top-position
         unelevated
         dense
         round
         @click="$emit('open-post')"
       />
-      <CommonIconMessages tooltip="Share" />
+      <CommonIconMessages tooltip="Share" tooltip-top-position />
     </div>
 
     <BaseButton
       size="16px"
       :icon="isViewerSaved ? 'bookmark' : 'bookmark_border'"
       :tooltip="isViewerSaved ? 'Remove from bookmarks' : 'Save to bookmarks'"
+      tooltip-top-position
       unelevated
       dense
       round
