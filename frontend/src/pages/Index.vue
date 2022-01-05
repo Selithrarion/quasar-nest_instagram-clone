@@ -40,6 +40,11 @@
       @share="dialog.open('share', { item: dialog.openedItem.value })"
       @close="dialog.close"
     />
+    <FeedPostDialogShare
+      :model-value="dialog.openedName.value === 'share'"
+      :post="dialog.openedItem.value"
+      @close="dialog.close"
+    />
   </q-page>
 </template>
 
@@ -62,7 +67,8 @@ import FeedPostSkeleton from 'components/feed/post/FeedPostSkeleton.vue';
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
 import FeedSidebarSkeleton from 'components/feed/sidebar/FeedSidebarSkeleton.vue';
 
-import FeedPostDetailDialog from 'components/feed/post/FeedPostDetailDialog.vue';
+import FeedPostDialogDetail from 'components/feed/post/FeedPostDialogDetail.vue';
+import FeedPostDialogShare from 'components/feed/post/FeedPostDialogShare.vue';
 
 export default defineComponent({
   name: 'FeedIndex',
@@ -71,12 +77,16 @@ export default defineComponent({
     FeedStoryList,
     FeedStory,
     FeedStorySkeleton,
+
     FeedPostList,
     FeedPost,
     FeedPostSkeleton,
+
     FeedSidebar,
     FeedSidebarSkeleton,
-    FeedPostDetailDialog,
+
+    FeedPostDialogDetail,
+    FeedPostDialogShare,
   },
 
   setup() {
