@@ -26,8 +26,8 @@
 
     <BaseButton
       size="16px"
-      :icon="isViewerBookmarked ? 'bookmark' : 'bookmark_border'"
-      :tooltip="isViewerBookmarked ? 'Remove from bookmarks' : 'Save to bookmarks'"
+      :icon="isViewerSaved ? 'bookmark' : 'bookmark_border'"
+      :tooltip="isViewerSaved ? 'Remove from bookmarks' : 'Save to bookmarks'"
       unelevated
       dense
       round
@@ -37,6 +37,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useStore } from 'src/store';
+
 import CommonIconMessages from 'components/common/CommonIconMessages.vue';
 
 export default defineComponent({
@@ -47,13 +49,18 @@ export default defineComponent({
   },
 
   props: {
+    postId: {
+      type: Number,
+      required: true,
+    },
     isViewerLiked: Boolean,
-    isViewerBookmarked: Boolean,
+    isViewerSaved: Boolean,
   },
 
-  setup() {
+  setup(props) {
+    const store = useStore();
     function toggleLike() {
-      //
+      void store.dispatch('post/toggleLike', props.postId);
     }
 
     return {

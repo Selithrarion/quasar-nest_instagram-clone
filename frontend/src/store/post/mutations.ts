@@ -18,9 +18,13 @@ const mutation: MutationTree<PostStateInterface> = {
     const index = state.posts.findIndex((p) => p.id === id);
     state.posts.splice(index, 1);
   },
-  TOGGLE_FAVORITE(state, id: number) {
+  TOGGLE_LIKE(state, { id, userID }) {
     const post = state.posts?.find((p) => p.id === id);
-    if (post) post.isViewerLiked = !post.isViewerLiked;
+    const currentUserID = state;
+    if (post) {
+      post.isViewerLiked = !post.isViewerLiked;
+      post.isViewerLiked ? post.likesUserIDs.push(userID) : post.likesUserIDs.pop();
+    }
   },
 };
 

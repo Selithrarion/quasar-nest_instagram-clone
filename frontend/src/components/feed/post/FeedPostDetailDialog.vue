@@ -20,7 +20,12 @@
           <div class="q-px-md q-pb-md q-pt-sm">
             {{ post.description }}
           </div>
-          <FeedPostActions @open-post="focusCommentInput" />
+          <FeedPostActions
+            :post-id="post.id"
+            :is-viewer-liked="post.isViewerLiked"
+            :is-viewer-saved="post.isViewerSaved"
+            @open-post="focusCommentInput"
+          />
           <FeedPostInfo
             :author-name="post.author.username"
             :description="post.description"

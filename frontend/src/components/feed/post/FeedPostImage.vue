@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import postRepository from 'src/repositories/postRepository';
+import { useStore } from 'src/store';
 
 export default defineComponent({
   name: 'FeedPostImage',
@@ -30,10 +30,12 @@ export default defineComponent({
   },
 
   setup(props) {
+    const store = useStore();
+
     const isLikeLocalAnimationKey = ref(props.isViewerLiked);
     function toggleLike() {
       isLikeLocalAnimationKey.value = !isLikeLocalAnimationKey.value;
-      if (!props.isViewerLiked) void postRepository.toggleLike(props.postId);
+      if (!props.isViewerLiked) void store.dispatch('post/toggleLike', props.postId);
     }
 
     return {

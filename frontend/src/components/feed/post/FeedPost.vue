@@ -9,7 +9,12 @@
 
     <FeedPostImage :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
 
-    <FeedPostActions @open-post="$emit('open-post')" />
+    <FeedPostActions
+      :post-id="post.id"
+      :is-viewer-liked="post.isViewerLiked"
+      :is-viewer-saved="post.isViewerSaved"
+      @open-post="$emit('open-post')"
+    />
     <FeedPostInfo
       :author-name="post.author.username"
       :description="post.description"
