@@ -1,6 +1,13 @@
 <template>
   <component :is="currentComponent" class="base-button" :class="classes" :no-wrap="noWrap" no-caps v-bind="$attrs">
-    <BaseTooltip v-if="tooltip" :label="tooltip" />
+    <BaseTooltip
+      v-if="tooltip"
+      :label="tooltip"
+      :anchor="tooltipTopPosition ? 'top middle' : tooltipAnchor"
+      :self="tooltipTopPosition ? 'bottom middle' : tooltipSelf"
+      :transition-show="tooltipTopPosition ? 'jump-up' : 'jump-down'"
+      :transition-hide="tooltipTopPosition ? 'jump-down' : 'jump-up'"
+    />
     <slot> {{ label }} </slot>
   </component>
 </template>
@@ -14,14 +21,26 @@ export default defineComponent({
   props: {
     label: {
       type: String,
-      required: false,
       default: null,
     },
+
+    // tooltip text
     tooltip: {
       type: String,
-      required: false,
       default: null,
     },
+    // move tooltip to top or use default bottom position
+    tooltipTopPosition: Boolean,
+    // quasar custom tooltip position
+    tooltipAnchor: {
+      type: String,
+      default: 'bottom middle',
+    },
+    tooltipSelf: {
+      type: String,
+      default: 'top middle',
+    },
+
     secondaryColor: Boolean,
     plainStyle: Boolean,
 
