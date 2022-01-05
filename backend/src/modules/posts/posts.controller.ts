@@ -54,7 +54,7 @@ export class PostsController {
     return await this.postsService.delete(id);
   }
 
-  @Post('favorite/:id')
+  @Post('like/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async toggleLike(@Param('id') id: number, @Request() req): Promise<void> {
     return await this.postsService.toggleLike(Number(id), req.user.id);

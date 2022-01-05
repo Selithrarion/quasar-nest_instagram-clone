@@ -24,6 +24,6 @@ export default {
   },
 
   async toggleLike(id: number): Promise<void> {
-    return await http.post(`/posts/favorite/${id}`);
+    return await http.post(`/posts/like/${id}`);
   },
 };
