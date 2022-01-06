@@ -47,14 +47,15 @@ Github actions CI pipeline
 - Search posts with selected tags ❌
 ##### Post
 - Posts CRUD ❌
-- Dragndrop or browse image
-- Images crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
-- Change aspect ratio (1:1, 4:5, 16:9, original)
-- Images css filters
+- Images support. Dragndrop or browse image to upload
+- Videos support. Dragndrop or browse video to upload ❌
+- Image crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
+- Image aspect ratio (1:1, 4:5, 16:9, original)
+- Image filters
 - Tags suggestion ❌
-- Dbclick to like post or like with button ❌
-- Comments CRUD, comment reply ❌
-- Share (?) ❌
+- Dbclick to like post (with cool animation haha) or like with button
+- Comments system, comment reply ❌
+- Share to users (?) ❌
 - Bookmark (?) ❌
 
 #### Profile page
