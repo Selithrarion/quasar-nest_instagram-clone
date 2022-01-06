@@ -5,7 +5,7 @@
       <BaseItem
         :label="isViewerFollowed ? 'Unfollow' : 'Follow'"
         :danger="isViewerFollowed"
-        @click="isViewerFollowed ? unfollow : follow"
+        @click="isViewerFollowed ? unfollow() : follow()"
       />
       <BaseItem label="Share to..." @click="$emit('share')" />
       <CommonClipboard copy-url>
