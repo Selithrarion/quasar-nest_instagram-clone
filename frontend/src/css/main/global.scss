@@ -14,3 +14,14 @@
     padding-right: 400px;
   }
 }
+
+form,
+.form-fields-wrapper {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+
+.emoji-picker__wrapper {
+  z-index: 10000;
+}
