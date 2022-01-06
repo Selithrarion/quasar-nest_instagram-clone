@@ -1,7 +1,7 @@
 <template>
   <q-page class="row gap-4 q-px-md no-wrap">
     <div class="feed">
-      <FeedStoryList>
+      <FeedStoryList :use-skeleton="isLoadingState">
         <FeedStory
           v-for="story of isLoadingState ? 20 : 20"
           :key="story"

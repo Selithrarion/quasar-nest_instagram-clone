@@ -1,10 +1,10 @@
 <template>
   <q-card class="feed-story-list" bordered flat>
-    <CommonNavigationButton class="navigation--previous" type="previous" />
+    <CommonNavigationButton v-if="!useSkeleton" class="navigation--previous" type="previous" />
 
     <slot />
 
-    <CommonNavigationButton class="navigation--next" type="next" />
+    <CommonNavigationButton v-if="!useSkeleton" class="navigation--next" type="next" />
   </q-card>
 </template>
 
@@ -17,6 +17,10 @@ export default defineComponent({
 
   components: {
     CommonNavigationButton,
+  },
+
+  props: {
+    useSkeleton: Boolean,
   },
 
   setup() {
