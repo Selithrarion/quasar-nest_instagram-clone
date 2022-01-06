@@ -8,9 +8,9 @@
         @click="isViewerFollowed ? unfollow : follow"
       />
       <BaseItem label="Share to..." @click="$emit('share')" />
-      <BaseItem>
-        <CommonClipboard copy-url> Copy link </CommonClipboard>
-      </BaseItem>
+      <CommonClipboard copy-url>
+        <BaseItem label="Copy link" />
+      </CommonClipboard>
       <!--<BaseItem label="Embed" />-->
       <BaseItem label="Cancel" />
     </BaseMenu>
