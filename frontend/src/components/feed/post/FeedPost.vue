@@ -1,32 +1,49 @@
 <template>
   <q-card class="feed-post" bordered flat>
-    <FeedPostHeader
-      :post-id="post.id"
-      :avatar="post.author?.avatar?.url"
-      :username="post.author.username"
-      :color="post.author.color"
-      :is-viewer-followed="post.isViewerFollowed"
-      @share="$emit('share')"
-    />
+    <template v-if="useSkeleton">
+      <q-card-section class="row items-center gap-3 q-pl-md q-pr-sm">
+        <q-skeleton type="QAvatar" size="32px" />
+        <q-skeleton type="text" width="100px" height="20px" />
+      </q-card-section>
 
-    <FeedPostImage :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
+      <q-skeleton height="500px" square />
 
-    <FeedPostActions
-      :post-id="post.id"
-      :is-viewer-liked="post.isViewerLiked"
-      :is-viewer-saved="post.isViewerSaved"
-      @share-to-user="$emit('share-to-user')"
-      @open-post="$emit('open-post')"
-    />
-    <FeedPostInfo
-      :author-name="post.author.username"
-      :description="post.description"
-      :likes="post.likesUserIDs.length"
-      :comments="post.comments"
-      :created-at="post.createdAt"
-      @open-post="$emit('open-post')"
-    />
-    <FeedPostCommentInput />
+      <q-card-section>
+        <q-skeleton type="text" class="text-subtitle1" />
+        <q-skeleton type="text" width="50%" class="text-subtitle1" />
+        <q-skeleton type="text" class="text-caption" />
+      </q-card-section>
+    </template>
+
+    <template v-else>
+      <FeedPostHeader
+        :post-id="post.id"
+        :avatar="post.author?.avatar?.url"
+        :username="post.author.username"
+        :color="post.author.color"
+        :is-viewer-followed="post.isViewerFollowed"
+        @share="$emit('share')"
+      />
+
+      <FeedPostImage :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
+
+      <FeedPostActions
+        :post-id="post.id"
+        :is-viewer-liked="post.isViewerLiked"
+        :is-viewer-saved="post.isViewerSaved"
+        @share-to-user="$emit('share-to-user')"
+        @open-post="$emit('open-post')"
+      />
+      <FeedPostInfo
+        :author-name="post.author.username"
+        :description="post.description"
+        :likes="post.likesUserIDs.length"
+        :comments="post.comments"
+        :created-at="post.createdAt"
+        @open-post="$emit('open-post')"
+      />
+      <FeedPostCommentInput />
+    </template>
   </q-card>
 </template>
 
@@ -57,6 +74,7 @@ export default defineComponent({
       type: Object as PropType<PostModel>,
       required: true,
     },
+    useSkeleton: Boolean,
   },
 
   emits: ['open-post', 'share', 'share-to-user'],

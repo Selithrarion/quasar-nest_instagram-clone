@@ -1,10 +1,10 @@
 <template>
   <q-card class="feed-story-list" bordered flat>
-    <CommonNavigationButton v-if="showNavigation" class="navigation--previous" type="previous" />
+    <CommonNavigationButton class="navigation--previous" type="previous" />
 
     <slot />
 
-    <CommonNavigationButton v-if="showNavigation" class="navigation--next" type="next" />
+    <CommonNavigationButton class="navigation--next" type="next" />
   </q-card>
 </template>
 
@@ -14,13 +14,6 @@ import CommonNavigationButton from 'components/common/CommonNavigationButton.vue
 
 export default defineComponent({
   name: 'FeedStoryList',
-
-  props: {
-    showNavigation: {
-      type: Boolean,
-      default: true,
-    },
-  },
 
   components: {
     CommonNavigationButton,

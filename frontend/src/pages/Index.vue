@@ -1,39 +1,29 @@
 <template>
   <q-page class="row gap-4 q-px-md no-wrap">
-    <template v-if="isLoadingState">
-      <div class="feed">
-        <FeedStoryList :show-navigation="false">
-          <FeedStorySkeleton v-for="story of 20" :key="story" />
-        </FeedStoryList>
+    <div class="feed">
+      <FeedStoryList>
+        <FeedStory
+          v-for="story of isLoadingState ? 20 : 20"
+          :key="story"
+          :story="story"
+          :use-skeleton="isLoadingState"
+        />
+      </FeedStoryList>
 
-        <FeedPostList>
-          <FeedPostSkeleton v-for="post of 2" :key="post" />
-        </FeedPostList>
-      </div>
+      <FeedPostList>
+        <FeedPost
+          v-for="post of isLoadingState ? 3 : availablePosts"
+          :key="post"
+          :post="post"
+          :use-skeleton="isLoadingState"
+          @share="dialog.open('share', { item: post })"
+          @share-to-user="dialog.open('shareToUser', { item: post })"
+          @open-post="dialog.open('postDetail', { item: post })"
+        />
+      </FeedPostList>
+    </div>
 
-      <FeedSidebarSkeleton />
-    </template>
-
-    <template v-else>
-      <div class="feed">
-        <FeedStoryList>
-          <FeedStory v-for="story of 20" :key="story" :story="story" />
-        </FeedStoryList>
-
-        <FeedPostList>
-          <FeedPost
-            v-for="post of availablePosts"
-            :key="post"
-            :post="post"
-            @share="dialog.open('share', { item: post })"
-            @share-to-user="dialog.open('shareToUser', { item: post })"
-            @open-post="dialog.open('postDetail', { item: post })"
-          />
-        </FeedPostList>
-      </div>
-
-      <FeedSidebar />
-    </template>
+    <FeedSidebar :use-skeleton="isLoadingState" />
 
     <FeedPostDialogDetail
       :model-value="dialog.openedName.value === 'postDetail'"
@@ -64,14 +54,11 @@ import useLoading from 'src/composables/common/useLoading';
 
 import FeedStoryList from 'components/feed/story/FeedStoryList.vue';
 import FeedStory from 'components/feed/story/FeedStory.vue';
-import FeedStorySkeleton from 'components/feed/story/FeedStorySkeleton.vue';
 
 import FeedPostList from 'components/feed/post/FeedPostList.vue';
 import FeedPost from 'components/feed/post/FeedPost.vue';
-import FeedPostSkeleton from 'components/feed/post/FeedPostSkeleton.vue';
 
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
-import FeedSidebarSkeleton from 'components/feed/sidebar/FeedSidebarSkeleton.vue';
 
 import FeedPostDialogDetail from 'components/feed/post/FeedPostDialogDetail.vue';
 import FeedPostDialogShare from 'components/feed/post/FeedPostDialogShare.vue';
@@ -83,14 +70,11 @@ export default defineComponent({
   components: {
     FeedStoryList,
     FeedStory,
-    FeedStorySkeleton,
 
     FeedPostList,
     FeedPost,
-    FeedPostSkeleton,
 
     FeedSidebar,
-    FeedSidebarSkeleton,
 
     FeedPostDialogDetail,
     FeedPostDialogShare,
@@ -106,6 +90,7 @@ export default defineComponent({
     const loading = useLoading();
 
     const availablePosts = computed(() => store.state.post.posts);
+    const availableStories = computed(() => []);
     const isLoadingState = computed(() => store.state.app.isLoadingState);
 
     onBeforeMount(async () => {
@@ -118,6 +103,7 @@ export default defineComponent({
       t,
 
       availablePosts,
+      availableStories,
       isLoadingState,
     };
   },
