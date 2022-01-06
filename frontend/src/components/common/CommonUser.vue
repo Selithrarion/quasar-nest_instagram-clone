@@ -1,5 +1,10 @@
 <template>
-  <BaseItem :clickable="clickable">
+  <div v-if="useSkeleton" class="row items-center gap-2">
+    <q-skeleton type="QAvatar" :size="size" />
+    <q-skeleton type="text" width="50%" height="20px" />
+  </div>
+
+  <BaseItem v-else :clickable="clickable">
     <q-item-section side>
       <BaseAvatar :size="size" :src="avatar" :item-name="username" :item-color="color" />
     </q-item-section>
@@ -26,6 +31,8 @@ export default defineComponent({
   name: 'CommonUser',
 
   props: {
+    useSkeleton: Boolean,
+
     username: {
       type: String,
       required: true,
