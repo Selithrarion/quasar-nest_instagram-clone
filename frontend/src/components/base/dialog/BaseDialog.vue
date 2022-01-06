@@ -22,6 +22,13 @@
 
           <BaseButtonCloseIcon v-if="!hideCloseIcon" class="close-icon" @click="close" />
         </q-card-section>
+        <q-card-section
+          v-if="!contentLoading && $slots.secondHeaderRow"
+          class="row items-center no-wrap q-pa-none"
+          :class="{ 'fixed-section': fixedHeader }"
+        >
+          <slot name="secondHeaderRow" />
+        </q-card-section>
 
         <q-form class="gap-0" @submit="confirm">
           <q-card-section class="q-pt-none q-px-lg q-pb-lg" :style="{ height: contentLoading ? '300px' : 'auto' }">
