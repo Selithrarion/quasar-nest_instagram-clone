@@ -26,6 +26,7 @@
             :key="post"
             :post="post"
             @share="dialog.open('share', { item: post })"
+            @share-to-user="dialog.open('shareToUser', { item: post })"
             @open-post="dialog.open('postDetail', { item: post })"
           />
         </FeedPostList>
@@ -42,6 +43,11 @@
     />
     <FeedPostDialogShare
       :model-value="dialog.openedName.value === 'share'"
+      :post="dialog.openedItem.value"
+      @close="dialog.close"
+    />
+    <FeedPostDialogShareToUser
+      :model-value="dialog.openedName.value === 'shareToUser'"
       :post="dialog.openedItem.value"
       @close="dialog.close"
     />
@@ -69,6 +75,7 @@ import FeedSidebarSkeleton from 'components/feed/sidebar/FeedSidebarSkeleton.vue
 
 import FeedPostDialogDetail from 'components/feed/post/FeedPostDialogDetail.vue';
 import FeedPostDialogShare from 'components/feed/post/FeedPostDialogShare.vue';
+import FeedPostDialogShareToUser from 'components/feed/post/FeedPostDialogShareToUser.vue';
 
 export default defineComponent({
   name: 'FeedIndex',
@@ -87,6 +94,7 @@ export default defineComponent({
 
     FeedPostDialogDetail,
     FeedPostDialogShare,
+    FeedPostDialogShareToUser,
   },
 
   setup() {

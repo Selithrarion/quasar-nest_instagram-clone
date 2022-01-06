@@ -15,6 +15,7 @@
       :post-id="post.id"
       :is-viewer-liked="post.isViewerLiked"
       :is-viewer-saved="post.isViewerSaved"
+      @share-to-user="$emit('share-to-user')"
       @open-post="$emit('open-post')"
     />
     <FeedPostInfo
@@ -58,7 +59,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['open-post', 'share'],
+  emits: ['open-post', 'share', 'share-to-user'],
 
   setup() {
     return {};

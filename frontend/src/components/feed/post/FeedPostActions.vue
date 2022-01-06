@@ -23,7 +23,7 @@
         round
         @click="$emit('open-post')"
       />
-      <CommonIconMessages tooltip="Share" tooltip-top-position />
+      <CommonIconMessages tooltip="Share" tooltip-top-position @click="$emit('share-to-user')" />
     </div>
 
     <BaseButton
@@ -59,6 +59,8 @@ export default defineComponent({
     isViewerLiked: Boolean,
     isViewerSaved: Boolean,
   },
+
+  emits: ['open-post', 'share-to-user'],
 
   setup(props) {
     const store = useStore();
