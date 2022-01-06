@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog small @close="$emit('close')" @click="$emit('close')">
+  <BaseDialog title="Share" small @close="$emit('close')" @click="$emit('close')">
     <template #content>
       <BaseItem label="Share to direct" disabled @click="$emit('close')" />
       <BaseItem label="Share to Facebook" disabled @click="$emit('close')" />
