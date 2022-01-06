@@ -36,32 +36,34 @@
             :class="{ 'fixed-section': fixedFooter }"
             :dense="type === 'delete'"
           >
-            <BaseButton
-              v-if="showBackButton"
-              color="blue-grey-6"
-              :label="backText || defaultBackText"
-              flat
-              @click="back"
-            />
-            <BaseButton
-              v-if="!hideCloseButton"
-              v-close-popup
-              color="blue-grey-6"
-              :label="closeText || selectedType.closeButtonText"
-              flat
-              @click="close"
-            />
-            <BaseButton
-              v-if="!hideConfirmButton"
-              type="submit"
-              :class="confirmClasses"
-              :color="confirmColor || selectedType.confirmColor"
-              :label="confirmText || selectedType.confirmButtonText"
-              :icon="confirmIcon"
-              :loading="confirmLoading"
-              :disabled="confirmDisabled"
-              unelevated
-            />
+            <slot name="actionsContent">
+              <BaseButton
+                v-if="showBackButton"
+                color="blue-grey-6"
+                :label="backText || defaultBackText"
+                flat
+                @click="back"
+              />
+              <BaseButton
+                v-if="!hideCloseButton"
+                v-close-popup
+                color="blue-grey-6"
+                :label="closeText || selectedType.closeButtonText"
+                flat
+                @click="close"
+              />
+              <BaseButton
+                v-if="!hideConfirmButton"
+                type="submit"
+                :class="confirmClasses"
+                :color="confirmColor || selectedType.confirmColor"
+                :label="confirmText || selectedType.confirmButtonText"
+                :icon="confirmIcon"
+                :loading="confirmLoading"
+                :disabled="confirmDisabled"
+                unelevated
+              />
+            </slot>
           </BaseDialogActions>
         </q-form>
       </slot>
