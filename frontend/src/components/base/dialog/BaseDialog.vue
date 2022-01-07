@@ -8,26 +8,25 @@
       <slot name="content">
         <q-card-section
           v-if="!contentLoading"
-          class="row items-center no-wrap q-pa-lg"
+          class="column items-center q-pa-none"
           :class="{ 'fixed-section': fixedHeader }"
         >
-          <slot name="title">
-            <div class="row items-center gap-2 text-h6 full-width no-wrap">
-              <q-icon v-if="type === 'delete'" color="amber-8" name="warning" />
-              {{ title }}
-            </div>
-          </slot>
+          <div class="row items-center no-wrap q-pa-lg full-width">
+            <slot name="title">
+              <div class="row items-center gap-2 text-h6 full-width no-wrap">
+                <q-icon v-if="type === 'delete'" color="amber-8" name="warning" />
+                {{ title }}
+              </div>
+            </slot>
 
-          <slot name="title-append-buttons" />
+            <slot name="title-append-buttons" />
 
-          <BaseButtonCloseIcon v-if="!hideCloseIcon" class="close-icon" @click="close" />
-        </q-card-section>
-        <q-card-section
-          v-if="!contentLoading && $slots.secondHeaderRow"
-          class="row items-center no-wrap q-pa-none"
-          :class="{ 'fixed-section': fixedHeader }"
-        >
-          <slot name="secondHeaderRow" />
+            <BaseButtonCloseIcon v-if="!hideCloseIcon" class="close-icon" @click="close" />
+          </div>
+
+          <div v-if="$slots.secondHeaderRow" class="row items-center no-wrap full-width">
+            <slot name="secondHeaderRow" />
+          </div>
         </q-card-section>
 
         <q-form class="gap-0" @submit="confirm">
