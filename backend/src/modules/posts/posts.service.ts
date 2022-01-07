@@ -72,6 +72,10 @@ export class PostsService {
     await this.posts.delete(id);
   }
 
+  async share(id: number): Promise<void> {
+    console.log('share', id);
+  }
+
   async toggleLike(postID: number, userID: number): Promise<void> {
     const userLikedPosts = await this.userService.getLikedPosts(userID);
     const postIndex = userLikedPosts.findIndex((p) => p.id === postID);
