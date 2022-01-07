@@ -38,7 +38,7 @@
     />
     <FeedPostDialogShareToUser
       :model-value="dialog.openedName.value === 'shareToUser'"
-      :post="dialog.openedItem.value"
+      :post-id="dialog.openedItem.value?.id"
       @close="dialog.close"
     />
   </q-page>

@@ -77,6 +77,13 @@ export default defineComponent({
     CommonUser,
   },
 
+  props: {
+    postId: {
+      type: Number,
+      default: null,
+    }
+  },
+
   emits: ['close'],
 
   setup(props, { emit }) {
