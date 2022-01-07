@@ -115,6 +115,7 @@ export default defineComponent({
       // TODO: fix data reset
       Object.assign(selectedUsers, {});
       Object.assign(suggestedUsers, {});
+      search.value = '';
       emit('close');
     }
 
