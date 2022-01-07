@@ -23,6 +23,10 @@ export default {
     return await http.delete(`/posts/${id}`);
   },
 
+  async share(id: number): Promise<void> {
+    return await http.post(`/posts/share/${id}`);
+  },
+
   async toggleLike(id: number): Promise<void> {
     return await http.post(`/posts/like/${id}`);
   },
