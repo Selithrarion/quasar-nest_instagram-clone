@@ -1,24 +1,27 @@
 <template>
-  <div v-if="useSkeleton" class="row items-center gap-2">
-    <q-skeleton type="QAvatar" :size="size" />
-    <q-skeleton type="text" width="50%" height="20px" />
-  </div>
-
-  <BaseItem v-else :clickable="clickable">
+  <BaseItem :clickable="clickable && !useSkeleton">
     <q-item-section side>
-      <BaseAvatar :size="size" :src="avatar" :item-name="username" :item-color="color" />
+      <q-skeleton v-if="useSkeleton" type="QAvatar" :size="size" />
+      <BaseAvatar v-else :size="size" :src="avatar" :item-name="username" :item-color="color" />
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ username }}</q-item-label>
-      <q-item-label v-if="$slots.name || name" caption>
-        <slot name="name" :user-name="name">
-          {{ name }}
-        </slot>
-      </q-item-label>
+      <template v-if="useSkeleton">
+        <q-skeleton type="text" width="50%" height="20px" />
+        <q-skeleton v-if="useSkeletonUsername" type="text" width="40%" height="20px" />
+      </template>
+
+      <template v-else>
+        <q-item-label>{{ username }}</q-item-label>
+        <q-item-label v-if="$slots.name || name" caption>
+          <slot name="name" :user-name="name">
+            {{ name }}
+          </slot>
+        </q-item-label>
+      </template>
     </q-item-section>
 
-    <slot name="append" />
+    <slot v-if="!useSkeleton || (useSkeleton && useSkeletonAppend)" name="append" />
 
     <BaseTooltip :label="tooltip" />
   </BaseItem>
@@ -32,6 +35,8 @@ export default defineComponent({
 
   props: {
     useSkeleton: Boolean,
+    useSkeletonUsername: Boolean,
+    useSkeletonAppend: Boolean,
 
     username: {
       type: String,
