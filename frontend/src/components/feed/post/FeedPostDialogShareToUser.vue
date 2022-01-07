@@ -38,6 +38,7 @@
           <CommonUser
             v-for="user in loading.active.value ? 3 : suggestedUsers"
             :key="user.id"
+            size="48px"
             :avatar="user?.avatar?.url"
             :color="user.color"
             :username="user.username"
@@ -57,7 +58,14 @@
     </template>
 
     <template #actionsContent>
-      <BaseButton class="full-width" label="Send" color="primary" :disabled="!selectedUsersArray.length" />
+      <BaseButton
+        class="full-width"
+        label="Send"
+        color="primary"
+        :loading="loading.custom.send"
+        :disabled="!selectedUsersArray.length"
+        @click="share"
+      />
     </template>
   </BaseDialog>
 </template>
@@ -67,7 +75,10 @@ import { computed, defineComponent, onBeforeMount, reactive, ref } from 'vue';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonUser from 'components/common/CommonUser.vue';
+
 import userRepository from 'src/repositories/userRepository';
+import postRepository from 'src/repositories/postRepository';
+
 import { UserModel } from 'src/models/user/user.model';
 
 export default defineComponent({
@@ -81,13 +92,13 @@ export default defineComponent({
     postId: {
       type: Number,
       default: null,
-    }
+    },
   },
 
   emits: ['close'],
 
   setup(props, { emit }) {
-    const loading = useLoading();
+    const loading = useLoading({ customNames: ['send'] });
     onBeforeMount(() => {
       void searchUsers();
     });
@@ -118,6 +129,15 @@ export default defineComponent({
       else selectedUsers[id] = username;
     }
 
+    async function share() {
+      try {
+        loading.start('send');
+        await postRepository.share(props.postId);
+        close();
+      } finally {
+        loading.stop('send');
+      }
+    }
     function close() {
       // TODO: fix data reset
       Object.assign(selectedUsers, {});
@@ -137,6 +157,7 @@ export default defineComponent({
       selectedUsersArray,
       toggleUserSelection,
 
+      share,
       close,
     };
   },
