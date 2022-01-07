@@ -22,8 +22,8 @@ export class UserService {
     private readonly filesService: FilesService
   ) {}
 
-  async get(searchText: string, currentUserID: number): Promise<UserEntity[]> {
-    if (!searchText.length)
+  async getAll(search: string, currentUserID: number): Promise<UserEntity[]> {
+    if (!search.length)
       return this.users.find({
         where: {
           id: Not(currentUserID),
@@ -31,13 +31,17 @@ export class UserService {
         take: 10,
       });
 
-    // const searchResult = await this.userSearchService.search(searchText);
-    // const userIDs = searchResult.map((result) => result.id);
-    // const filteredUserIDs = userIDs.filter((id) => id !== currentUserID);
-    // if (!filteredUserIDs.length) return [];
-    // return this.users.find({
-    //   where: { id: In(filteredUserIDs) },
-    // });
+    const searchResult = await this.users
+      .createQueryBuilder()
+      .select()
+      .where('username ILIKE :search', { search: `%${search}%` })
+      .orWhere('name ILIKE :search', { search: `%${search}%` })
+      .orWhere('email ILIKE :search', { search: `%${search}%` })
+      .getMany();
+    const currentUserIndexInSearchResult = searchResult.findIndex((u) => u.id === currentUserID);
+    if (currentUserIndexInSearchResult !== -1) searchResult.splice(currentUserIndexInSearchResult, 1);
+
+    return searchResult;
   }
 
   async getByEmail(email: string): Promise<UserEntity> {

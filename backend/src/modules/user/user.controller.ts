@@ -25,7 +25,7 @@ export class UserController {
 
   @Get()
   async get(@Query('search') search: string, @Request() req): Promise<UserEntity[]> {
-    return await this.userService.get(search, req.user.id);
+    return await this.userService.getAll(search, req.user.id);
   }
 
   @Get('self')
