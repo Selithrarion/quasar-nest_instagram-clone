@@ -15,11 +15,16 @@
             @remove="toggleUserSelection(user.id, user.username)"
           />
           <!--TODO: fix RTL padding-->
-          <input
+          <q-input
+            v-model="search"
             class="row full-width flex-1 q-pl-sm"
-            style="min-width: 50px; min-height: 36px"
+            style="min-width: 50px"
             placeholder="Search..."
+            debounce="300"
             autofocus
+            outlined
+            dense
+            @update:model-value="searchUsers"
           />
         </div>
       </div>
@@ -28,20 +33,26 @@
     <template #default>
       <div>
         <div class="text-subtitle2 q-pb-sm">Suggested</div>
-        <CommonUser
-          v-for="user in suggestedUsers"
-          :key="user"
-          :avatar="user?.avatar?.url"
-          :color="user.color"
-          :username="user.username"
-          :name="user.name"
-          @click="toggleUserSelection(user.id, user.username)"
-        >
-          <template #append>
-            <q-icon v-show="selectedUsers[user.id]" size="24px" name="check_circle" color="primary" />
-            <q-icon v-show="!selectedUsers[user.id]" size="24px" name="radio_button_unchecked" color="blue-grey-3" />
-          </template>
-        </CommonUser>
+
+        <template v-if="loading.active.value || suggestedUsers.length">
+          <CommonUser
+            v-for="user in loading.active.value ? 3 : suggestedUsers"
+            :key="user.id"
+            :avatar="user?.avatar?.url"
+            :color="user.color"
+            :username="user.username"
+            :name="user.name"
+            :use-skeleton="loading.active.value"
+            use-skeleton-username
+            @click="toggleUserSelection(user.id, user.username)"
+          >
+            <template #append>
+              <q-icon v-show="selectedUsers[user.id]" size="24px" name="check_circle" color="primary" />
+              <q-icon v-show="!selectedUsers[user.id]" size="24px" name="radio_button_unchecked" color="blue-grey-3" />
+            </template>
+          </CommonUser>
+        </template>
+        <div v-else class="text-body2 text-blue-grey-5">No account found</div>
       </div>
     </template>
 
@@ -52,8 +63,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue';
+import { computed, defineComponent, onBeforeMount, reactive, ref } from 'vue';
+import useLoading from 'src/composables/common/useLoading';
+
 import CommonUser from 'components/common/CommonUser.vue';
+import userRepository from 'src/repositories/userRepository';
+import { UserModel } from 'src/models/user/user.model';
 
 export default defineComponent({
   name: 'FeedPostDialogShareToUser',
@@ -65,16 +80,22 @@ export default defineComponent({
   emits: ['close'],
 
   setup(props, { emit }) {
-    const suggestedUsers = reactive([
-      { id: 1, username: '123', color: 'hsl(290, 50%, 80%)', name: '124124' },
-      { id: 2, username: '1234', color: 'hsl(290, 50%, 80%)', name: '124124' },
-      { id: 3, username: '1235', color: 'hsl(290, 50%, 80%)', name: '124124' },
-      { id: 4, username: '1263', color: 'hsl(290, 50%, 80%)', name: '124124' },
-      { id: 5, username: '1273', color: 'hsl(290, 50%, 80%)', name: '124124' },
-      { id: 6, username: '1283', color: 'hsl(290, 50%, 80%)', name: '124124' },
-      { id: 7, username: '1283', color: 'hsl(290, 50%, 80%)', name: '124124' },
-      { id: 78, username: '1283', color: 'hsl(290, 50%, 80%)', name: '124124' },
-    ]);
+    const loading = useLoading();
+    onBeforeMount(() => {
+      void searchUsers();
+    });
+
+    const suggestedUsers = ref<UserModel[]>([]);
+    const search = ref('');
+    async function searchUsers(value = '') {
+      try {
+        loading.start();
+        suggestedUsers.value = await userRepository.searchUsers(value);
+      } finally {
+        loading.stop();
+      }
+    }
+
     const selectedUsers = reactive<Record<number, string>>({});
     const selectedUsersArray = computed(() => {
       const arr: { id: number; username: string }[] = [];
@@ -98,7 +119,11 @@ export default defineComponent({
     }
 
     return {
+      loading,
+
       suggestedUsers,
+      search,
+      searchUsers,
 
       selectedUsers,
       selectedUsersArray,
