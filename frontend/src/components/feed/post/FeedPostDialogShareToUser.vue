@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog title="Share" @close="$emit('close')">
+  <BaseDialog title="Share" @close="close">
     <template #secondHeaderRow>
       <div class="row items-center gap-6 q-pb-lg q-pt-none q-px-lg full-width">
         <div class="text-subtitle1 text-weight-medium">To:</div>
@@ -64,8 +64,8 @@ export default defineComponent({
 
   emits: ['close'],
 
-  setup() {
-    const suggestedUsers = [
+  setup(props, { emit }) {
+    const suggestedUsers = reactive([
       { id: 1, username: '123', color: 'hsl(290, 50%, 80%)', name: '124124' },
       { id: 2, username: '1234', color: 'hsl(290, 50%, 80%)', name: '124124' },
       { id: 3, username: '1235', color: 'hsl(290, 50%, 80%)', name: '124124' },
@@ -74,7 +74,7 @@ export default defineComponent({
       { id: 6, username: '1283', color: 'hsl(290, 50%, 80%)', name: '124124' },
       { id: 7, username: '1283', color: 'hsl(290, 50%, 80%)', name: '124124' },
       { id: 78, username: '1283', color: 'hsl(290, 50%, 80%)', name: '124124' },
-    ];
+    ]);
     const selectedUsers = reactive<Record<number, string>>({});
     const selectedUsersArray = computed(() => {
       const arr: { id: number; username: string }[] = [];
@@ -90,12 +90,21 @@ export default defineComponent({
       else selectedUsers[id] = username;
     }
 
+    function close() {
+      // TODO: fix data reset
+      Object.assign(selectedUsers, {});
+      Object.assign(suggestedUsers, {});
+      emit('close');
+    }
+
     return {
       suggestedUsers,
 
       selectedUsers,
       selectedUsersArray,
       toggleUserSelection,
+
+      close,
     };
   },
 });
