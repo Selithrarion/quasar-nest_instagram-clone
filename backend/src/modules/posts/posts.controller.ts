@@ -55,7 +55,8 @@ export class PostsController {
   }
 
   @Post('share/:id')
-  async share(@Body('id') id: number, @Request() req): Promise<void> {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async share(@Param('id') id: number, @Request() req): Promise<void> {
     return await this.postsService.share(id, req.user.id);
   }
 
