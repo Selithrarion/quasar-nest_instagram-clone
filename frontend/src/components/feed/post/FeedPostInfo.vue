@@ -65,7 +65,7 @@ export default defineComponent({
       required: true,
     },
     createdAt: {
-      type: Number,
+      type: String,
       required: true,
     },
     comments: {
