@@ -8,7 +8,7 @@
 
         <div v-else>
           <div class="flex-center q-mt-lg q-mb-md">
-            <CommonLogo />
+            <CommonLogo style="margin-top: 6px"/>
           </div>
 
           <h6

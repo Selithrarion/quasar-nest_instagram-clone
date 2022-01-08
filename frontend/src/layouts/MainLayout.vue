@@ -3,7 +3,7 @@
     <q-header class="bg-white text-blue-grey-7 shadow-3">
       <q-toolbar class="container layout__toolbar" style="min-height: 60px">
         <div class="layout__logo" @click="goToMainPage">
-          <CommonLogo />
+          <CommonLogo style="margin-top: 6px" />
         </div>
 
         <CommonSearch v-model="searchValue" class="mobile-hide" prepend-icon @search="search" />
