@@ -58,6 +58,8 @@ Github actions CI pipeline
 - Share to users (?) ❌
 - Bookmark (?) ❌
 
+#### Messenger (?)
+
 #### Profile page
 - View all own photos/videos ❌
 - Edit info - change username / name / email / about etc... ❌
