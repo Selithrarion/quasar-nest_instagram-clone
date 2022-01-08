@@ -7,6 +7,7 @@
           :key="story"
           :story="story"
           :use-skeleton="isLoadingState"
+          @click="openStory(story)"
         />
       </FeedStoryList>
 
@@ -97,6 +98,11 @@ export default defineComponent({
       if (!availablePosts.value) await store.dispatch('post/getAll');
     });
 
+    function openStory(storyID: number) {
+      if (isLoadingState.value) return;
+      void router.push(`/story/${storyID}`);
+    }
+
     return {
       dialog,
       loading,
@@ -105,6 +111,8 @@ export default defineComponent({
       availablePosts,
       availableStories,
       isLoadingState,
+
+      openStory,
     };
   },
 });
