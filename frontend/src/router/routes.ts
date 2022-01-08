@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/auth',
-    component: () => import('layouts/GuestLayout.vue'),
+    component: () => import('layouts/EmptyLayout.vue'),
     children: [
       {
         path: '/auth',
@@ -16,9 +16,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '/', name: 'feed', component: () => import('pages/Index.vue'), meta: { auth: true } },
-    ],
+    children: [{ path: '/', name: 'feed', component: () => import('pages/Index.vue'), meta: { auth: true } }],
   },
 
   {

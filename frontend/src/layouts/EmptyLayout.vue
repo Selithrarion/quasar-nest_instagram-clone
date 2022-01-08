@@ -10,6 +10,6 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'GuestLayout',
+  name: 'EmptyLayout',
 });
 </script>
