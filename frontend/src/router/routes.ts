@@ -20,6 +20,27 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/story',
+    component: () => import('layouts/EmptyLayout.vue'),
+    children: [
+      {
+        path: '/story',
+        name: 'storyFeed',
+        component: () => import('pages/StoryFeed.vue'),
+        meta: { auth: true },
+        children: [
+          {
+            path: '/story/:storyID',
+            name: 'story',
+            component: () => import('components/story/StoryItem.vue'),
+            meta: { auth: true },
+          },
+        ],
+      },
+    ],
+  },
+
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/Error404.vue'),
   },
