@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/story',
         name: 'storyFeed',
-        component: () => import('pages/story/StoryFeed.vue'),
+        component: () => import('pages/StoryFeed.vue'),
         meta: { auth: true },
         children: [
           {
@@ -36,12 +36,6 @@ const routes: RouteRecordRaw[] = [
             meta: { auth: true },
           },
         ],
-      },
-      {
-        path: '/story/create',
-        name: 'storyCreate',
-        component: () => import('pages/StoryCreate.vue'),
-        meta: { auth: true },
       },
     ],
   },
