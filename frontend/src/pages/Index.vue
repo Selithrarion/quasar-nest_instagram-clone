@@ -3,12 +3,22 @@
     <div class="feed">
       <FeedStoryList :use-skeleton="isLoadingState">
         <FeedStory
-          v-for="story of isLoadingState ? 20 : 20"
-          :key="story"
-          :story="story"
-          :use-skeleton="isLoadingState"
-          @click="openStory(story)"
-        />
+          v-if="!isLoadingState"
+          :current-user-avatar-url="currentUser.avatar?.url"
+          :current-user-username="currentUser.username"
+          :current-user-color="currentUser.color"
+          use-plus-badge
+          @click="createStory"
+        >
+          <template #name> Your story </template>
+        </FeedStory>
+        <!--        <FeedStory-->
+        <!--          v-for="story of isLoadingState ? 20 : 20"-->
+        <!--          :key="story"-->
+        <!--          :story="story"-->
+        <!--          :use-skeleton="isLoadingState"-->
+        <!--          @click="openStory(story)"-->
+        <!--        />-->
       </FeedStoryList>
 
       <FeedPostList>
@@ -94,6 +104,8 @@ export default defineComponent({
     const availableStories = computed(() => []);
     const isLoadingState = computed(() => store.state.app.isLoadingState);
 
+    const currentUser = computed(() => store.state.user.currentUser);
+
     onBeforeMount(async () => {
       if (!availablePosts.value) await store.dispatch('post/getAll');
     });
@@ -101,6 +113,9 @@ export default defineComponent({
     function openStory(storyID: number) {
       if (isLoadingState.value) return;
       void router.push(`/story/${storyID}`);
+    }
+    function createStory() {
+      void router.push('/story/create');
     }
 
     return {
@@ -112,7 +127,10 @@ export default defineComponent({
       availableStories,
       isLoadingState,
 
+      currentUser,
+
       openStory,
+      createStory,
     };
   },
 });
@@ -123,6 +141,7 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   gap: 32px;
+  flex-grow: 1;
   max-width: 655px;
 }
 </style>
