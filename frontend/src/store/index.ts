@@ -4,15 +4,18 @@ import { createStore, Store as VuexStore, useStore as vuexUseStore } from 'vuex'
 
 import app from 'src/store/app';
 import post from 'src/store/post';
+import story from 'src/store/story';
 import user from 'src/store/user';
 
 import { AppStateInterface } from 'src/store/app/state';
 import { PostStateInterface } from 'src/store/post/state';
+import { StoryStateInterface } from 'src/store/story/state';
 import { UserStateInterface } from 'src/store/user/state';
 
 export interface StateInterface {
   app: AppStateInterface;
   post: PostStateInterface;
+  story: StoryStateInterface;
   user: UserStateInterface;
 }
 
@@ -30,6 +33,7 @@ export default store(function (/* { ssrContext } */) {
     modules: {
       app,
       post,
+      story,
       user,
     },
 
