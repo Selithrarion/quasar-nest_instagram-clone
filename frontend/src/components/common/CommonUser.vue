@@ -2,7 +2,7 @@
   <BaseItem :clickable="clickable && !useSkeleton">
     <q-item-section side>
       <q-skeleton v-if="useSkeleton" type="QAvatar" :size="size" />
-      <BaseAvatar v-else :size="size" :src="avatar" :item-name="username" :item-color="color" />
+      <BaseAvatar v-else :size="size" :src="user?.avatar?.url" :item-name="user.username" :item-color="user.color" />
     </q-item-section>
 
     <q-item-section>
@@ -12,10 +12,10 @@
       </template>
 
       <template v-else>
-        <q-item-label>{{ username }}</q-item-label>
-        <q-item-label v-if="$slots.name || name" caption>
-          <slot name="name" :user-name="name">
-            {{ name }}
+        <q-item-label>{{ user.username }}</q-item-label>
+        <q-item-label v-if="$slots.name || !hideName" caption>
+          <slot name="name" :user-name="user.name">
+            {{ user.name }}
           </slot>
         </q-item-label>
       </template>
@@ -28,7 +28,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+import { UserModel } from 'src/models/user/user.model';
 
 export default defineComponent({
   name: 'CommonUser',
@@ -38,24 +39,12 @@ export default defineComponent({
     useSkeletonUsername: Boolean,
     useSkeletonAppend: Boolean,
 
-    username: {
-      type: String,
-      required: true,
+    user: {
+      type: Object as PropType<UserModel>,
+      default: null
     },
-    name: {
-      type: String,
-      required: false,
-      default: null,
-    },
+    hideName: Boolean,
 
-    avatar: {
-      type: String,
-      default: null,
-    },
-    color: {
-      type: String,
-      required: true,
-    },
 
     tooltip: {
       type: String,
