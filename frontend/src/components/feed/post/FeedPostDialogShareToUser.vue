@@ -39,10 +39,7 @@
             v-for="user in loading.active.value ? 3 : suggestedUsers"
             :key="user.id"
             size="48px"
-            :avatar="user?.avatar?.url"
-            :color="user.color"
-            :username="user.username"
-            :name="user.name"
+            :user="user"
             :use-skeleton="loading.active.value"
             use-skeleton-username
             @click="toggleUserSelection(user.id, user.username)"

@@ -42,10 +42,9 @@
         <CommonUser
           class="q-pl-none"
           size="28px"
-          :username="currentUser.username"
-          :avatar="currentUser.avatar"
-          :color="currentUser.color"
+          :user="currentUser"
           :clickable="false"
+          hide-name
         />
         <q-input v-model="form.description" label="Description" :counter="2200" autogrow />
       </div>

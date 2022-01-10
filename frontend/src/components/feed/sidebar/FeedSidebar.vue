@@ -12,10 +12,7 @@
       <div class="column gap-2">
         <CommonUser
           class="q-px-xs"
-          :avatar="currentUser?.avatar?.url"
-          :color="currentUser.color"
-          :username="currentUser.username"
-          :name="currentUser.name"
+          :user="currentUser"
           @click="openCurrentUserProfile"
         />
 

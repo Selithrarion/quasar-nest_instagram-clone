@@ -6,15 +6,7 @@
     </div>
 
     <div>
-      <CommonUser
-        v-for="user in suggestions"
-        :key="user.id"
-        class="q-px-xs"
-        size="32px"
-        :avatar="user?.avatar?.url"
-        :color="user.color"
-        :username="user.username"
-      >
+      <CommonUser v-for="user in suggestions" :key="user.id" class="q-px-xs" size="32px" :user="user" hide-name>
         <template #name> Follows you / Followed by USERNAME / New to Instagram </template>
       </CommonUser>
     </div>

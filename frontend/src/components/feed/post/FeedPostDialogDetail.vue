@@ -10,9 +10,8 @@
               class="full-width q-px-xs"
               size="32px"
               tooltip="Open author profile"
-              :avatar="post.author?.avatar?.url"
-              :color="post.author.color"
-              :username="post.author.username"
+              :user="post.author"
+              hide-name
               @click="openAuthorProfile"
             />
             <FeedPostMoreButton :post-id="post.id" @share="$emit('share')" />
