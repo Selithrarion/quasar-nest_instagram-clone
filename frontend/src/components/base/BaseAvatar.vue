@@ -29,6 +29,8 @@
       <span v-else-if="itemName" class="text-white">{{ itemInitials }}</span>
     </slot>
 
+    <slot name="badge" />
+
     <BaseTooltip :label="tooltip || itemName" />
 
     <div v-if="clickable" class="base-avatar__hover" />
