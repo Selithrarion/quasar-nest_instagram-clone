@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { CommentModel } from 'src/models/post/comment.model';
+import { CommentModel } from 'src/models/feed/comment.model';
 
 export default defineComponent({
   name: 'FeedPostComment',

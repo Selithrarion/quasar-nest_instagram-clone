@@ -1,5 +1,5 @@
 import { http } from 'boot/axios';
-import { PostDTO, PostModel } from 'src/models/post/post.model';
+import { PostDTO, PostModel } from 'src/models/feed/post.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
 
 export default {

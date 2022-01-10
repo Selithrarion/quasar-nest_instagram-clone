@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
 import { PostStateInterface } from './state';
-import { PostModel } from 'src/models/post/post.model';
+import { PostModel } from 'src/models/feed/post.model';
 import { PaginationData } from 'src/models/common/pagination.model';
 
 const mutation: MutationTree<PostStateInterface> = {

@@ -1,4 +1,4 @@
-import { PostModel } from 'src/models/post/post.model';
+import { PostModel } from 'src/models/feed/post.model';
 import { PaginationMeta } from 'src/models/common/pagination.model';
 
 export interface PostStateInterface {

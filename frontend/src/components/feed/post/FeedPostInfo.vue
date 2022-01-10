@@ -41,7 +41,7 @@ import { useFormat, DateTypes } from 'src/composables/format/useFormat';
 
 import FeedPostComment from 'components/feed/post/FeedPostComment.vue';
 
-import { CommentModel } from 'src/models/post/comment.model';
+import { CommentModel } from 'src/models/feed/comment.model';
 
 export default defineComponent({
   name: 'FeedPostInfo',

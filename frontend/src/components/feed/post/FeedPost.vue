@@ -56,7 +56,7 @@ import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
 import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
 import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue';
 
-import { PostModel } from 'src/models/post/post.model';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedPost',

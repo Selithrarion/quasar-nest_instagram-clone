@@ -1,6 +1,6 @@
 import { BaseModel } from 'src/models/common/base.model';
 import { UserModel } from 'src/models/user/user.model';
-import { CommentModel } from 'src/models/post/comment.model';
+import { CommentModel } from 'src/models/feed/comment.model';
 
 export interface PostModel extends BaseModel {
   fileURL: string;

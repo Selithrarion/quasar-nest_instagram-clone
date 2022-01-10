@@ -51,7 +51,7 @@ import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
 import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue';
 import FeedPostMoreButton from 'components/feed/post/FeedPostMoreButton.vue';
 
-import { PostModel } from 'src/models/post/post.model';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedPostDialogDetail',

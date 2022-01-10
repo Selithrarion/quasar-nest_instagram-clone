@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { PostStateInterface } from './state';
-import { PostDTO } from 'src/models/post/post.model';
+import { PostDTO } from 'src/models/feed/post.model';
 import { PaginationApiPayload } from 'src/models/common/pagination.model';
 
 import postRepository from 'src/repositories/postRepository';

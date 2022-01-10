@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import CommonClipboard from 'components/common/CommonClipboard.vue';
-import { PostModel } from 'src/models/post/post.model';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedPostDialogShare',
