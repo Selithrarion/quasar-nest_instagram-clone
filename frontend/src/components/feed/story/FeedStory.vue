@@ -6,23 +6,61 @@
     </template>
 
     <template v-else>
-      <BaseAvatar size="66px" src="https://cdn.quasar.dev/img/avatar.png" />
-      <div class="feed-story__name text-caption ellipsis">123123123123123123123</div>
+      <BaseAvatar
+        size="66px"
+        :item-name="currentUserUsername || story.author.username"
+        :item-color="currentUserColor || story.author.color"
+        :src="currentUserUsername ? currentUserAvatarUrl : story.author?.avatar?.url"
+      >
+        <template v-if="usePlusBadge" #badge>
+          <!--TODO: refactor badge styles-->
+          <q-badge
+            style="margin-top: 52px; margin-right: 2px; padding: 2px; border: 1px solid white"
+            color="primary"
+            rounded
+            floating
+          >
+            <q-icon name="add" />
+          </q-badge>
+        </template>
+      </BaseAvatar>
+      <div class="feed-story__name text-caption ellipsis">
+        <slot name="name"> 123123123123123123123 </slot>
+      </div>
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+import { StoryModel } from 'src/models/feed/story.model';
 
 export default defineComponent({
   name: 'FeedStory',
 
   props: {
     story: {
-      type: Object,
-      required: true,
+      type: Object as PropType<StoryModel>,
+      default: null,
     },
+
+    currentUserAvatarUrl: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    currentUserUsername: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    currentUserColor: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    usePlusBadge: Boolean,
+
     useSkeleton: Boolean,
   },
 
@@ -44,6 +82,8 @@ export default defineComponent({
   width: 80px;
   overflow: hidden;
   min-width: 0;
+
+  cursor: pointer;
 
   &__name {
     max-width: 80px;
