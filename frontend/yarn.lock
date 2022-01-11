@@ -6253,6 +6253,18 @@ vue-cropperjs@^5.0.0:
   dependencies:
     cropperjs "^1.5.6"
 
+vue-demi@latest:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
+  integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
+
+vue-drawing-canvas@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/vue-drawing-canvas/-/vue-drawing-canvas-1.0.7.tgz#458441b4be00eae9bb75bee25d5642a486f01691"
+  integrity sha512-rsNZfzq07Lh1gP87tbFLBDAItislQjz9cUBzsg8m/mpLmUITgRpRHOTc4G1AvVdtU1XDNDxZCHHls1imH2lCvw==
+  dependencies:
+    vue-demi latest
+
 vue-eslint-parser@^7.10.0:
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.11.0.tgz#214b5dea961007fcffb2ee65b8912307628d0daf"
