@@ -8,7 +8,7 @@
           :current-user-username="currentUser.username"
           :current-user-color="currentUser.color"
           use-plus-badge
-          @click="createStory"
+          @set-image="dialog.open('createStory', { item: $event })"
         >
           <template #name> Your story </template>
         </FeedStory>
@@ -36,6 +36,11 @@
 
     <FeedSidebar :use-skeleton="isLoadingState" />
 
+    <FeedStoryDialogCreate
+      :model-value="dialog.openedName.value === 'createStory'"
+      :image="dialog.openedItem.value"
+      @close="dialog.close"
+    />
     <FeedPostDialogDetail
       :model-value="dialog.openedName.value === 'postDetail'"
       :post="dialog.openedItem.value"
@@ -65,15 +70,15 @@ import useLoading from 'src/composables/common/useLoading';
 
 import FeedStoryList from 'components/feed/story/FeedStoryList.vue';
 import FeedStory from 'components/feed/story/FeedStory.vue';
+import FeedStoryDialogCreate from 'components/feed/story/FeedStoryDialogCreate.vue';
 
 import FeedPostList from 'components/feed/post/FeedPostList.vue';
 import FeedPost from 'components/feed/post/FeedPost.vue';
-
-import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
-
 import FeedPostDialogDetail from 'components/feed/post/FeedPostDialogDetail.vue';
 import FeedPostDialogShare from 'components/feed/post/FeedPostDialogShare.vue';
 import FeedPostDialogShareToUser from 'components/feed/post/FeedPostDialogShareToUser.vue';
+
+import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
 
 export default defineComponent({
   name: 'FeedIndex',
@@ -81,15 +86,15 @@ export default defineComponent({
   components: {
     FeedStoryList,
     FeedStory,
+    FeedStoryDialogCreate,
 
     FeedPostList,
     FeedPost,
-
-    FeedSidebar,
-
     FeedPostDialogDetail,
     FeedPostDialogShare,
     FeedPostDialogShareToUser,
+
+    FeedSidebar,
   },
 
   setup() {
@@ -114,9 +119,6 @@ export default defineComponent({
       if (isLoadingState.value) return;
       void router.push(`/story/${storyID}`);
     }
-    function createStory() {
-      void router.push('/story/create');
-    }
 
     return {
       dialog,
@@ -130,7 +132,6 @@ export default defineComponent({
       currentUser,
 
       openStory,
-      createStory,
     };
   },
 });
