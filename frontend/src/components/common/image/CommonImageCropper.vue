@@ -21,8 +21,8 @@
       <template v-else>
         <VueCropper
           ref="cropper"
-          class="common-image-cropper__cropper"
           :key="selectedAspectRatio"
+          class="common-image-cropper__cropper"
           :aspect-ratio="selectedAspectRatio"
           :src="imgSrc"
           :background="false"
