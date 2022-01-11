@@ -7,15 +7,15 @@
     @dragleave="handleDragLeave"
     @dragover.stop.prevent
   >
-    <input ref="fileInput" class="hidden" type="file" name="image" accept="image/*" @change="setRawImage" />
-
     <div class="column gap-6">
       <template v-if="!imageRaw">
         <div class="flex-center column gap-4">
           <q-icon name="photo_library" size="64px" />
           <div class="text-h6 text-weight-light">Drag photos and videos here</div>
         </div>
-        <BaseButton label="Select from computer" color="primary" @click="showFileChooser" />
+        <CommonUploader @set-image="setRawImage">
+          <BaseButton label="Select from computer" color="primary" />
+        </CommonUploader>
       </template>
 
       <template v-else>
@@ -58,6 +58,8 @@ import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 
+import CommonUploader from 'components/common/CommonUploader.vue';
+
 interface VueCropperModel {
   getCroppedCanvas: (options?: GetCroppedCanvasOptions) => HTMLCanvasElement;
   getCropBoxData: () => string;
@@ -85,6 +87,7 @@ export default defineComponent({
 
   components: {
     VueCropper,
+    CommonUploader,
   },
 
   props: {
@@ -110,7 +113,6 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const cropper = ref<VueCropperModel | null>(null);
-    const fileInput = ref<HTMLInputElement | null>(null);
     const imgSrc = ref(props.imageRaw);
     const data = ref('');
 
@@ -137,30 +139,11 @@ export default defineComponent({
       cropper.value?.setData(parsedData);
     }
 
-    function showFileChooser() {
-      fileInput.value?.click();
-    }
-    function setRawImage($event: Event) {
-      const file = (<HTMLInputElement>$event.target)?.files?.[0];
-
-      if (!file) return;
-      if (file.type.indexOf('image/') === -1) {
-        alert('Please select an image file');
-        return;
-      }
-      if (typeof FileReader !== 'function') alert('Sorry, FileReader API not supported');
-
-      const reader = new FileReader();
-      reader.onload = ($readerEvent: Event) => {
-        const target = $readerEvent.target as EventTarget & { result: string };
-
-        imgSrc.value = target.result;
-        emit('update:image-raw', target.result);
-
-        // rebuild cropper js with the updated source
-        cropper.value?.replace(target.result);
-      };
-      reader.readAsDataURL(file);
+    function setRawImage(image: string) {
+      imgSrc.value = image;
+      emit('update:image-raw', image);
+      // rebuild cropper js with the updated source
+      cropper.value?.replace(image);
     }
 
     function zoom(percent: string) {
@@ -255,7 +238,6 @@ export default defineComponent({
 
     return {
       cropper,
-      fileInput,
       imgSrc,
       data,
 
@@ -263,7 +245,6 @@ export default defineComponent({
       getCroppedImageData,
       setCroppedImageData,
 
-      showFileChooser,
       setRawImage,
       zoom,
 
