@@ -7,7 +7,7 @@
     @dragleave="handleDragLeave"
     @dragover.stop.prevent
   >
-    <input ref="input" type="file" name="image" accept="image/*" @change="setRawImage" />
+    <input ref="fileInput" class="hidden" type="file" name="image" accept="image/*" @change="setRawImage" />
 
     <div class="column gap-6">
       <template v-if="!imageRaw">
@@ -110,7 +110,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const cropper = ref<VueCropperModel | null>(null);
-    const input = ref<HTMLInputElement | null>(null);
+    const fileInput = ref<HTMLInputElement | null>(null);
     const imgSrc = ref(props.imageRaw);
     const data = ref('');
 
@@ -138,7 +138,7 @@ export default defineComponent({
     }
 
     function showFileChooser() {
-      input.value?.click();
+      fileInput.value?.click();
     }
     function setRawImage($event: Event) {
       const file = (<HTMLInputElement>$event.target)?.files?.[0];
@@ -255,7 +255,7 @@ export default defineComponent({
 
     return {
       cropper,
-      input,
+      fileInput,
       imgSrc,
       data,
 
@@ -318,10 +318,6 @@ export default defineComponent({
         opacity: 1;
       }
     }
-  }
-
-  input[type='file'] {
-    display: none;
   }
 
   ::v-deep .cropper-container {
