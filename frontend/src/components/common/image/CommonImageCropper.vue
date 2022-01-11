@@ -19,7 +19,7 @@
       </template>
 
       <template v-else>
-        <vue-cropper
+        <VueCropper
           ref="cropper"
           class="common-image-cropper__cropper"
           :key="selectedAspectRatio"
