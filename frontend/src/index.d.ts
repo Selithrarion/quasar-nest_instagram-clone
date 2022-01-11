@@ -9,3 +9,7 @@ declare module 'vuedraggable' {
 declare module 'vue-cropperjs' {
   export default function VueCropper(): void;
 }
+
+declare module 'vue-drawing-canvas' {
+  export default function VueDrawingCanvas(): void;
+}
