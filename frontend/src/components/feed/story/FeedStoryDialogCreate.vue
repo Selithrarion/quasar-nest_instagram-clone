@@ -3,7 +3,7 @@
     <template #default>
       <div class="flex-center">
         <VueDrawingCanvas
-          ref="VueCanvasDrawing"
+          ref="drawCanvas"
           v-model:image="localImage"
           class="shadow-1"
           stroke-type="dash"
@@ -15,6 +15,7 @@
           :width="backgroundImageWidth"
           :height="backgroundImageHeight"
           save-as="jpeg"
+          canvas-id="drawCanvas"
         />
       </div>
     </template>
