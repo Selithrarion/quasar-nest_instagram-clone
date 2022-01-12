@@ -54,11 +54,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, ref, toRefs, watch } from 'vue';
+import { defineComponent, onBeforeUnmount, onMounted, PropType, reactive, ref, toRefs, watch } from 'vue';
 import VueDrawingCanvas from 'vue-drawing-canvas';
+import useLoading from 'src/composables/common/useLoading';
+import { useStore } from 'src/store';
+import storyRepository from 'src/repositories/storyRepository';
 
 interface VueDrawingCanvasModel {
   redraw: () => void;
+  undo: () => void;
+  redo: () => void;
 }
 // refactor
 interface ImageDataModel {
@@ -84,6 +89,16 @@ export default defineComponent({
   emits: ['close'],
 
   setup(props, { emit }) {
+    const store = useStore();
+    const loading = useLoading();
+
+    onMounted(() => {
+      document.addEventListener('keydown', handleKeydown);
+    });
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', handleKeydown);
+    });
+
     const state = reactive({
       x: 0,
       y: 0,
@@ -119,6 +134,23 @@ export default defineComponent({
       state.backgroundImage = props.imageData.image;
       drawCanvas.value?.redraw();
     }
+    function handleKeydown(event: KeyboardEvent) {
+      if (event.ctrlKey && event.code === 'KeyZ') {
+        undo();
+      } else if (event.ctrlKey && event.code === 'KeyY') {
+        redo();
+      } else if (!event.ctrlKey && event.key === '1') {
+        state.eraser = false;
+      } else if (!event.ctrlKey && event.key === '2') {
+        state.eraser = true;
+      }
+    }
+    function undo() {
+      drawCanvas.value?.undo();
+    }
+    function redo() {
+      drawCanvas.value?.redo();
+    }
 
     function close() {
       emit('close');
@@ -131,6 +163,9 @@ export default defineComponent({
       selectColor,
 
       drawCanvas,
+      undo,
+      redo,
+
       close,
     };
   },
