@@ -139,7 +139,7 @@ export default defineComponent({
       cropper.value?.setData(parsedData);
     }
 
-    function setRawImage(image: string) {
+    function setRawImage({ image = '' }) {
       imgSrc.value = image;
       emit('update:image-raw', image);
       // rebuild cropper js with the updated source

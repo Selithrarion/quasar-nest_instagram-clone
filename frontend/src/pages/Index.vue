@@ -38,7 +38,7 @@
 
     <FeedStoryDialogCreate
       :model-value="dialog.openedName.value === 'createStory'"
-      :image="dialog.openedItem.value"
+      :image-data="dialog.openedItem.value"
       @close="dialog.close"
     />
     <FeedPostDialogDetail

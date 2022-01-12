@@ -43,7 +43,12 @@ export default defineComponent({
       const reader = new FileReader();
       reader.onload = ($readerEvent: Event) => {
         const target = $readerEvent.target as EventTarget & { result: string };
-        emit('set-image', target.result);
+
+        const image = new Image();
+        image.src = target.result;
+        image.onload = () => {
+          emit('set-image', { image: target.result, width: image.width, height: image.height });
+        };
       };
       reader.readAsDataURL(file);
     }
