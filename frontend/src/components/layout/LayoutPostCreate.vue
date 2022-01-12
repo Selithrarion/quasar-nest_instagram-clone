@@ -39,14 +39,8 @@
         :ratio="form.imageAspectRatio"
       />
       <div class="w-33 flex-shrink-0">
-        <CommonUser
-          class="q-pl-none"
-          size="28px"
-          :user="currentUser"
-          :clickable="false"
-          hide-name
-        />
-        <q-input v-model="form.description" label="Description" :counter="2200" autogrow />
+        <CommonUser class="q-pl-none" size="28px" :user="currentUser" :clickable="false" hide-name />
+        <q-input v-model="form.description" label="Description" autogrow counter />
       </div>
     </div>
   </BaseDialog>
@@ -112,7 +106,7 @@ export default defineComponent({
       step.value = CreatePostEnum.SELECT;
       form.value = {
         imageRaw: null,
-        imageAspectRatio: null,
+        imageAspectRatio: 1,
         imageBlob: null,
         imageBlobWithFilter: null,
         imageCropData: null,
@@ -129,7 +123,7 @@ export default defineComponent({
 
     const form = ref({
       imageRaw: null,
-      imageAspectRatio: null,
+      imageAspectRatio: 1,
       imageBlob: null,
       imageBlobWithFilter: null,
       imageCropData: null,
