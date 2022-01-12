@@ -1,16 +1,19 @@
 <template>
   <BaseDialog title="Create new story" @close="close">
     <template #default>
-      <div>
+      <div class="flex-center">
         <VueDrawingCanvas
           ref="VueCanvasDrawing"
           v-model:image="localImage"
+          class="shadow-1"
           stroke-type="dash"
           :eraser="eraser"
           :line-width="lineWidth"
           :color="color"
           :background-color="backgroundColor"
           :background-image="backgroundImage"
+          :width="backgroundImageWidth"
+          :height="backgroundImageHeight"
           save-as="jpeg"
         />
       </div>
@@ -19,12 +22,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs, watch } from 'vue';
+import { defineComponent, PropType, reactive, ref, toRefs, watch } from 'vue';
 import VueDrawingCanvas from 'vue-drawing-canvas';
 
 interface VueDrawingCanvasModel {
   redraw: () => void;
 }
+// refactor
+interface ImageDataModel {
+  image: string;
+  width: number;
+  height: number;
+}
+
 export default defineComponent({
   name: 'FeedStoryDialogCreate',
 
@@ -33,8 +43,8 @@ export default defineComponent({
   },
 
   props: {
-    image: {
-      type: String,
+    imageData: {
+      type: Object as PropType<ImageDataModel>,
       default: null,
     },
   },
@@ -51,18 +61,24 @@ export default defineComponent({
       color: '#000000',
       backgroundColor: '#FFFFFF',
       backgroundImage: '',
+      backgroundImageWidth: 550,
+      backgroundImageHeight: 400,
     });
 
     const drawCanvas = ref<VueDrawingCanvasModel | null>(null);
     watch(
-      () => props.image,
+      () => props.imageData,
       () => {
         setImage();
       }
     );
+    // TODO: fix if very large image
     function setImage() {
-      if (!props.image) return;
-      state.backgroundImage = props.image;
+      if (!props.imageData.image) return;
+
+      state.backgroundImageWidth = props.imageData.width;
+      state.backgroundImageHeight = props.imageData.height;
+      state.backgroundImage = props.imageData.image;
       drawCanvas.value?.redraw();
     }
 
