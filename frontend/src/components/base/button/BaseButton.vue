@@ -4,8 +4,8 @@
     class="base-button"
     :class="classes"
     :icon="icon"
-    :unelevated="Boolean(icon)"
-    :round="Boolean(icon)"
+    :unelevated="unelevated === undefined ? Boolean(icon) : unelevated"
+    :round="round === undefined ? Boolean(icon) : round"
     :no-wrap="noWrap"
     no-caps
     v-bind="$attrs"
@@ -33,8 +33,17 @@ export default defineComponent({
       type: String,
       default: null,
     },
+
     icon: {
       type: String,
+      default: undefined,
+    },
+    unelevated: {
+      type: Boolean,
+      default: undefined,
+    },
+    round: {
+      type: Boolean,
       default: undefined,
     },
 
