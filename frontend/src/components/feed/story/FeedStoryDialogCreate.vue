@@ -1,7 +1,38 @@
 <template>
   <BaseDialog title="Create new story" @close="close">
     <template #default>
-      <div class="flex-center">
+      <div class="flex-center relative-position" @keydown.ctrl.>
+        <div class="absolute-top-left row gap-1">
+          <BaseButton tooltip="Undo (Ctrl + Z)" icon="undo" @click="undo" />
+          <BaseButton tooltip="Redo (Ctrl + Y)" icon="redo" @click="redo" />
+        </div>
+
+        <div class="absolute-top-right column gap-4">
+          <div class="row gap-1">
+            <BaseButton
+              :class="{ 'brush--selected': !eraser }"
+              tooltip="Select brush (1)"
+              icon="brush"
+              @click="eraser = false"
+            />
+            <BaseButton
+              :class="{ 'brush--selected': eraser }"
+              tooltip="Select eraser (2)"
+              icon="remove"
+              @click="eraser = true"
+            />
+          </div>
+          <div class="column gap-1 items-center">
+            <button
+              v-for="color in availableColors"
+              :key="color"
+              class="color"
+              :class="{ 'color--selected': drawColor === color && !eraser }"
+              :style="{ backgroundColor: color }"
+              @click="selectColor(color)"
+            />
+          </div>
+        </div>
         <VueDrawingCanvas
           ref="drawCanvas"
           v-model:image="localImage"
@@ -9,7 +40,7 @@
           stroke-type="dash"
           :eraser="eraser"
           :line-width="lineWidth"
-          :color="color"
+          :color="drawColor"
           :background-color="backgroundColor"
           :background-image="backgroundImage"
           :width="backgroundImageWidth"
@@ -59,12 +90,18 @@ export default defineComponent({
       localImage: '',
       eraser: false,
       lineWidth: 5,
-      color: '#000000',
-      backgroundColor: '#FFFFFF',
+      drawColor: '#000000',
+      backgroundColor: '#ffffff',
       backgroundImage: '',
       backgroundImageWidth: 550,
       backgroundImageHeight: 400,
     });
+
+    const availableColors = ['#fdcb5c', '#fd8d32', '#d10869', '#a307ba', '#0095f6', '#58c322', '#000000', '#ffffff'];
+    function selectColor(color: string) {
+      state.drawColor = color;
+      state.eraser = false;
+    }
 
     const drawCanvas = ref<VueDrawingCanvasModel | null>(null);
     watch(
@@ -89,9 +126,44 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+
+      availableColors,
+      selectColor,
+
       drawCanvas,
       close,
     };
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.brush--selected {
+  border: 1px solid $blue-grey-3;
+  background: $blue-grey-1;
+}
+.color {
+  width: 32px;
+  height: 32px;
+  border: 1px solid $blue-grey-3;
+  border-radius: 50%;
+  transition: transform 100ms ease-out, filter 100ms ease-out, border 100ms ease-out;
+  cursor: pointer;
+  &:not(&--selected) {
+    &:hover {
+      filter: brightness(1.1);
+      border: 1px solid $blue-grey-4;
+    }
+    &:active {
+      filter: brightness(1.15);
+      border: 1px solid $blue-grey-4;
+      transform: scale(0.9);
+    }
+  }
+  &--selected {
+    border: 1px solid $blue-grey-6;
+    transform: scale(1.15);
+    cursor: default;
+  }
+}
+</style>
