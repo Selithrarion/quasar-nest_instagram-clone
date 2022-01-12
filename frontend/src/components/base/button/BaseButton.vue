@@ -1,5 +1,15 @@
 <template>
-  <component :is="currentComponent" class="base-button" :class="classes" :no-wrap="noWrap" no-caps v-bind="$attrs">
+  <component
+    :is="currentComponent"
+    class="base-button"
+    :class="classes"
+    :icon="icon"
+    :unelevated="Boolean(icon)"
+    :round="Boolean(icon)"
+    :no-wrap="noWrap"
+    no-caps
+    v-bind="$attrs"
+  >
     <BaseTooltip
       v-if="tooltip"
       :label="tooltip"
@@ -22,6 +32,10 @@ export default defineComponent({
     label: {
       type: String,
       default: null,
+    },
+    icon: {
+      type: String,
+      default: undefined,
     },
 
     // tooltip text
