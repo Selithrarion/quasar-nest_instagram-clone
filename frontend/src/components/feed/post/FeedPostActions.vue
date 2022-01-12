@@ -7,9 +7,7 @@
         :icon="isViewerLiked ? 'favorite' : 'favorite_border'"
         :tooltip="isViewerLiked ? 'Remove like' : 'Like'"
         tooltip-top-position
-        unelevated
         dense
-        round
         @click="toggleLike"
       />
       <BaseButton
@@ -18,9 +16,7 @@
         size="16px"
         tooltip="Show comments"
         tooltip-top-position
-        unelevated
         dense
-        round
         @click="$emit('open-post')"
       />
       <CommonIconMessages tooltip="Share" tooltip-top-position @click="$emit('share-to-user')" />
@@ -31,9 +27,7 @@
       :icon="isViewerSaved ? 'bookmark' : 'bookmark_border'"
       :tooltip="isViewerSaved ? 'Remove from bookmarks' : 'Save to bookmarks'"
       tooltip-top-position
-      unelevated
       dense
-      round
     />
   </div>
 </template>

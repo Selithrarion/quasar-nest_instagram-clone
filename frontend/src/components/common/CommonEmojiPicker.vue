@@ -1,5 +1,5 @@
 <template>
-  <BaseButton icon="mood" unelevated dense round @click.stop="openPicker" />
+  <BaseButton icon="mood" dense @click.stop="openPicker" />
 </template>
 
 <script lang="ts">

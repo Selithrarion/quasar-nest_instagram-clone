@@ -13,9 +13,7 @@
       :text-color="comment % 2 ? 'red' : ''"
       :icon="comment % 2 ? 'favorite' : 'favorite_border'"
       :tooltip="comment % 2 ? 'Remove like' : 'Like'"
-      unelevated
       dense
-      round
       @click="toggleLike"
     />
   </div>

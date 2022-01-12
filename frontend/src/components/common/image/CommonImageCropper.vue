@@ -30,7 +30,7 @@
         />
 
         <div class="row gap-4">
-          <BaseButton icon="aspect_ratio" unelevated round>
+          <BaseButton icon="aspect_ratio">
             <BaseMenu>
               <BaseItem
                 v-for="ratio in availableAspectRatios"
@@ -44,8 +44,8 @@
             </BaseMenu>
           </BaseButton>
           <div class="row gap-1">
-            <BaseButton icon="zoom_in" unelevated round @click.prevent="zoom(0.2)" />
-            <BaseButton icon="zoom_out" unelevated round @click.prevent="zoom(-0.2)" />
+            <BaseButton icon="zoom_in" @click.prevent="zoom(0.2)" />
+            <BaseButton icon="zoom_out" @click.prevent="zoom(-0.2)" />
           </div>
         </div>
       </template>

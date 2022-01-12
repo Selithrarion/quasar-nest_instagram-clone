@@ -4,7 +4,7 @@
     size="10px"
     :icon="type === 'previous' ? 'navigate_before' : 'navigate_next'"
     :tooltip="type === 'previous' ? 'Show previous' : 'Show next'"
-    round
+    :unelevated="false"
   />
 </template>
 

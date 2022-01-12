@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="common-icon-messages" icon="send" size="16px" unelevated dense round />
+  <BaseButton class="common-icon-messages" icon="send" size="16px" dense />
 </template>
 
 <script lang="ts">

@@ -55,8 +55,6 @@
                 icon="circle"
                 size="6px"
                 :color="item.read ? 'blue-grey-3' : 'primary'"
-                round
-                flat
                 @click.stop="toggleNotificationRead(item.id)"
               >
                 <BaseTooltip delay="0" :label="item.read ? t('notification.markUnread') : t('notification.markRead')" />

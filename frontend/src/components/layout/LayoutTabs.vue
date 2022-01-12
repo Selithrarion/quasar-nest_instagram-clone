@@ -1,6 +1,6 @@
 <template>
   <div class="flex-center gap-1">
-    <BaseButton icon="home" size="18px" tooltip="Feed" unelevated dense round />
+    <BaseButton icon="home" size="18px" tooltip="Feed" dense />
 
     <CommonIconMessages tooltip="Messages" disabled />
 
@@ -8,13 +8,11 @@
       icon="add_box"
       size="18px"
       tooltip="Add post"
-      unelevated
       dense
-      round
       @click="dialog.open('createPost')"
     />
 
-    <BaseButton icon="explore" size="18px" tooltip="Explore" disabled unelevated dense round />
+    <BaseButton icon="explore" size="18px" tooltip="Explore" disabled dense />
 
     <LayoutNotifications />
 
