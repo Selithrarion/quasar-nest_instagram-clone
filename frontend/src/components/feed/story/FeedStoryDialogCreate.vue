@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog title="Create new story" @close="close">
+  <BaseDialog title="Create new story" :confirm-loading="loading.active.value" @confirm="createStory" @close="close">
     <template #default>
       <div class="flex-center relative-position" @keydown.ctrl.>
         <div class="absolute-top-left row gap-1">
@@ -152,11 +152,22 @@ export default defineComponent({
       drawCanvas.value?.redo();
     }
 
+    function createStory() {
+      try {
+        loading.start();
+        // await storyRepository.create();
+        // await store.dispatch('post/getAll');
+        close();
+      } finally {
+        loading.stop();
+      }
+    }
     function close() {
       emit('close');
     }
 
     return {
+      loading,
       ...toRefs(state),
 
       availableColors,
@@ -166,6 +177,7 @@ export default defineComponent({
       undo,
       redo,
 
+      createStory,
       close,
     };
   },
