@@ -78,10 +78,6 @@ export default defineComponent({
   },
 
   emits: ['open-post', 'share', 'share-to-user'],
-
-  setup() {
-    return {};
-  },
 });
 </script>
 
