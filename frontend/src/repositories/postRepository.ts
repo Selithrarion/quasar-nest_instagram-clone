@@ -32,8 +32,8 @@ export default {
     return await http.post(`/posts/like/${id}`);
   },
 
-  async createComment(text: string): Promise<CommentModel> {
-    const { data }: ApiResponseModel<CommentModel> = await http.post('/posts/comment', { text });
+  async createComment(text: string, postID: number): Promise<CommentModel> {
+    const { data }: ApiResponseModel<CommentModel> = await http.post('/posts/comment', { text, postID });
     return data;
   },
   async updateComment(id: number, text: string): Promise<CommentModel> {
