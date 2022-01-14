@@ -17,7 +17,7 @@
             <FeedPostMoreButton :post-id="post.id" @share="$emit('share')" />
           </div>
 
-          <div class="q-px-md q-pb-md q-pt-sm">
+          <div class="q-px-md q-pb-md q-pt-sm break-word">
             {{ post.description }}
           </div>
 

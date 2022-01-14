@@ -10,7 +10,7 @@
       {{ likes }} likes
     </BaseButton>
 
-    <div v-if="!hideDescription" style="word-break: break-word">
+    <div v-if="!hideDescription" class="break-word">
       <b>{{ authorName }}</b>
       {{ formattedDescription }}
       <BaseButton
