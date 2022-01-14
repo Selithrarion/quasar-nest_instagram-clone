@@ -16,9 +16,11 @@
             />
             <FeedPostMoreButton :post-id="post.id" @share="$emit('share')" />
           </div>
+
           <div class="q-px-md q-pb-md q-pt-sm">
             {{ post.description }}
           </div>
+
           <FeedPostActions
             :post-id="post.id"
             :is-viewer-liked="post.isViewerLiked"
@@ -31,6 +33,7 @@
             :likes="post.likesUserIDs.length"
             :comments="post.comments"
             :created-at="post.createdAt"
+            hide-description
             @open-post="focusCommentInput"
           />
           <FeedPostCommentInput ref="commentInput" />
