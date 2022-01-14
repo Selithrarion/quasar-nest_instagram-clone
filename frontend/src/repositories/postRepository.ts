@@ -1,6 +1,7 @@
 import { http } from 'boot/axios';
 import { PostDTO, PostModel } from 'src/models/feed/post.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
+import { CommentModel } from 'src/models/feed/comment.model';
 
 export default {
   async getAll({ page = 1, limit = 5 } = { page: 1, limit: 5 }): Promise<PostModel[]> {
@@ -29,5 +30,17 @@ export default {
 
   async toggleLike(id: number): Promise<void> {
     return await http.post(`/posts/like/${id}`);
+  },
+
+  async createComment(text: string): Promise<CommentModel> {
+    const { data }: ApiResponseModel<CommentModel> = await http.post('/posts/comment', { text });
+    return data;
+  },
+  async updateComment(id: number, text: string): Promise<CommentModel> {
+    const { data }: ApiResponseModel<CommentModel> = await http.patch(`/posts/comment/${id}`, { text });
+    return data;
+  },
+  async deleteComment(id: number): Promise<void> {
+    return await http.delete(`/posts/comment/${id}`);
   },
 };
