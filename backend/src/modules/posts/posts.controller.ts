@@ -19,6 +19,7 @@ import { PostEntity } from './entity/post.entity';
 import { PostsService } from './posts.service';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CommentEntity } from './entity/comment.entity';
 
 @Controller('posts')
 export class PostsController {
@@ -64,5 +65,18 @@ export class PostsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async toggleLike(@Param('id') id: number, @Request() req): Promise<void> {
     return await this.postsService.toggleLike(Number(id), req.user.id);
+  }
+
+  @Post('comment')
+  async createComment(@Body('text') text: string, @Request() req): Promise<CommentEntity> {
+    return await this.postsService.createComment(text, req.user.id);
+  }
+  @Patch('comment/:id')
+  async updateComment(@Param('id') id: number, @Body('text') text: string, @Request() req): Promise<CommentEntity> {
+    return await this.postsService.updateComment(text, req.user.id);
+  }
+  @Delete('comment/:id')
+  async deleteComment(@Param('id') id: number): Promise<void> {
+    return await this.postsService.deleteComment(id);
   }
 }

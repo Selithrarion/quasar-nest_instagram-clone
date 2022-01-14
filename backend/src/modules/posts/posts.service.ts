@@ -9,12 +9,15 @@ import { UserEntity } from '../user/entity/user.entity';
 
 import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
+import { CommentEntity } from './entity/comment.entity';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
     private posts: Repository<PostEntity>,
+    @InjectRepository(CommentEntity)
+    private postComments: Repository<CommentEntity>,
 
     @Inject(FilesService)
     private readonly filesService: FilesService,
@@ -88,5 +91,15 @@ export class PostsService {
     }
 
     await this.userService.update(userID, { likedPosts: userLikedPosts });
+  }
+
+  async updateComment(id: number, text: string): Promise<CommentEntity> {
+    const toUpdate = await this.postComments.findOneOrFail(id);
+    const updated = this.postComments.create({ ...toUpdate, text });
+    await this.postComments.save(updated);
+    return updated;
+  }
+  async deleteComment(id: number): Promise<void> {
+    await this.postComments.delete(id);
   }
 }
