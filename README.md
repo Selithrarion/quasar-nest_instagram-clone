@@ -18,10 +18,9 @@ TODO
 
 1. Node.js (Nest.js)
 2. Typescript
-3. PostgreSQL + TypeORM (database)
-4. Swagger, Swagger UI (docs)
-5. Socket.io
-6. AWS S3 (Amazon Simple Storage Service)
+3. PostgreSQL + TypeORM (Database)
+4. Socket.io
+5. AWS S3 (Amazon Simple Storage Service)
 
 #### Other
 
