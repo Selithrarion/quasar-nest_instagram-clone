@@ -10,9 +10,15 @@
       {{ likes }} likes
     </BaseButton>
 
-    <div>
+    <div style="word-break: break-word">
       <b>{{ authorName }}</b>
-      {{ description }}
+      {{ formattedDescription }}
+      <BaseButton
+        v-if="clampDescriptionLocal && description.length >= 101"
+        label="Show more"
+        plain-style
+        @click="clampDescriptionLocal = false"
+      />
     </div>
 
     <template v-if="comments.length">
@@ -35,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType, ref } from 'vue';
 import useDialog from 'src/composables/common/useDialog';
 import { useFormat, DateTypes } from 'src/composables/format/useFormat';
 
@@ -72,13 +78,22 @@ export default defineComponent({
       type: Array as PropType<CommentModel[]>,
       required: true,
     },
+    clampDescription: Boolean,
   },
 
   emits: ['open-post'],
 
-  setup() {
+  setup(props) {
     const dialog = useDialog();
     const { formatDate } = useFormat();
+
+    const clampDescriptionLocal = ref(props.clampDescription);
+    const formattedDescription = computed(() => {
+      if (!clampDescriptionLocal.value) return props.description;
+
+      if (props.description.length <= 100) return props.description;
+      return props.description.slice(0, 100) + ' ...';
+    });
 
     function toggleLike() {
       //
@@ -89,10 +104,22 @@ export default defineComponent({
       formatDate,
       DateTypes,
 
+      clampDescriptionLocal,
+      formattedDescription,
+
       toggleLike,
     };
   },
 });
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.feed-post-info {
+  //&__description--clamp {
+  //  display: -webkit-box;
+  //  -webkit-line-clamp: 2;
+  //  -webkit-box-orient: vertical;
+  //  overflow: hidden;
+  //}
+}
+</style>

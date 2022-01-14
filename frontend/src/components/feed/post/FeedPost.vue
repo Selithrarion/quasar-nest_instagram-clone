@@ -40,6 +40,7 @@
         :likes="post.likesUserIDs.length"
         :comments="post.comments"
         :created-at="post.createdAt"
+        clamp-description
         @open-post="$emit('open-post')"
       />
       <FeedPostCommentInput />
