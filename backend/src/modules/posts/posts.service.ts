@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreatePostDTO, UpdatePostDTO } from './dto';
+import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from './dto';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate/index';
 
 import { PostEntity } from './entity/post.entity';
@@ -93,6 +93,10 @@ export class PostsService {
     await this.userService.update(userID, { likedPosts: userLikedPosts });
   }
 
+  async createComment({ text, postID }: CreateCommentDTO, user: UserEntity): Promise<CommentEntity> {
+    const post = await this.posts.findOneOrFail(postID);
+    return await this.postComments.save({ text, post, author: user });
+  }
   async updateComment(id: number, text: string): Promise<CommentEntity> {
     const toUpdate = await this.postComments.findOneOrFail(id);
     const updated = this.postComments.create({ ...toUpdate, text });

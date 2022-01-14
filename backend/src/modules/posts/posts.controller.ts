@@ -14,7 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-import { CreatePostDTO, UpdatePostDTO } from './dto';
+import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from "./dto";
 import { PostEntity } from './entity/post.entity';
 import { PostsService } from './posts.service';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
@@ -68,12 +68,12 @@ export class PostsController {
   }
 
   @Post('comment')
-  async createComment(@Body('text') text: string, @Request() req): Promise<CommentEntity> {
-    return await this.postsService.createComment(text, req.user.id);
+  async createComment(@Body() payload: CreateCommentDTO, @Request() req): Promise<CommentEntity> {
+    return await this.postsService.createComment(payload, req.user);
   }
   @Patch('comment/:id')
-  async updateComment(@Param('id') id: number, @Body('text') text: string, @Request() req): Promise<CommentEntity> {
-    return await this.postsService.updateComment(text, req.user.id);
+  async updateComment(@Param('id') id: number, @Body('text') text: string): Promise<CommentEntity> {
+    return await this.postsService.updateComment(id, text);
   }
   @Delete('comment/:id')
   async deleteComment(@Param('id') id: number): Promise<void> {
