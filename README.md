@@ -56,6 +56,9 @@ Github actions CI pipeline
 - Comments system, comment reply ❌
 - Share to users (?) ❌
 - Bookmark (?) ❌
+##### Story
+- Story CRUD ❌
+- Drawing canvas with [vue-drawing-canvas](https://github.com/razztyfication/vue-drawing-canvas)
 
 #### Messenger (?)
 
