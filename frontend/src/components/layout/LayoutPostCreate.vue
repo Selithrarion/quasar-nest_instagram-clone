@@ -26,6 +26,7 @@
       <CommonImageFilter
         ref="filter"
         :model-value="imageBlobURL"
+        :ratio="form.imageAspectRatio"
         @update:model-value="form.imageBlobWithFilter = $event"
       />
     </div>
@@ -37,6 +38,7 @@
         fit="scale-down"
         :src="imageBlobWithFilterURL"
         :ratio="form.imageAspectRatio"
+        :initial-ratio="form.imageAspectRatio"
       />
       <div class="w-33 flex-shrink-0">
         <CommonUser class="q-pl-none" size="28px" :user="currentUser" :clickable="false" hide-name />

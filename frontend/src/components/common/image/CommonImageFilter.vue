@@ -1,6 +1,14 @@
 <template>
   <div class="common-image-filter row no-wrap gap-2">
-    <q-img ref="QImgRef" fit="scale-down" :src="modelValue" :style="styles" @load="setImageData" />
+    <q-img
+      ref="QImgRef"
+      fit="scale-down"
+      :src="modelValue"
+      :style="styles"
+      :ratio="ratio"
+      :initial-ratio="ratio"
+      @load="setImageData"
+    />
     <div class="common-image-filter__items column gap-1 full-width q-pl-md">
       <CommonImageFilterItem v-model="filter.brightness" label="Brightness" :max="2" />
       <CommonImageFilterItem v-model="filter.contrast" label="Contrast" :max="2" />
@@ -29,6 +37,10 @@ export default defineComponent({
     modelValue: {
       type: String,
       default: null,
+    },
+    ratio: {
+      type: Number,
+      default: 1,
     },
   },
 
@@ -103,6 +115,8 @@ export default defineComponent({
 .common-image-filter {
   .q-img {
     width: 50%;
+    height: 100%;
+    align-self: center;
   }
   &__items {
     width: 50%;
