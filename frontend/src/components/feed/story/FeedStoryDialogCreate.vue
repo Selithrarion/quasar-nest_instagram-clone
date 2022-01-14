@@ -26,6 +26,7 @@
             <button
               v-for="color in availableColors"
               :key="color"
+              type="button"
               class="color"
               :class="{ 'color--selected': drawColor === color && !eraser }"
               :style="{ backgroundColor: color }"
