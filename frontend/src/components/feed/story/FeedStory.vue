@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import CommonUploader from 'components/common/CommonUploader.vue';
 
 import { StoryModel } from 'src/models/feed/story.model';

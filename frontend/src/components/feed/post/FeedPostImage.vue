@@ -1,7 +1,7 @@
 <template>
   <div class="feed-post-image relative-position" @dblclick="toggleLike">
     <q-img :src="src" />
-    <div v-show="likeLocalAnimationKey > 0" class="feed-post-image__like" :key="likeLocalAnimationKey">
+    <div v-show="likeLocalAnimationKey > 0" :key="likeLocalAnimationKey" class="feed-post-image__like">
       <q-icon color="white" name="favorite" size="128px" />
     </div>
   </div>
