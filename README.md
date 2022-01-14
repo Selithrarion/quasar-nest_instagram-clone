@@ -18,10 +18,9 @@ TODO
 
 1. Node.js (Nest.js)
 2. Typescript
-3. PostgreSQL + TypeORM (database)
-4. Swagger, Swagger UI (docs)
-5. Socket.io
-6. AWS S3 (Amazon Simple Storage Service)
+3. PostgreSQL + TypeORM (Database)
+4. Socket.io
+5. AWS S3 (Amazon Simple Storage Service)
 
 #### Other
 
@@ -30,7 +29,7 @@ Github actions CI pipeline
 ### App Features
 ❌ === not implemented yet
 #### Global
-- English lanugage
+- English lanugage (wow!)
 - User notifications ❌
 
 #### Auth
@@ -57,6 +56,9 @@ Github actions CI pipeline
 - Comments system, comment reply ❌
 - Share to users (?) ❌
 - Bookmark (?) ❌
+##### Story
+- Story CRUD ❌
+- Drawing canvas with [vue-drawing-canvas](https://github.com/razztyfication/vue-drawing-canvas)
 
 #### Messenger (?)
 
