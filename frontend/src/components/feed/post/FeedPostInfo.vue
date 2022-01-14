@@ -10,7 +10,7 @@
       {{ likes }} likes
     </BaseButton>
 
-    <div style="word-break: break-word">
+    <div v-if="!hideDescription" style="word-break: break-word">
       <b>{{ authorName }}</b>
       {{ formattedDescription }}
       <BaseButton
@@ -78,6 +78,8 @@ export default defineComponent({
       type: Array as PropType<CommentModel[]>,
       required: true,
     },
+
+    hideDescription: Boolean,
     clampDescription: Boolean,
   },
 
