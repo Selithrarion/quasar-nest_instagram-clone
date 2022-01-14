@@ -29,7 +29,7 @@ Github actions CI pipeline
 ### App Features
 ❌ === not implemented yet
 #### Global
-- English lanugage
+- English lanugage (wow!)
 - User notifications ❌
 
 #### Auth
