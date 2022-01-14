@@ -43,7 +43,7 @@
         clamp-description
         @open-post="$emit('open-post')"
       />
-      <FeedPostCommentInput />
+      <FeedPostCommentInput :post-id="post.id" />
     </template>
   </q-card>
 </template>

@@ -36,7 +36,7 @@
             hide-description
             @open-post="focusCommentInput"
           />
-          <FeedPostCommentInput ref="commentInput" />
+          <FeedPostCommentInput :post-id="post.id" ref="commentInput" />
         </div>
       </div>
     </template>
