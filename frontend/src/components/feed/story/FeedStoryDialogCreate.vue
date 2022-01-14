@@ -153,12 +153,16 @@ export default defineComponent({
       drawCanvas.value?.redo();
     }
 
-    function createStory() {
+    async function createStory() {
       try {
         loading.start();
-        // await storyRepository.create();
-        // await store.dispatch('post/getAll');
+
+        const formData = new FormData();
+        formData.append('image', state.localImage);
+        await storyRepository.create(formData);
+
         close();
+        await store.dispatch('post/getAll');
       } finally {
         loading.stop();
       }
