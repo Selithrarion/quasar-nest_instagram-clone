@@ -97,10 +97,6 @@ export default defineComponent({
       return props.description.slice(0, 100) + ' ...';
     });
 
-    function toggleLike() {
-      //
-    }
-
     return {
       dialog,
       formatDate,
@@ -108,8 +104,6 @@ export default defineComponent({
 
       clampDescriptionLocal,
       formattedDescription,
-
-      toggleLike,
     };
   },
 });
