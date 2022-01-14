@@ -9,7 +9,7 @@
             <CommonUser
               class="full-width q-px-xs"
               size="32px"
-              tooltip="Open author profile"
+              tooltip="Open author's profile"
               :user="post.author"
               hide-name
               @click="openAuthorProfile"
