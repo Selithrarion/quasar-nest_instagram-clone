@@ -32,7 +32,7 @@ export class PostsService {
       order: { createdAt: 'DESC' },
       relations: ['author', 'file', 'comments'],
     });
-    // TODO: comments. i think we need to send only 2-3 comments and load the rest only on separate page with pagination
+    // TODO: comments. i think we need to send AND LOAD FROM DB (?) only 2-3 comments and load the rest only on separate page with pagination
     // if user wants to see them all
     // coz if post have 10000+ comments it may be bad
     const formattedPosts = items.map((p) => ({
