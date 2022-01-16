@@ -14,6 +14,8 @@ export class CommentEntity extends BaseEntity {
   })
   @JoinColumn({ name: 'postID' })
   post: PostEntity;
+  @RelationId('post')
+  postID: number
 
   @ManyToOne(() => UserEntity, (user) => user.comments, {
     eager: true,
