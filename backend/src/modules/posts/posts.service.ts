@@ -50,7 +50,8 @@ export class PostsService {
     return await this.posts.findOneOrFail(id, { relations: ['users'] });
   }
 
-  async create(file: Express.Multer.File, payload: CreatePostDTO, user: UserEntity): Promise<PostEntity> {
+  async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {
+    const user = await this.userService.getByID(userID);
     const uploadedFile = await this.filesService.uploadPublicFile({
       file,
       quality: 95,

@@ -14,7 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from "./dto";
+import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from './dto';
 import { PostEntity } from './entity/post.entity';
 import { PostsService } from './posts.service';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
