@@ -1,10 +1,8 @@
 <template>
   <div class="row justify-between gap-2 no-wrap">
     <div>
-      <b> 123123123123 </b>
-      <span>
-        flex-wrap flex-wrap fleex-wrap fleex-wrap fleex-wrap flex-wrap flex-wrap flex-wrap flex-wrap flex-wrap flex-wrap
-      </span>
+      <b> {{ comment.author.username }} </b>
+      {{ comment.text }}
     </div>
 
     <BaseButton
