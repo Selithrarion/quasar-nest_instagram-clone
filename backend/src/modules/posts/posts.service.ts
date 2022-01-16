@@ -94,9 +94,12 @@ export class PostsService {
     await this.userService.update(userID, { likedPosts: userLikedPosts });
   }
 
-  async createComment({ text, postID }: CreateCommentDTO, user: UserEntity): Promise<CommentEntity> {
+  async createComment({ text, postID }: CreateCommentDTO, userID: number): Promise<CommentEntity> {
+    const user = await this.userService.getByID(userID);
     const post = await this.posts.findOneOrFail(postID);
-    return await this.postComments.save({ text, post, author: user });
+    const comment = await this.postComments.save({ text, post, author: user });
+    delete comment.post;
+    return { ...comment, postID };
   }
   async updateComment(id: number, text: string): Promise<CommentEntity> {
     const toUpdate = await this.postComments.findOneOrFail(id);

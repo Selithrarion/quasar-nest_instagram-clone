@@ -69,7 +69,7 @@ export class PostsController {
 
   @Post('comment')
   async createComment(@Body() payload: CreateCommentDTO, @Request() req): Promise<CommentEntity> {
-    return await this.postsService.createComment(payload, req.user);
+    return await this.postsService.createComment(payload, req.user.id);
   }
   @Patch('comment/:id')
   async updateComment(@Param('id') id: number, @Body('text') text: string): Promise<CommentEntity> {
