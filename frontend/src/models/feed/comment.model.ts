@@ -8,3 +8,8 @@ export interface CommentModel extends BaseModel {
   likes: UserModel[];
   likesUserIDs: number;
 }
+
+export interface CommentDTO {
+  text: string;
+  postID: number;
+}
