@@ -11,7 +11,7 @@ const mutation: MutationTree<PostStateInterface> = {
   },
   UPDATE_POST(state, post: PostModel) {
     if (!state.posts) return;
-    const index = state.posts.findIndex((d) => d.id === post.id);
+    const index = state.posts.findIndex((p) => p.id === post.id);
     state.posts[index] = post;
   },
   DELETE_POST(state, id: number) {
