@@ -1,7 +1,7 @@
 import { http } from 'boot/axios';
 import { PostDTO, PostModel } from 'src/models/feed/post.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
-import { CommentModel } from 'src/models/feed/comment.model';
+import { CommentDTO, CommentModel } from 'src/models/feed/comment.model';
 
 export default {
   async getAll({ page = 1, limit = 5 } = { page: 1, limit: 5 }): Promise<PostModel[]> {
@@ -32,8 +32,8 @@ export default {
     return await http.post(`/posts/like/${id}`);
   },
 
-  async createComment(text: string, postID: number): Promise<CommentModel> {
-    const { data }: ApiResponseModel<CommentModel> = await http.post('/posts/comment', { text, postID });
+  async createComment(payload: CommentDTO): Promise<CommentModel> {
+    const { data }: ApiResponseModel<CommentModel> = await http.post('/posts/comment', payload);
     return data;
   },
   async updateComment(id: number, text: string): Promise<CommentModel> {
