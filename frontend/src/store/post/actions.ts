@@ -2,6 +2,7 @@ import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { PostStateInterface } from './state';
 import { PostDTO } from 'src/models/feed/post.model';
+import { CommentDTO } from 'src/models/feed/comment.model';
 import { PaginationApiPayload } from 'src/models/common/pagination.model';
 
 import postRepository from 'src/repositories/postRepository';
@@ -26,9 +27,22 @@ const actions: ActionTree<PostStateInterface, StateInterface> = {
     commit('DELETE_POST', id);
   },
   async toggleLike({ commit, rootState }, id: number) {
-    const userID = rootState.user.currentUser?.id
+    const userID = rootState.user.currentUser?.id;
     commit('TOGGLE_LIKE', { id, userID });
     await postRepository.toggleLike(id);
+  },
+
+  async createComment({ commit }, payload: CommentDTO) {
+    const comment = await postRepository.createComment(payload);
+    commit('CREATE_COMMENT', comment);
+  },
+  async updateComment({ commit }, { id, text }) {
+    const comment = await postRepository.updateComment(id, text);
+    commit('UPDATE_COMMENT', comment);
+  },
+  async deleteComment({ commit }, { commentID, postID }: { commentID: number; postID: number }) {
+    commit('DELETE_COMMENT', { commentID, postID });
+    await postRepository.deleteComment(commentID);
   },
 };
 
