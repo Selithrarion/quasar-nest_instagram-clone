@@ -51,7 +51,7 @@ export class UserService {
     return await this.users.findOne(id);
   }
   async getProfileByID(id: number): Promise<UserEntity> {
-    return await this.users.findOne(id);
+    return await this.users.findOneOrFail(id);
   }
 
   async create(payload: CreateUserDTO): Promise<UserEntity> {
