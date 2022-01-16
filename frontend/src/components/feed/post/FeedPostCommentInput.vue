@@ -7,18 +7,17 @@
     </q-input>
 
     <div class="flex-center">
-      <BaseButton label="Post" color="primary" :loading="loading.active.value" flat @click="addComment" />
+      <BaseButton label="Post" color="primary" :loading="loading.active.value" flat @click="createComment" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonEmojiPicker from 'components/common/CommonEmojiPicker.vue';
-
-import postRepository from 'src/repositories/postRepository';
 
 export default defineComponent({
   name: 'FeedPostCommentInput',
@@ -35,12 +34,13 @@ export default defineComponent({
   },
 
   setup(props) {
+    const store = useStore();
     const loading = useLoading();
 
     const input = ref<HTMLInputElement>();
 
     const text = ref('');
-    async function addComment() {
+    async function createComment() {
       if (!text.value.trim()) {
         text.value = '';
         return;
@@ -48,7 +48,7 @@ export default defineComponent({
 
       try {
         loading.start();
-        await postRepository.createComment(text.value, props.postId);
+        await store.dispatch('post/createComment', { text: text.value, postID: props.postId });
         text.value = '';
       } finally {
         loading.stop();
@@ -65,7 +65,7 @@ export default defineComponent({
       input,
 
       text,
-      addComment,
+      createComment,
       focusInput,
     };
   },
