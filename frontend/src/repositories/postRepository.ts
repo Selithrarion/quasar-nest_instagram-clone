@@ -36,6 +36,9 @@ export default {
     const { data }: ApiResponseModel<CommentModel> = await http.post('/posts/comment', payload);
     return data;
   },
+  async reportComment(id: number, reasonID: number): Promise<CommentModel> {
+    return await http.post('/posts/comment/${id}', { reasonID });
+  },
   async updateComment(id: number, text: string): Promise<CommentModel> {
     const { data }: ApiResponseModel<CommentModel> = await http.patch(`/posts/comment/${id}`, { text });
     return data;
