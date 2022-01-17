@@ -102,10 +102,13 @@ export class PostsService {
     return { ...comment, postID };
   }
   async updateComment(id: number, text: string): Promise<CommentEntity> {
-    const toUpdate = await this.postComments.findOneOrFail(id);
+    const toUpdate = await this.postComments.findOneOrFail(id, { relations: ['post'] });
     const updated = this.postComments.create({ ...toUpdate, text });
     await this.postComments.save(updated);
-    return updated;
+
+    const postID = updated.post.id;
+    delete updated.post;
+    return { ...updated, postID };
   }
   async deleteComment(id: number): Promise<void> {
     await this.postComments.delete(id);
