@@ -14,7 +14,7 @@
           <div class="row items-center no-wrap q-pa-lg full-width">
             <slot name="title">
               <div class="row items-center gap-2 text-h6 full-width no-wrap">
-                <q-icon v-if="type === 'delete'" color="amber-8" name="warning" />
+                <q-icon v-if="type === 'delete'" color="red-6" name="warning" />
                 {{ title }}
               </div>
             </slot>
@@ -222,7 +222,7 @@ export default defineComponent({
       {
         name: 'delete',
         confirmButtonText: t('common.delete'),
-        confirmColor: 'amber-8',
+        confirmColor: 'red-6',
         closeButtonText: t('common.cancel'),
       },
     ];
