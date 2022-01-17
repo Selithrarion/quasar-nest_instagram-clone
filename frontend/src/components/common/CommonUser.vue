@@ -12,7 +12,11 @@
       </template>
 
       <template v-else>
-        <q-item-label>{{ user.username }}</q-item-label>
+        <q-item-label>
+          <slot name="username" :username="user.username">
+            {{ user.username }}
+          </slot>
+        </q-item-label>
         <q-item-label v-if="$slots.name || !hideName" caption>
           <slot name="name" :user-name="user.name">
             {{ user.name }}
