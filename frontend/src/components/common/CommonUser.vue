@@ -41,10 +41,9 @@ export default defineComponent({
 
     user: {
       type: Object as PropType<UserModel>,
-      default: null
+      default: null,
     },
     hideName: Boolean,
-
 
     tooltip: {
       type: String,
