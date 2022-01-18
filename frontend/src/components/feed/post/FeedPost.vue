@@ -34,16 +34,7 @@
         @share-to-user="$emit('share-to-user')"
         @open-post="$emit('open-post')"
       />
-      <FeedPostInfo
-        :author-name="post.author.username"
-        :description="post.description"
-        :likes="post.likesUserIDs.length"
-        :comments="post.comments"
-        :created-at="post.createdAt"
-        clamp-description
-        minimized-comments
-        @open-post="$emit('open-post')"
-      />
+      <FeedPostInfo :post="post" clamp-description minimized-comments @open-post="$emit('open-post')" />
       <FeedPostCommentInput :post-id="post.id" />
     </template>
   </q-card>

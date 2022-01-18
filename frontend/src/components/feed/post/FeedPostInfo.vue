@@ -7,37 +7,42 @@
       flat
       @click="dialog.open('postLikes')"
     >
-      {{ likes }} likes
+      {{ post.likesUserIDs.length }} likes
     </BaseButton>
 
     <div v-if="!hideDescription" class="break-word">
-      <b>{{ authorName }}</b>
+      <b>{{ post.author.username }}</b>
       {{ formattedDescription }}
       <BaseButton
-        v-if="clampDescriptionLocal && description.length >= 101"
+        v-if="clampDescriptionLocal && post.description.length >= 101"
         label="Show more"
         plain-style
         @click="clampDescriptionLocal = false"
       />
     </div>
 
-    <template v-if="comments.length">
-      <div class="column gap-1">
-        <FeedPostComment v-for="comment in comments" :key="comment" :comment="comment" :minimized="minimizedComments" />
-      </div>
+    <template v-if="post.comments.length">
       <BaseButton
-        v-if="!hideViewAllComments"
+        v-if="!hideViewAllComments && post.comments.length !== post.commentIDs.length"
         class="text-subtitle2 text-blue-grey-4 w-fit-content"
         style="margin-left: -4px"
         dense
         flat
         @click="$emit('open-post')"
       >
-        View all comments ({{ comments.length }})
+        View all comments ({{ post.comments.length }})
       </BaseButton>
+      <div class="column gap-1">
+        <FeedPostComment
+          v-for="comment in post.comments"
+          :key="comment"
+          :comment="comment"
+          :minimized="minimizedComments"
+        />
+      </div>
     </template>
 
-    <div class="text-caption text-blue-grey-4">{{ formatDate(createdAt, DateTypes.DIFF) }}</div>
+    <div class="text-caption text-blue-grey-4">{{ formatDate(post.createdAt, DateTypes.DIFF) }}</div>
   </div>
 </template>
 
@@ -48,7 +53,7 @@ import { useFormat, DateTypes } from 'src/composables/format/useFormat';
 
 import FeedPostComment from 'components/feed/post/FeedPostComment.vue';
 
-import { CommentModel } from 'src/models/feed/comment.model';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedPostInfo',
@@ -58,25 +63,8 @@ export default defineComponent({
   },
 
   props: {
-    authorName: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    likes: {
-      type: Number,
-      required: true,
-    },
-    createdAt: {
-      type: String,
-      required: true,
-    },
-    comments: {
-      type: Array as PropType<CommentModel[]>,
+    post: {
+      type: Object as PropType<PostModel>,
       required: true,
     },
 
@@ -94,10 +82,10 @@ export default defineComponent({
 
     const clampDescriptionLocal = ref(props.clampDescription);
     const formattedDescription = computed(() => {
-      if (!clampDescriptionLocal.value) return props.description;
+      if (!clampDescriptionLocal.value) return props.post.description;
 
-      if (props.description.length <= 100) return props.description;
-      return props.description.slice(0, 100) + ' ...';
+      if (props.post.description.length <= 100) return props.post.description;
+      return props.post.description.slice(0, 100) + ' ...';
     });
 
     return {

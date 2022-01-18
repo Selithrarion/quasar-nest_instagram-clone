@@ -27,16 +27,7 @@
             :is-viewer-saved="post.isViewerSaved"
             @open-post="focusCommentInput"
           />
-          <FeedPostInfo
-            :author-name="post.author.username"
-            :description="post.description"
-            :likes="post.likesUserIDs.length"
-            :comments="post.comments"
-            :created-at="post.createdAt"
-            hide-description
-            hide-view-all-comments
-            @open-post="focusCommentInput"
-          />
+          <FeedPostInfo :post="post" hide-description hide-view-all-comments @open-post="focusCommentInput" />
           <FeedPostCommentInput :post-id="post.id" ref="commentInput" />
         </div>
       </div>
