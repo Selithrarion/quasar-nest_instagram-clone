@@ -1,6 +1,6 @@
 <template>
   <BaseItem :clickable="clickable && !useSkeleton">
-    <q-item-section side>
+    <q-item-section :class="{ 'self-start': alignAvatarToTop }" side>
       <q-skeleton v-if="useSkeleton" type="QAvatar" :size="size" />
       <BaseAvatar v-else :size="size" :src="user?.avatar?.url" :item-name="user.username" :item-color="user.color" />
     </q-item-section>
@@ -48,6 +48,7 @@ export default defineComponent({
       default: null,
     },
     hideName: Boolean,
+    alignAvatarToTop: Boolean,
 
     tooltip: {
       type: String,
