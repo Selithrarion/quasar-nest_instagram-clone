@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-between gap-2 no-wrap">
+  <div v-if="minimized" class="row justify-between gap-2 no-wrap">
     <div>
       <b> {{ comment.author.username }} </b>
       {{ comment.text }}
@@ -15,8 +15,9 @@
       @click="toggleLike"
     />
   </div>
-  <div>
-    <CommonUser size="32px" :user="comment.author" :clickable="false">
+
+  <div v-else>
+    <CommonUser class="q-px-none" size="32px" :user="comment.author" :clickable="false" align-avatar-to-top>
       <template #username>
         {{ comment.text }}
       </template>
