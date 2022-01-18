@@ -34,6 +34,7 @@
             :comments="post.comments"
             :created-at="post.createdAt"
             hide-description
+            hide-view-all-comments
             @open-post="focusCommentInput"
           />
           <FeedPostCommentInput :post-id="post.id" ref="commentInput" />

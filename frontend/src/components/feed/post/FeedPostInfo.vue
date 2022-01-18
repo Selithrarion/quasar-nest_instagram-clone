@@ -23,9 +23,10 @@
 
     <template v-if="comments.length">
       <div class="column gap-1">
-        <FeedPostComment v-for="comment in comments" :key="comment" :comment="comment" minimized />
+        <FeedPostComment v-for="comment in comments" :key="comment" :comment="comment" :minimized="minimizedComments" />
       </div>
       <BaseButton
+        v-if="!hideViewAllComments"
         class="text-subtitle2 text-blue-grey-4 w-fit-content"
         style="margin-left: -4px"
         dense
@@ -80,7 +81,9 @@ export default defineComponent({
     },
 
     hideDescription: Boolean,
+    hideViewAllComments: Boolean,
     clampDescription: Boolean,
+    minimizedComments: Boolean,
   },
 
   emits: ['open-post'],

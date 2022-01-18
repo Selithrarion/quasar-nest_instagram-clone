@@ -41,6 +41,7 @@
         :comments="post.comments"
         :created-at="post.createdAt"
         clamp-description
+        minimized-comments
         @open-post="$emit('open-post')"
       />
       <FeedPostCommentInput :post-id="post.id" />
