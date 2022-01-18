@@ -33,6 +33,8 @@ export class PostEntity extends BaseEntity {
     cascade: true,
   })
   comments: CommentEntity[];
+  @RelationId('comments')
+  commentIDs: number;
 
   @Column({ type: 'boolean', default: false })
   isVideo: boolean;

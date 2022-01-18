@@ -11,7 +11,7 @@ export interface PostModel extends BaseModel {
   likesUserIDs: number[];
 
   comments: CommentModel[];
-  commentsNumber: number;
+  commentIDs: number[];
 
   // isAdvertisement: boolean;
   // isAffiliate: boolean;
