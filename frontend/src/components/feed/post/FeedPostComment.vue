@@ -23,8 +23,7 @@
       </template>
       <template #name>
         <div class="row items-center gap-2">
-          <!--          TODO: comment created at date formdat-->
-          <div>1 min ago</div>
+          <div class="text-caption text-blue-grey-4">{{ formatDate(comment.createdAt, DateTypes.DIFF) }}</div>
           <BaseButton label="Reply" size="12px" dense flat />
           <BaseButtonMore size="12px" @click="dialog.open('commentActions')" />
         </div>
@@ -82,11 +81,12 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue';
 import { useStore } from 'src/store';
+import useDialog from 'src/composables/common/useDialog';
+import { useFormat, DateTypes } from 'src/composables/format/useFormat';
 
 import CommonUser from 'components/common/CommonUser.vue';
 
 import { CommentModel } from 'src/models/feed/comment.model';
-import useDialog from 'src/composables/common/useDialog';
 
 export default defineComponent({
   name: 'FeedPostComment',
@@ -106,6 +106,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const dialog = useDialog();
+    const { formatDate } = useFormat();
 
     const isCurrentUserComment = computed(() => store.state.user.currentUser?.id === props.comment.author.id);
 
@@ -158,6 +159,8 @@ export default defineComponent({
 
     return {
       dialog,
+      formatDate,
+      DateTypes,
 
       isCurrentUserComment,
 
