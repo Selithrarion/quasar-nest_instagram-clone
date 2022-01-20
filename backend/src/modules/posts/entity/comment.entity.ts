@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, RelationId } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { PostEntity } from './post.entity';
@@ -15,7 +15,7 @@ export class CommentEntity extends BaseEntity {
   @JoinColumn({ name: 'postID' })
   post: PostEntity;
   @RelationId('post')
-  postID: number
+  postID: number;
 
   @ManyToOne(() => UserEntity, (user) => user.comments, {
     eager: true,
@@ -34,4 +34,22 @@ export class CommentEntity extends BaseEntity {
   likes: UserEntity[];
   @RelationId('likes')
   likesUserIDs: number[];
+
+  @OneToOne(() => CommentEntity, (comment) => comment.childComment, {
+    cascade: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  @JoinColumn()
+  parentComment: CommentEntity;
+  @RelationId('parentComment')
+  parentCommentID: number;
+
+  @OneToOne(() => CommentEntity, (comment) => comment.parentComment, {
+    nullable: true,
+  })
+  childComment: CommentEntity;
+  @RelationId('childComment')
+  childCommentID: number;
 }

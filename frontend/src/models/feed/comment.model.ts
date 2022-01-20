@@ -5,8 +5,12 @@ export interface CommentModel extends BaseModel {
   text: string;
   postID: number;
   author: UserModel;
+
   likes: UserModel[];
   likesUserIDs: number;
+
+  parentComment?: CommentModel;
+  parentCommentID: number;
 }
 
 export interface CommentDTO {
