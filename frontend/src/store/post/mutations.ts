@@ -30,7 +30,7 @@ const mutation: MutationTree<PostStateInterface> = {
   CREATE_COMMENT(state, comment: CommentModel) {
     if (!state.posts) return;
     const post = state.posts.find((p) => p.id === comment.postID);
-    if (post) post.comments.push(comment);
+    if (post) post.comments.unshift(comment);
   },
   UPDATE_COMMENT(state, comment: CommentModel) {
     if (!state.posts) return;
