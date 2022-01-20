@@ -53,7 +53,8 @@ Github actions CI pipeline
 - Image filters
 - Tags suggestion ❌
 - Dbclick to like post (with cool animation haha) or like with button
-- Comments system, comment reply ❌
+- Comments CRUD
+- Comment system with infinity reply nesting ❌
 - Share to users (?) ❌
 - Bookmark (?) ❌
 ##### Story
