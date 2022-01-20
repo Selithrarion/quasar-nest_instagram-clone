@@ -94,11 +94,15 @@ export class PostsService {
     await this.userService.update(userID, { likedPosts: userLikedPosts });
   }
 
-  async createComment({ text, postID }: CreateCommentDTO, userID: number): Promise<CommentEntity> {
+  async createComment({ text, postID, replyCommentID }: CreateCommentDTO, userID: number): Promise<CommentEntity> {
     const user = await this.userService.getByID(userID);
     const post = await this.posts.findOneOrFail(postID);
-    const comment = await this.postComments.save({ text, post, author: user });
+    const parentComment = replyCommentID ? await this.postComments.findOneOrFail(replyCommentID) : null;
+
+    const comment = await this.postComments.save({ text, post, author: user, parentComment });
+
     delete comment.post;
+    delete comment.parentComment;
     return { ...comment, postID };
   }
   async updateComment(id: number, text: string): Promise<CommentEntity> {
@@ -108,6 +112,7 @@ export class PostsService {
 
     const postID = updated.post.id;
     delete updated.post;
+    delete updated.parentComment;
     return { ...updated, postID };
   }
   async deleteComment(id: number): Promise<void> {
