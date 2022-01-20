@@ -12,4 +12,5 @@ export interface CommentModel extends BaseModel {
 export interface CommentDTO {
   text: string;
   postID: number;
+  replyCommentID?: number;
 }
