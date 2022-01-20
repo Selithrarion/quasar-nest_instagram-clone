@@ -4,7 +4,7 @@ import { ApiResponseModel } from 'src/models/common/apiResponse.model';
 import { CommentDTO, CommentModel } from 'src/models/feed/comment.model';
 
 export default {
-  async getAll({ page = 1, limit = 5 } = { page: 1, limit: 5 }): Promise<PostModel[]> {
+  async getAll({ page = 1, limit = 10 } = { page: 1, limit: 10 }): Promise<PostModel[]> {
     const { data }: ApiResponseModel<PostModel[]> = await http.get('/posts', { params: { page, limit } });
     return data;
   },
