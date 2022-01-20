@@ -59,7 +59,7 @@
     <BaseDialog
       title="Edit comment"
       :model-value="dialog.openedName.value === 'editComment'"
-      :confirm-loading="dialog.loading"
+      :confirm-loading="dialog.loading.value"
       @close="closeDialog"
       @confirm="updateComment"
     >
@@ -69,7 +69,7 @@
       type="delete"
       title="Delete comment"
       :model-value="dialog.openedName.value === 'deleteComment'"
-      :confirm-loading="dialog.loading"
+      :confirm-loading="dialog.loading.value"
       @close="closeDialog"
       @confirm="deleteComment"
     >
