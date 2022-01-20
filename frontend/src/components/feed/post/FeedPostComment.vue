@@ -1,7 +1,7 @@
 <template>
   <div v-if="minimized" class="row justify-between gap-2 no-wrap">
     <div>
-      <b> {{ comment.author.username }} </b>
+      <b> {{ comment.author?.username }} </b>
       {{ comment.text }}
     </div>
 
@@ -24,7 +24,7 @@
       <template #name>
         <div class="row items-center gap-2">
           <div class="text-caption text-blue-grey-4">{{ formatDate(comment.createdAt, DateTypes.DIFF) }}</div>
-          <BaseButton label="Reply" size="12px" dense flat />
+          <BaseButton label="Reply" size="12px" dense flat @click="$emit('reply')" />
           <BaseButtonMore size="12px" @click="dialog.open('commentActions')" />
         </div>
       </template>
@@ -102,6 +102,8 @@ export default defineComponent({
     },
     minimized: Boolean,
   },
+
+  emits: ['reply'],
 
   setup(props) {
     const store = useStore();

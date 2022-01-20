@@ -27,8 +27,19 @@
             :is-viewer-saved="post.isViewerSaved"
             @open-post="focusCommentInput"
           />
-          <FeedPostInfo :post="post" hide-description hide-view-all-comments @open-post="focusCommentInput" />
-          <FeedPostCommentInput :post-id="post.id" ref="commentInput" />
+          <FeedPostInfo
+            :post="post"
+            hide-description
+            hide-view-all-comments
+            @open-post="focusCommentInput"
+            @reply="replyComment"
+          />
+          <FeedPostCommentInput
+            ref="commentInput"
+            :post-id="post.id"
+            :reply-comment="currentReplyComment"
+            @remove-reply="currentReplyComment = null"
+          />
         </div>
       </div>
     </template>
@@ -47,6 +58,7 @@ import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue'
 import FeedPostMoreButton from 'components/feed/post/FeedPostMoreButton.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
+import { CommentModel } from 'src/models/feed/comment.model';
 
 export default defineComponent({
   name: 'FeedPostDialogDetail',
@@ -78,6 +90,12 @@ export default defineComponent({
       commentInput.value?.focusInput();
     }
 
+    const currentReplyComment = ref<CommentModel | null>(null);
+    function replyComment(comment: CommentModel) {
+      currentReplyComment.value = comment;
+      focusCommentInput();
+    }
+
     async function openAuthorProfile() {
       await router.push(`/${props.post.author.username}`);
     }
@@ -85,6 +103,9 @@ export default defineComponent({
     return {
       commentInput,
       focusCommentInput,
+
+      currentReplyComment,
+      replyComment,
 
       openAuthorProfile,
     };

@@ -38,6 +38,7 @@
           :key="comment"
           :comment="comment"
           :minimized="minimizedComments"
+          @reply="$emit('reply', comment)"
         />
       </div>
     </template>
@@ -74,7 +75,7 @@ export default defineComponent({
     minimizedComments: Boolean,
   },
 
-  emits: ['open-post'],
+  emits: ['open-post', 'reply'],
 
   setup(props) {
     const dialog = useDialog();

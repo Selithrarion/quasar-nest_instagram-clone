@@ -3,6 +3,16 @@
     <q-input ref="input" v-model="text" class="flex-grow-1" placeholder="Add a comment..." filled autogrow dense>
       <template #prepend>
         <CommonEmojiPicker v-model="text" />
+        <q-chip
+          v-if="replyComment"
+          class="flex-shrink-0"
+          color="blue-grey-3"
+          text-color="blue-grey-9"
+          :label="`@${replyComment.author?.username}`"
+          removable
+          square
+          @remove="$emit('remove-reply')"
+        />
       </template>
     </q-input>
 
@@ -13,11 +23,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonEmojiPicker from 'components/common/CommonEmojiPicker.vue';
+import { UserModel } from 'src/models/user/user.model';
+import { CommentModel } from 'src/models/feed/comment.model';
 
 export default defineComponent({
   name: 'FeedPostCommentInput',
@@ -31,9 +43,15 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    replyComment: {
+      type: Object as PropType<CommentModel>,
+      default: null,
+    },
   },
 
-  setup(props) {
+  emits: ['remove-reply'],
+
+  setup(props, { emit }) {
     const store = useStore();
     const loading = useLoading();
 
@@ -48,7 +66,12 @@ export default defineComponent({
 
       try {
         loading.start();
-        await store.dispatch('post/createComment', { text: text.value, postID: props.postId });
+        await store.dispatch('post/createComment', {
+          text: text.value,
+          postID: props.postId,
+          replyCommentID: props.replyComment?.id,
+        });
+        emit('remove-reply');
         text.value = '';
       } finally {
         loading.stop();
