@@ -26,12 +26,22 @@ export class PostsService {
     private readonly userService: UserService
   ) {}
 
-  async getAll(query: IPaginationOptions = { page: 1, limit: 10 }, userID: number): Promise<Pagination<PostEntity>> {
+  async getAll(
+    queryOptions: IPaginationOptions = { page: 1, limit: 10 },
+    userID: number
+  ): Promise<Pagination<PostEntity>> {
     const currentUser = await this.userService.getByID(userID);
-    const { items, meta } = await paginate<PostEntity>(this.posts, query, {
-      order: { createdAt: 'DESC' },
-      relations: ['author', 'file', 'comments'],
-    });
+
+    const queryBuilder = this.posts.createQueryBuilder('post');
+    queryBuilder.orderBy('post.createdAt', 'DESC');
+    queryBuilder.leftJoinAndSelect('post.author', 'author');
+    queryBuilder.leftJoinAndSelect('post.file', 'file');
+    queryBuilder.leftJoinAndSelect('post.comments', 'comments');
+    queryBuilder.leftJoinAndSelect('comments.author', 'commentAuthor');
+    queryBuilder.addOrderBy('comments.createdAt', 'DESC');
+
+    const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
+
     // TODO: comments. i think we need to send AND LOAD FROM DB (?) only 2-3 comments and load the rest only on separate page with pagination
     // if user wants to see them all
     // coz if post have 10000+ comments it may be bad
