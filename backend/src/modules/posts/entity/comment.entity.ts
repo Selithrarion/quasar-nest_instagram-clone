@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, RelationId } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, RelationId } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { PostEntity } from './post.entity';
@@ -42,6 +42,7 @@ export class CommentEntity extends BaseEntity {
     nullable: true,
   })
   @JoinColumn()
+  @Index()
   parentComment: CommentEntity;
   @RelationId('parentComment')
   parentCommentID: number;
