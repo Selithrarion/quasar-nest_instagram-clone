@@ -37,8 +37,6 @@ export class PostsService {
     queryBuilder.leftJoinAndSelect('post.author', 'author');
     queryBuilder.leftJoinAndSelect('post.file', 'file');
     queryBuilder.leftJoinAndSelect('post.comments', 'comments');
-    queryBuilder.leftJoinAndSelect('comments.author', 'commentAuthor');
-    queryBuilder.addOrderBy('comments.createdAt', 'DESC');
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 
@@ -46,14 +44,17 @@ export class PostsService {
     // and load the rest only on post detail page with pagination
     // if user wants to see them all
     // coz if post have 10000+ comments it may be bad
-    const formattedPosts = items.map((p) => ({
-      ...p,
-      fileURL: p.file?.url,
-      isViewerFollowed: currentUser.followedUsersIDs.includes(p.author.id),
-      isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
-      isViewerSaved: false,
-      isViewerInPhoto: false,
-    })) as PostEntity[];
+    const formattedPosts = (await Promise.all(
+      items.map(async (p) => ({
+        ...p,
+        comments: await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
+        fileURL: p.file?.url,
+        isViewerFollowed: currentUser.followedUsersIDs.includes(p.author.id),
+        isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
+        isViewerSaved: false,
+        isViewerInPhoto: false,
+      }))
+    )) as PostEntity[];
     return { items: formattedPosts, meta };
   }
 
