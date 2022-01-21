@@ -73,7 +73,7 @@ Github actions CI pipeline
 2. Terminal #1 "docker compose up"  
 3. Terminal #2 "cd .\frontend\" and "quasar dev"  
 4. Terminal #3 "cd .\backend\" and "yarn start:dev" 
-5. Don't forget to create new server (Object => Create => Server) and then database (jiraClone) in pgadmin (localhost:8082). small tip: in server connection field enter: host.docker.internal
+5. Don't forget to create new server (Object => Create => Server) and then database (instagram) in pgadmin (localhost:8082). small tip: in server connection field enter: host.docker.internal
 6. do you like stars? 🤩😊 anyway, glad to any PRs  
 
 
