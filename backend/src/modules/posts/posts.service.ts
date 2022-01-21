@@ -42,7 +42,8 @@ export class PostsService {
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 
-    // TODO: comments. i think we need to send AND LOAD FROM DB (?) only 2-3 comments and load the rest only on separate page with pagination
+    // TODO: comments. i think we need to load from db only 2-3 most popular comments
+    // and load the rest only on post detail page with pagination
     // if user wants to see them all
     // coz if post have 10000+ comments it may be bad
     const formattedPosts = items.map((p) => ({
