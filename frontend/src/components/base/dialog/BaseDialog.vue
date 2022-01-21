@@ -181,6 +181,7 @@ export default defineComponent({
       default: true,
     },
     large: Boolean,
+    xLarge: Boolean,
   },
 
   emits: ['confirm', 'close', 'back'],
@@ -237,6 +238,7 @@ export default defineComponent({
 
       if (props.small && !props.maximized) styles.push({ width: '300px' });
       else if (props.large && !props.maximized) styles.push({ width: '900px' }, { maxWidth: '900px' });
+      else if (props.xLarge && !props.maximized) styles.push({ width: '1400px' }, { maxWidth: '1400px' });
       else if (props.medium && !props.maximized) styles.push({ width: '600px' }, { maxWidth: '600px' });
 
       return styles;
