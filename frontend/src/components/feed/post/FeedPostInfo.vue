@@ -30,7 +30,7 @@
         flat
         @click="$emit('open-post')"
       >
-        View all comments ({{ post.comments.length }})
+        View all comments ({{ post.commentIDs.length }})
       </BaseButton>
       <div class="column gap-1">
         <FeedPostComment
