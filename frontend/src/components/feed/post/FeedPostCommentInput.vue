@@ -28,7 +28,6 @@ import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonEmojiPicker from 'components/common/CommonEmojiPicker.vue';
-import { UserModel } from 'src/models/user/user.model';
 import { CommentModel } from 'src/models/feed/comment.model';
 
 export default defineComponent({
