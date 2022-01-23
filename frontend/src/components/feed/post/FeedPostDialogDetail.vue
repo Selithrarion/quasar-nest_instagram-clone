@@ -1,10 +1,16 @@
 <template>
   <BaseDialog x-large @close="$emit('close')">
     <template #content>
-      <div class="row">
-        <FeedPostImage class="w-half" :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
+      <div class="row no-wrap">
+        <FeedPostImage
+          class="w-half"
+          style="max-height: calc(100vh - 48px); max-width: calc(100vh - 48px)"
+          :post-id="post.id"
+          :src="post.fileURL"
+          :is-viewer-liked="post.isViewerLiked"
+        />
 
-        <div class="w-half">
+        <div class="column flex-grow-1">
           <div class="flex-center-between q-py-md q-px-sm">
             <CommonUser
               class="full-width q-px-xs"
@@ -17,9 +23,13 @@
             <FeedPostMoreButton :post-id="post.id" @share="$emit('share')" />
           </div>
 
-          <div class="q-px-md q-pb-md q-pt-sm break-word">
-            {{ post.description }}
-          </div>
+          <FeedPostInfo
+            :post="post"
+            hide-view-all-comments
+            comments-scroll
+            @open-post="focusCommentInput"
+            @reply="replyComment"
+          />
 
           <FeedPostActions
             class="post-actions"
@@ -28,13 +38,7 @@
             :is-viewer-saved="post.isViewerSaved"
             @open-post="focusCommentInput"
           />
-          <FeedPostInfo
-            :post="post"
-            hide-description
-            hide-view-all-comments
-            @open-post="focusCommentInput"
-            @reply="replyComment"
-          />
+
           <FeedPostCommentInput
             ref="commentInput"
             :post-id="post.id"
