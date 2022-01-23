@@ -22,6 +22,7 @@
           </div>
 
           <FeedPostActions
+            class="post-actions"
             :post-id="post.id"
             :is-viewer-liked="post.isViewerLiked"
             :is-viewer-saved="post.isViewerSaved"
@@ -112,3 +113,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.post-actions {
+  border-top: 1px solid $blue-grey-3;
+}
+</style>
