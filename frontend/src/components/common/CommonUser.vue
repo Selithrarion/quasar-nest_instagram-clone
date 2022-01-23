@@ -7,8 +7,8 @@
 
     <q-item-section>
       <template v-if="useSkeleton">
-        <q-skeleton type="text" width="50%" height="20px" />
-        <q-skeleton v-if="useSkeletonUsername" type="text" width="40%" height="20px" />
+        <q-skeleton type="text" width="90%" height="20px" />
+        <q-skeleton v-if="useSkeletonUsername" type="text" width="60%" height="20px" />
       </template>
 
       <template v-else>
