@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog large v-bind="$attrs" @close="$emit('close')">
+  <BaseDialog x-large @close="$emit('close')">
     <template #content>
       <div class="row">
         <FeedPostImage class="w-half" :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
