@@ -119,12 +119,7 @@ export default defineComponent({
   &:not(.feed-post-info--scroll) {
     padding: 0 8px 16px 16px;
   }
-  //&__description--clamp {
-  //  display: -webkit-box;
-  //  -webkit-line-clamp: 2;
-  //  -webkit-box-orient: vertical;
-  //  overflow: hidden;
-  //}
+
   &--scroll {
     flex-grow: 1;
     overflow: hidden;
