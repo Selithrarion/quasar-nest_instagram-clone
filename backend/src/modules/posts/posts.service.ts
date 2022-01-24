@@ -35,7 +35,6 @@ export class PostsService {
     queryBuilder.orderBy('post.createdAt', 'DESC');
     queryBuilder.leftJoinAndSelect('post.author', 'author');
     queryBuilder.leftJoinAndSelect('post.file', 'file');
-    queryBuilder.leftJoinAndSelect('post.comments', 'comments');
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 
