@@ -95,10 +95,10 @@ export default defineComponent({
     const loading = useLoading({ customNames: ['comments'] });
 
     watch(
-      () => props.post,
-      async () => {
+      () => props.post.id,
+      async (v) => {
         loading.start('comments');
-        postComments.value = await postRepository.getComments(props.post.id);
+        postComments.value = await postRepository.getComments(v);
         loading.stop('comments');
       }
     );

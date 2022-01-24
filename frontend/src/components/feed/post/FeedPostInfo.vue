@@ -49,7 +49,10 @@
           />
         </div>
       </template>
-      <BaseLoader v-show="commentsLoading" class="feed-post-info__loader" medium />
+
+      <div class="feed-post-info__loader">
+        <BaseLoader v-show="commentsLoading" medium />
+      </div>
     </div>
 
     <div v-if="!useScroll" class="text-caption text-blue-grey-4">
