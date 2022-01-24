@@ -49,6 +49,7 @@
           />
         </div>
       </template>
+      <BaseLoader v-show="commentsLoading" class="feed-post-info__loader" medium />
     </div>
 
     <div v-if="!useScroll" class="text-caption text-blue-grey-4">
@@ -80,6 +81,7 @@ export default defineComponent({
     },
 
     useScroll: Boolean,
+    commentsLoading: Boolean,
     hideViewAllComments: Boolean,
     clampDescription: Boolean,
     minimizedComments: Boolean,
@@ -148,6 +150,11 @@ export default defineComponent({
     height: calc(100% - 32px);
     width: calc(100% - 32px);
     overflow-y: scroll;
+  }
+
+  &__loader {
+    margin-top: 32px;
+    margin-bottom: 56px;
   }
 }
 </style>

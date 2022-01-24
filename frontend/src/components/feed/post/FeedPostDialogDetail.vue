@@ -5,9 +5,9 @@
         <FeedPostImage
           class="w-half"
           style="max-height: calc(100vh - 48px); max-width: calc(100vh - 48px)"
-          :post-id="post.id"
-          :src="post.fileURL"
-          :is-viewer-liked="post.isViewerLiked"
+          :post-id="formattedPost.id"
+          :src="formattedPost.fileURL"
+          :is-viewer-liked="formattedPost.isViewerLiked"
         />
 
         <div class="column flex-grow-1">
@@ -16,15 +16,16 @@
               class="full-width q-px-xs"
               size="32px"
               tooltip="Open author's profile"
-              :user="post.author"
+              :user="formattedPost.author"
               hide-name
               @click="openAuthorProfile"
             />
-            <FeedPostMoreButton :post-id="post.id" @share="$emit('share')" />
+            <FeedPostMoreButton :post-id="formattedPost.id" @share="$emit('share')" />
           </div>
 
           <FeedPostInfo
-            :post="post"
+            :post="formattedPost"
+            :comments-loading="loading.custom.comments"
             hide-view-all-comments
             use-scroll
             @open-post="focusCommentInput"
@@ -33,15 +34,15 @@
 
           <FeedPostActions
             class="post-actions"
-            :post-id="post.id"
-            :is-viewer-liked="post.isViewerLiked"
-            :is-viewer-saved="post.isViewerSaved"
+            :post-id="formattedPost.id"
+            :is-viewer-liked="formattedPost.isViewerLiked"
+            :is-viewer-saved="formattedPost.isViewerSaved"
             @open-post="focusCommentInput"
           />
 
           <FeedPostCommentInput
             ref="commentInput"
-            :post-id="post.id"
+            :post-id="formattedPost.id"
             :reply-comment="currentReplyComment"
             @remove-reply="currentReplyComment = null"
           />
@@ -52,8 +53,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import useLoading from 'src/composables/common/useLoading';
 
 import CommonUser from 'components/common/CommonUser.vue';
 import FeedPostImage from 'components/feed/post/FeedPostImage.vue';
@@ -64,6 +66,8 @@ import FeedPostMoreButton from 'components/feed/post/FeedPostMoreButton.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
 import { CommentModel } from 'src/models/feed/comment.model';
+
+import postRepository from 'src/repositories/postRepository';
 
 export default defineComponent({
   name: 'FeedPostDialogDetail',
@@ -88,6 +92,24 @@ export default defineComponent({
 
   setup(props) {
     const router = useRouter();
+    const loading = useLoading({ customNames: ['comments'] });
+
+    watch(
+      () => props.post,
+      async () => {
+        loading.start('comments');
+        postComments.value = await postRepository.getComments(props.post.id);
+        loading.stop('comments');
+      }
+    );
+
+    const postComments = ref<CommentModel[]>([]);
+    const formattedPost = computed<PostModel>(() => {
+      return {
+        ...props.post,
+        comments: postComments.value,
+      };
+    });
 
     const commentInput = ref<InstanceType<typeof FeedPostCommentInput>>();
     function focusCommentInput() {
@@ -106,6 +128,11 @@ export default defineComponent({
     }
 
     return {
+      loading,
+
+      postComments,
+      formattedPost,
+
       commentInput,
       focusCommentInput,
 
