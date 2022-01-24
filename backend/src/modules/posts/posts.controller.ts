@@ -34,6 +34,10 @@ export class PostsController {
   async getByID(@Param('id') id: number): Promise<PostEntity> {
     return await this.postsService.getByID(id);
   }
+  @Get('comments/:id')
+  async getComments(@Param('id') id: number): Promise<CommentEntity[]> {
+    return await this.postsService.getComments(id);
+  }
 
   @UseInterceptors(FileInterceptor('file'))
   @Post()

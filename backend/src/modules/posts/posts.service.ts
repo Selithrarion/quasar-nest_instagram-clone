@@ -60,6 +60,11 @@ export class PostsService {
     return await this.posts.findOneOrFail(id, { relations: ['users'] });
   }
 
+  async getComments(id: number): Promise<CommentEntity[]> {
+    const post = await this.posts.findOneOrFail(id);
+    return await this.postComments.find({ where: { post }, relations: ['author'] });
+  }
+
   async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {
     const user = await this.userService.getByID(userID);
     const uploadedFile = await this.filesService.uploadPublicFile({
