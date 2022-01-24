@@ -5,7 +5,6 @@ import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from './dto';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate/index';
 
 import { PostEntity } from './entity/post.entity';
-import { UserEntity } from '../user/entity/user.entity';
 
 import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
