@@ -26,7 +26,7 @@
           <FeedPostInfo
             :post="post"
             hide-view-all-comments
-            comments-scroll
+            use-scroll
             @open-post="focusCommentInput"
             @reply="replyComment"
           />

@@ -1,5 +1,5 @@
 <template>
-  <div class="feed-post-info" :class="{ 'feed-post-info--scroll': commentsScroll }">
+  <div class="feed-post-info" :class="{ 'feed-post-info--scroll': useScroll }">
     <div class="feed-post-info__header">
       <BaseButton
         class="text-subtitle2 text-weight-bold w-fit-content"
@@ -10,12 +10,12 @@
       >
         {{ post.likesUserIDs.length }} likes
       </BaseButton>
-      <div v-if="commentsScroll" class="text-caption text-blue-grey-4">
+      <div v-if="useScroll" class="text-caption text-blue-grey-4">
         {{ formatDate(post.createdAt, DateTypes.DIFF) }}
       </div>
     </div>
 
-    <div :class="{ 'comments-scroll q-ml-md q-mr-sm q-mb-md': commentsScroll }">
+    <div :class="{ 'feed-post-info__scroll-wrapper': useScroll }">
       <div class="feed-post-info__description">
         <b>{{ post.author.username }}</b>
         {{ formattedDescription }}
@@ -51,7 +51,7 @@
       </template>
     </div>
 
-    <div v-if="!commentsScroll" class="text-caption text-blue-grey-4">
+    <div v-if="!useScroll" class="text-caption text-blue-grey-4">
       {{ formatDate(post.createdAt, DateTypes.DIFF) }}
     </div>
   </div>
@@ -79,8 +79,8 @@ export default defineComponent({
       required: true,
     },
 
+    useScroll: Boolean,
     hideViewAllComments: Boolean,
-    commentsScroll: Boolean,
     clampDescription: Boolean,
     minimizedComments: Boolean,
   },
@@ -136,12 +136,14 @@ export default defineComponent({
     }
   }
 
-  .comments-scroll {
+  &__scroll-wrapper {
     position: absolute;
     top: 40px;
     bottom: 0;
     left: 0;
     flex-grow: 1;
+
+    margin: 0 8px 16px 16px;
 
     height: calc(100% - 32px);
     width: calc(100% - 32px);
