@@ -1,20 +1,15 @@
 <template>
   <aside class="feed-sidebar">
     <template v-if="useSkeleton">
-      <CommonUser use-skeleton />
-
+      <CommonUser class="q-px-xs" use-skeleton />
       <div class="column gap-1">
-        <CommonUser v-for="item in 5" :key="item" style="height: 48px" size="32px" use-skeleton />
+        <CommonUser v-for="item in 5" :key="item" class="q-px-xs" style="height: 48px" size="32px" use-skeleton />
       </div>
     </template>
 
     <template v-else>
       <div class="column gap-2">
-        <CommonUser
-          class="q-px-xs"
-          :user="currentUser"
-          @click="openCurrentUserProfile"
-        />
+        <CommonUser class="q-px-xs" :user="currentUser" @click="openCurrentUserProfile" />
 
         <FeedSidebarRecommendations />
 
