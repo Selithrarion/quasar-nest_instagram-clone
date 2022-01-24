@@ -12,6 +12,10 @@ export default {
     const { data }: ApiResponseModel<PostModel> = await http.get(`/posts/${id}`);
     return data;
   },
+  async getComments(id: number): Promise<CommentModel[]> {
+    const { data }: ApiResponseModel<CommentModel[]> = await http.get(`/posts/comments/${id}`);
+    return data;
+  },
   async create(payload: FormData): Promise<PostModel> {
     const { data }: ApiResponseModel<PostModel> = await http.post('/posts', payload);
     return data;
