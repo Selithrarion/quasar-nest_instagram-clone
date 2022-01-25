@@ -27,7 +27,7 @@
     </div>
 
     <div :class="{ 'feed-post-info__scroll-wrapper': useScroll }">
-      <div class="feed-post-info__description">
+      <div class="feed-post-info__description break-word">
         <b>{{ post.author.username }}</b>
         {{ formattedDescription }}
         <BaseButton
