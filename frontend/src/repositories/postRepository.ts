@@ -2,12 +2,14 @@ import { http } from 'boot/axios';
 import { PostDTO, PostModel } from 'src/models/feed/post.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
 import { CommentDTO, CommentModel } from 'src/models/feed/comment.model';
+import { UserModel } from 'src/models/user/user.model';
 
 export default {
   async getAll({ page = 1, limit = 10 } = { page: 1, limit: 10 }): Promise<PostModel[]> {
     const { data }: ApiResponseModel<PostModel[]> = await http.get('/posts', { params: { page, limit } });
     return data;
   },
+
   async getByID(id: number): Promise<PostModel> {
     const { data }: ApiResponseModel<PostModel> = await http.get(`/posts/${id}`);
     return data;
@@ -16,6 +18,11 @@ export default {
     const { data }: ApiResponseModel<CommentModel[]> = await http.get(`/posts/comments/${id}`);
     return data;
   },
+  async getLikes(id: number): Promise<UserModel[]> {
+    const { data }: ApiResponseModel<UserModel[]> = await http.get(`/posts/likes/${id}`);
+    return data;
+  },
+
   async create(payload: FormData): Promise<PostModel> {
     const { data }: ApiResponseModel<PostModel> = await http.post('/posts', payload);
     return data;
