@@ -18,10 +18,13 @@
     <template v-else>
       <FeedPostHeader
         :post-id="post.id"
+        :author-id="post.author?.id"
         :avatar="post.author?.avatar?.url"
         :username="post.author.username"
         :color="post.author.color"
         :is-viewer-followed="post.isViewerFollowed"
+        @delete="$emit('delete')"
+        @edit="$emit('edit')"
         @share="$emit('share')"
       />
 
@@ -70,7 +73,7 @@ export default defineComponent({
     useSkeleton: Boolean,
   },
 
-  emits: ['open-post', 'share', 'share-to-user'],
+  emits: ['open-post', 'delete', 'edit', 'share', 'share-to-user'],
 });
 </script>
 

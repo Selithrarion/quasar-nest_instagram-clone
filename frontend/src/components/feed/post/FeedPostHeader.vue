@@ -5,7 +5,13 @@
       <BaseButton class="text-weight-bold" :label="username" plain-style />
     </div>
 
-    <FeedPostMoreButton :post-id="postId" @share="$emit('share')" />
+    <FeedPostMoreButton
+      :post-id="postId"
+      :author-id="authorId"
+      @share="$emit('share')"
+      @delete="$emit('delete')"
+      @edit="$emit('edit')"
+    />
   </div>
 </template>
 
@@ -26,6 +32,10 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    authorId: {
+      type: Number,
+      required: true,
+    },
     avatar: {
       type: String,
       default: null,
@@ -41,7 +51,7 @@ export default defineComponent({
     isViewerFollowed: Boolean,
   },
 
-  emits: ['share'],
+  emits: ['delete', 'edit', 'share'],
 
   setup(props) {
     const router = useRouter();

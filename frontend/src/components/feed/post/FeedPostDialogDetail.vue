@@ -20,7 +20,13 @@
               hide-name
               @click="openAuthorProfile"
             />
-            <FeedPostMoreButton :post-id="formattedPost.id" @share="$emit('share')" />
+            <FeedPostMoreButton
+              :post-id="formattedPost.id"
+              :author-id="formattedPost.author.id"
+              @share="$emit('share')"
+              @edit="$emit('edit')"
+              @delete="$emit('edit')"
+            />
           </div>
 
           <FeedPostInfo
@@ -88,7 +94,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'share'],
+  emits: ['close', 'delete', 'edit', 'share'],
 
   setup(props) {
     const router = useRouter();
