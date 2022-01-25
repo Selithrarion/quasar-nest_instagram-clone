@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog x-large @close="$emit('close')">
+  <BaseDialog :model-value="modelValue" x-large @close="$emit('close')">
     <template #content>
       <div class="row no-wrap">
         <FeedPostImage
@@ -88,6 +88,7 @@ export default defineComponent({
   },
 
   props: {
+    modelValue: Boolean,
     post: {
       type: Object as PropType<PostModel>,
       default: null,
@@ -101,10 +102,11 @@ export default defineComponent({
     const loading = useLoading({ customNames: ['comments'] });
 
     watch(
-      () => props.post.id,
-      async (v) => {
+      () => props.modelValue,
+      async () => {
+        if (!props.modelValue) return;
         loading.start('comments');
-        postComments.value = await postRepository.getComments(v);
+        postComments.value = await postRepository.getComments(props.post.id);
         loading.stop('comments');
       }
     );
