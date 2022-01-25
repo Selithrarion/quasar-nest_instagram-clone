@@ -23,6 +23,9 @@ export interface UserModel extends BaseModel {
   isViewerFollowed?: boolean;
   isViewerBlocked?: boolean;
 
+  followersIDs: number[];
+  followedUsersIDs: number[];
+
   accessToken?: string;
   refreshToken?: string;
 }
