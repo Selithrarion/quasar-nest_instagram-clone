@@ -47,8 +47,9 @@ Github actions CI pipeline
 #### Feed
 - View all recent posts (photos/videos) from subscriptions or trends ❌
 - Search posts with selected tags ❌
+- User suggestions in sidebar who follows you / followed by who you follow or just new to instagram ❌
 ##### Post
-- Posts CRU❌D❌ 
+- Posts CRUD
 - Images support. Dragndrop or browse image to upload
 - Videos support. Dragndrop or browse video to upload ❌
 - Image crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
@@ -56,6 +57,7 @@ Github actions CI pipeline
 - Image filters
 - Tags suggestion ❌
 - Dbclick to like post (with cool animation haha) or like with button
+- Show users who liked this post ❌
 - Comments CRUD
 - Comment system with 5 lvl reply nesting ❌
 - Share to users (?) ❌
