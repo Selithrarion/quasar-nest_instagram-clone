@@ -20,6 +20,7 @@ import { PostsService } from './posts.service';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CommentEntity } from './entity/comment.entity';
+import { UserEntity } from "../user/entity/user.entity";
 
 @Controller('posts')
 export class PostsController {
@@ -37,6 +38,10 @@ export class PostsController {
   @Get('comments/:id')
   async getComments(@Param('id') id: number): Promise<CommentEntity[]> {
     return await this.postsService.getComments(id);
+  }
+  @Get('likes/:id')
+  async getLikes(@Param('id') id: number): Promise<UserEntity[]> {
+    return await this.postsService.getLikes(id);
   }
 
   @UseInterceptors(FileInterceptor('file'))

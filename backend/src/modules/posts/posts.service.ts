@@ -9,6 +9,7 @@ import { PostEntity } from './entity/post.entity';
 import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
 import { CommentEntity } from './entity/comment.entity';
+import { UserEntity } from '../user/entity/user.entity';
 
 @Injectable()
 export class PostsService {
@@ -59,10 +60,13 @@ export class PostsService {
   async getByID(id: number): Promise<PostEntity> {
     return await this.posts.findOneOrFail(id, { relations: ['users'] });
   }
-
   async getComments(id: number): Promise<CommentEntity[]> {
     const post = await this.posts.findOneOrFail(id);
     return await this.postComments.find({ where: { post }, relations: ['author'] });
+  }
+  async getLikes(id: number): Promise<UserEntity[]> {
+    const post = await this.posts.findOneOrFail(id, { relations: ['likes'] });
+    return post.likes;
   }
 
   async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {
