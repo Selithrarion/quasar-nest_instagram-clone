@@ -2,14 +2,25 @@
   <div class="feed-post-info" :class="{ 'feed-post-info--scroll': useScroll }">
     <div class="feed-post-info__header">
       <BaseButton
+        v-if="post.likesUserIDs.length"
         class="text-subtitle2 text-weight-bold w-fit-content"
         style="margin-left: -4px"
         dense
         flat
-        @click="dialog.open('postLikes')"
+        @click="$emit('open-likes')"
       >
         {{ post.likesUserIDs.length }} likes
       </BaseButton>
+      <BaseButton
+        v-else
+        class="text-subtitle2 text-weight-bold w-fit-content"
+        style="margin-left: -4px"
+        label="Be the first to like this"
+        dense
+        flat
+        @click="toggleLike"
+      />
+
       <div v-if="useScroll" class="text-caption text-blue-grey-4">
         {{ formatDate(post.createdAt, DateTypes.DIFF) }}
       </div>
@@ -63,6 +74,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue';
+import { useStore } from 'src/store';
 import useDialog from 'src/composables/common/useDialog';
 import { useFormat, DateTypes } from 'src/composables/format/useFormat';
 
@@ -90,9 +102,10 @@ export default defineComponent({
     minimizedComments: Boolean,
   },
 
-  emits: ['open-post', 'reply'],
+  emits: ['open-post', 'open-likes', 'reply'],
 
   setup(props) {
+    const store = useStore();
     const dialog = useDialog();
     const { formatDate } = useFormat();
 
@@ -104,6 +117,10 @@ export default defineComponent({
       return props.post.description.slice(0, 100) + ' ...';
     });
 
+    function toggleLike() {
+      void store.dispatch('post/toggleLike', props.post.id);
+    }
+
     return {
       dialog,
       formatDate,
@@ -111,6 +128,8 @@ export default defineComponent({
 
       clampDescriptionLocal,
       formattedDescription,
+
+      toggleLike,
     };
   },
 });
