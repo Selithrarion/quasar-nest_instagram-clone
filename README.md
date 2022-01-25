@@ -47,6 +47,7 @@ Github actions CI pipeline
 #### Feed
 - View all recent posts (photos/videos) from subscriptions or trends ❌
 - Search posts with selected tags ❌
+- User suggestions in sidebar who follows you / followed by who you follow or just new to instagram ❌
 ##### Post
 - Posts CRUD
 - Images support. Dragndrop or browse image to upload
