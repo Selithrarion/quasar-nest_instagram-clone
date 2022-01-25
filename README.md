@@ -56,6 +56,7 @@ Github actions CI pipeline
 - Image filters
 - Tags suggestion ❌
 - Dbclick to like post (with cool animation haha) or like with button
+- Show users who liked this post ❌
 - Comments CRUD
 - Comment system with 5 lvl reply nesting ❌
 - Share to users (?) ❌
