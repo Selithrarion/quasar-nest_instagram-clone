@@ -35,6 +35,7 @@
             hide-view-all-comments
             use-scroll
             @open-post="focusCommentInput"
+            @open-likes="$emit('open-likes')"
             @reply="replyComment"
           />
 
@@ -95,7 +96,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'delete', 'edit', 'share'],
+  emits: ['close', 'open-likes', 'delete', 'edit', 'share'],
 
   setup(props) {
     const router = useRouter();

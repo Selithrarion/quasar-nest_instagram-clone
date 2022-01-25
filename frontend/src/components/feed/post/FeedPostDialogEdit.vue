@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts">
-import { PostModel } from 'src/models/feed/post.model';
+import { defineComponent, PropType, ref, watch } from 'vue';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedPostDialogEdit',

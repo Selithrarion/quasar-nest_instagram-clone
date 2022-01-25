@@ -37,7 +37,13 @@
         @share-to-user="$emit('share-to-user')"
         @open-post="$emit('open-post')"
       />
-      <FeedPostInfo :post="post" clamp-description minimized-comments @open-post="$emit('open-post')" />
+      <FeedPostInfo
+        :post="post"
+        clamp-description
+        minimized-comments
+        @open-likes="$emit('open-likes')"
+        @open-post="$emit('open-post')"
+      />
       <FeedPostCommentInput :post-id="post.id" />
     </template>
   </q-card>
@@ -73,7 +79,7 @@ export default defineComponent({
     useSkeleton: Boolean,
   },
 
-  emits: ['open-post', 'delete', 'edit', 'share', 'share-to-user'],
+  emits: ['open-post', 'open-likes', 'delete', 'edit', 'share', 'share-to-user'],
 });
 </script>
 

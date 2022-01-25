@@ -32,6 +32,7 @@
           @share="dialog.open('share', { item: post })"
           @share-to-user="dialog.open('shareToUser', { item: post })"
           @open-post="dialog.open('postDetail', { item: post })"
+          @open-likes="dialog.open('postLikes', { item: post })"
         />
       </FeedPostList>
     </div>
@@ -46,6 +47,7 @@
     <FeedPostDialogDetail
       :model-value="dialog.openedName.value === 'postDetail'"
       :post="dialog.openedItem.value"
+      @open-likes="dialog.open('postLikes', { item: dialog.openedItem.value })"
       @edit="dialog.open('editPost', { item: dialog.openedItem.value })"
       @delete="dialog.open('deletePost', { item: dialog.openedItem.value })"
       @share="dialog.open('share', { item: dialog.openedItem.value })"
@@ -65,6 +67,12 @@
 
     <FeedPostDialogEdit
       :model-value="dialog.openedName.value === 'editPost'"
+      :post="dialog.openedItem.value"
+      @close="dialog.close"
+    />
+
+    <FeedPostDialogLikes
+      :model-value="dialog.openedName.value === 'postLikes'"
       :post="dialog.openedItem.value"
       @close="dialog.close"
     />
@@ -97,6 +105,7 @@ import FeedStoryDialogCreate from 'components/feed/story/FeedStoryDialogCreate.v
 import FeedPostList from 'components/feed/post/FeedPostList.vue';
 import FeedPost from 'components/feed/post/FeedPost.vue';
 import FeedPostDialogDetail from 'components/feed/post/FeedPostDialogDetail.vue';
+import FeedPostDialogLikes from 'components/feed/post/FeedPostDialogLikes.vue';
 import FeedPostDialogEdit from 'components/feed/post/FeedPostDialogEdit.vue';
 import FeedPostDialogShare from 'components/feed/post/FeedPostDialogShare.vue';
 import FeedPostDialogShareToUser from 'components/feed/post/FeedPostDialogShareToUser.vue';
@@ -114,6 +123,7 @@ export default defineComponent({
     FeedPostList,
     FeedPost,
     FeedPostDialogDetail,
+    FeedPostDialogLikes,
     FeedPostDialogEdit,
     FeedPostDialogShare,
     FeedPostDialogShareToUser,
