@@ -50,8 +50,8 @@
         </div>
       </template>
 
-      <div class="feed-post-info__loader">
-        <BaseLoader v-show="commentsLoading" medium />
+      <div v-if="commentsLoading" class="feed-post-info__loader">
+        <BaseLoader medium />
       </div>
     </div>
 
