@@ -48,7 +48,7 @@ Github actions CI pipeline
 - View all recent posts (photos/videos) from subscriptions or trends ❌
 - Search posts with selected tags ❌
 ##### Post
-- Posts CRU❌D❌ 
+- Posts CRUD
 - Images support. Dragndrop or browse image to upload
 - Videos support. Dragndrop or browse video to upload ❌
 - Image crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
