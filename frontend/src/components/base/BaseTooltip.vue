@@ -1,5 +1,5 @@
 <template>
-  <q-tooltip class="bg-blue-grey-9 text-caption q-py-none q-px-sm" :delay="delay" v-bind="$attrs">
+  <q-tooltip class="bg-blue-grey-9 text-caption q-py-none q-px-sm" :delay="Number(delay)" v-bind="$attrs">
     <slot>
       {{ label }}
     </slot>
@@ -21,8 +21,8 @@ export default defineComponent({
     delay: {
       type: [Number, String],
       required: false,
-      default: 300
-    }
+      default: 300,
+    },
   },
 });
 </script>
