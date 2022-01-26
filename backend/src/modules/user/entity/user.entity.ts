@@ -151,6 +151,7 @@ export class UserEntity extends BaseEntity {
   likedCommentsIDs: number[];
 
   @ManyToMany(() => UserEntity, (user) => user.followedUsers, {
+    cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

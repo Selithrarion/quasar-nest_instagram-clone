@@ -10,6 +10,8 @@ import {
   Request,
   UploadedFile,
   UseInterceptors,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 
 import { UserEntity } from './entity/user.entity';
@@ -24,7 +26,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async get(@Query('search') search: string, @Request() req): Promise<UserEntity[]> {
+  async getAll(@Query('search') search: string, @Request() req): Promise<UserEntity[]> {
     return await this.userService.getAll(search, req.user.id);
   }
 
@@ -57,5 +59,16 @@ export class UserController {
   @Patch(':id')
   async update(@Param('id') id: number, @Body() payload: Partial<UserEntity>): Promise<UserEntity> {
     return await this.userService.update(id, payload);
+  }
+
+  @Post('follow/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async follow(@Param('id') id: number, @Request() req): Promise<void> {
+    return await this.userService.follow(id, req.user.id);
+  }
+  @Post('unfollow/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async unfollow(@Param('id') id: number, @Request() req): Promise<void> {
+    return await this.userService.unfollow(id, req.user.id);
   }
 }

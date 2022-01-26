@@ -183,4 +183,14 @@ export class UserService {
     );
     return true;
   }
+
+  async follow(id: number, currentUserID: number): Promise<void> {
+    const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
+    const currentUser = await this.users.findOneOrFail(currentUserID);
+    await this.users.save({ ...user, followers: [...user.followers, currentUser] });
+  }
+  async unfollow(id: number, currentUserID: number): Promise<void> {
+    const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
+    await this.users.save({ ...user, followers: user.followers.filter((f) => f.id !== currentUserID) });
+  }
 }
