@@ -36,7 +36,7 @@ export default {
   async uploadAvatar(file: File): Promise<PublicFileModel> {
     const form = new FormData();
     form.append('file', file);
-    const { data }: ApiResponseModel<PublicFileModel> = await http.post('user/avatar', form);
+    const { data }: ApiResponseModel<PublicFileModel> = await http.post('/user/avatar', form);
     return data;
   },
 
@@ -49,10 +49,17 @@ export default {
     return data;
   },
 
-  async sendEmailChange(id: number) {
+  async sendEmailChange(id: number): Promise<void> {
     await http.post('/user/change-email', id);
   },
-  async validateEmailChangeCode(id: number, code: number | string) {
+  async validateEmailChangeCode(id: number, code: number | string): Promise<void> {
     await http.post('/user/change-email-validate-code', { id, code });
+  },
+
+  async follow(id: number): Promise<void> {
+    await http.post(`/user/follow/${id}`);
+  },
+  async unfollow(id: number): Promise<void> {
+    await http.post(`/user/unfollow/${id}`);
   },
 };
