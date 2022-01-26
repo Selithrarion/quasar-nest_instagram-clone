@@ -18,7 +18,6 @@ export interface PostModel extends BaseModel {
   // isPaidPartnership: boolean;
   isVideo: boolean;
 
-  isViewerFollowed: boolean;
   isViewerLiked: boolean;
   isViewerSaved: boolean;
   isViewerInPhoto: boolean;
