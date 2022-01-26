@@ -42,6 +42,14 @@ export default defineComponent({
       type: Number,
       default: 1,
     },
+    width: {
+      type: Number,
+      default: 0,
+    },
+    height: {
+      type: Number,
+      default: 0,
+    },
   },
 
   emits: ['update:model-value'],
@@ -49,20 +57,17 @@ export default defineComponent({
   setup(props, { emit }) {
     const QImgRef = ref<InstanceType<typeof QImg>>();
     const imageEl = ref<HTMLImageElement>();
-    const imageWidth = ref<number>();
-    const imageHeight = ref<number>();
+
     function setImageData() {
       const QImgEl = QImgRef.value?.$el as HTMLElement;
       imageEl.value = QImgEl?.querySelector('.q-img__image') as HTMLImageElement;
-      imageWidth.value = imageEl.value.width;
-      imageHeight.value = imageEl.value.height;
     }
     function getFilteredImageBlob() {
-      if (!imageEl.value || !imageWidth.value || !imageHeight.value) return;
+      if (!imageEl.value || !props.width || !props.height) return;
 
       const canvas = document.createElement('canvas');
-      canvas.width = imageWidth.value;
-      canvas.height = imageHeight.value;
+      canvas.width = props.width;
+      canvas.height = props.height;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 

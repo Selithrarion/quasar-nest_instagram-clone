@@ -27,6 +27,8 @@
         ref="filter"
         :model-value="imageBlobURL"
         :ratio="form.imageAspectRatio"
+        :width="form.imageCropData?.width"
+        :height="form.imageCropData?.height"
         @update:model-value="form.imageBlobWithFilter = $event"
       />
     </div>
