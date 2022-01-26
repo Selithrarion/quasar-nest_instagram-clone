@@ -39,6 +39,7 @@ export class PostsController {
   async getComments(@Param('id') id: number): Promise<CommentEntity[]> {
     return await this.postsService.getComments(id);
   }
+  // TODO: need to add likes pagination. on frontend fetch next page when user scrolls to dialog bottom
   @Get('likes/:id')
   async getLikes(@Param('id') id: number): Promise<UserEntity[]> {
     return await this.postsService.getLikes(id);
