@@ -11,12 +11,15 @@ import { FilesService } from '../files/files.service';
 import { PublicFileEntity } from '../files/entity/public-file.entity';
 import { CreateUserGithubDTO } from './dto';
 import { NotificationEntity } from '../notifications/entity/notification.entity';
+import { FollowingEntity } from './entity/following.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly users: Repository<UserEntity>,
+    @InjectRepository(FollowingEntity)
+    private readonly followings: Repository<FollowingEntity>,
 
     @Inject(FilesService)
     private readonly filesService: FilesService
@@ -188,9 +191,27 @@ export class UserService {
     const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
     const currentUser = await this.users.findOneOrFail(currentUserID);
     await this.users.save({ ...user, followers: [...user.followers, currentUser] });
+
+    // const user = await this.users.findOneOrFail(id);
+    // const currentUser = await this.users.findOneOrFail(currentUserID);
+    // // await this.users.save({ ...user, followers: [...user.followers, currentUser] });
+    // // await this.users.save({ ...currentUser, followedUsers: [...user.followedUsers, user] });
+    // console.log(user, currentUser);
+    // const following = await this.followings.save({ follower: currentUser, followedTo: user });
+    // console.log('following', following);
   }
   async unfollow(id: number, currentUserID: number): Promise<void> {
     const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
     await this.users.save({ ...user, followers: user.followers.filter((f) => f.id !== currentUserID) });
+
+    // // const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
+    // // const currentUser = await this.users.findOneOrFail(currentUserID, { relations: ['followedUsers'] });
+    // // await this.users.save({ ...user, followers: user.followers.filter((f) => f.id !== currentUserID) });
+    // // await this.users.save({ ...currentUser, followedUsers: user.followedUsers.filter((f) => f.id !== id) });
+    // // const user = await this.users.findOneOrFail(id);
+    // const currentUser = await this.users.findOneOrFail(currentUserID);
+    // const following = await this.followings.findOneOrFail({ where: { follower: currentUser } });
+    // console.log('unfollow', following);
+    // await this.followings.remove(following);
   }
 }
