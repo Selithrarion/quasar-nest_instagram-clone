@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import FeedPostMoreButton from 'components/feed/post/FeedPostMoreButton.vue';
+import FeedPostMoreButton from 'components/feed/post/parts/FeedPostMoreButton.vue';
 
 export default defineComponent({
   name: 'FeedPostHeader',

@@ -104,11 +104,11 @@ import FeedStoryDialogCreate from 'components/feed/story/FeedStoryDialogCreate.v
 
 import FeedPostList from 'components/feed/post/FeedPostList.vue';
 import FeedPost from 'components/feed/post/FeedPost.vue';
-import FeedPostDialogDetail from 'components/feed/post/FeedPostDialogDetail.vue';
-import FeedPostDialogLikes from 'components/feed/post/FeedPostDialogLikes.vue';
-import FeedPostDialogEdit from 'components/feed/post/FeedPostDialogEdit.vue';
-import FeedPostDialogShare from 'components/feed/post/FeedPostDialogShare.vue';
-import FeedPostDialogShareToUser from 'components/feed/post/FeedPostDialogShareToUser.vue';
+import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
+import FeedPostDialogLikes from 'components/feed/post/dialog/FeedPostDialogLikes.vue';
+import FeedPostDialogEdit from 'components/feed/post/dialog/FeedPostDialogEdit.vue';
+import FeedPostDialogShare from 'components/feed/post/dialog/FeedPostDialogShare.vue';
+import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialogShareToUser.vue';
 
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
 

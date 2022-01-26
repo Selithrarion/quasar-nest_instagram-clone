@@ -78,7 +78,7 @@ import { useStore } from 'src/store';
 import useDialog from 'src/composables/common/useDialog';
 import { useFormat, DateTypes } from 'src/composables/format/useFormat';
 
-import FeedPostComment from 'components/feed/post/FeedPostComment.vue';
+import FeedPostComment from 'components/feed/post/comment/FeedPostComment.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
 

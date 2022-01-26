@@ -65,11 +65,11 @@ import { useRouter } from 'vue-router';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonUser from 'components/common/CommonUser.vue';
-import FeedPostImage from 'components/feed/post/FeedPostImage.vue';
-import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
-import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
-import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue';
-import FeedPostMoreButton from 'components/feed/post/FeedPostMoreButton.vue';
+import FeedPostImage from 'components/feed/post/parts/FeedPostImage.vue';
+import FeedPostActions from 'components/feed/post/parts/FeedPostActions.vue';
+import FeedPostInfo from 'components/feed/post/parts/FeedPostInfo.vue';
+import FeedPostCommentInput from 'components/feed/post/comment/FeedPostCommentInput.vue';
+import FeedPostMoreButton from 'components/feed/post/parts/FeedPostMoreButton.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
 import { CommentModel } from 'src/models/feed/comment.model';

@@ -51,11 +51,11 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 
-import FeedPostHeader from 'components/feed/post/FeedPostHeader.vue';
-import FeedPostImage from 'components/feed/post/FeedPostImage.vue';
-import FeedPostInfo from 'components/feed/post/FeedPostInfo.vue';
-import FeedPostActions from 'components/feed/post/FeedPostActions.vue';
-import FeedPostCommentInput from 'components/feed/post/FeedPostCommentInput.vue';
+import FeedPostHeader from 'components/feed/post/parts/FeedPostHeader.vue';
+import FeedPostImage from 'components/feed/post/parts/FeedPostImage.vue';
+import FeedPostInfo from 'components/feed/post/parts/FeedPostInfo.vue';
+import FeedPostActions from 'components/feed/post/parts/FeedPostActions.vue';
+import FeedPostCommentInput from 'components/feed/post/comment/FeedPostCommentInput.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
 
