@@ -48,7 +48,6 @@ export class PostsService {
         ...p,
         comments: await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
         fileURL: p.file?.url,
-        isViewerFollowed: currentUser.followedUsersIDs.includes(p.author.id),
         isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
         isViewerSaved: false,
         isViewerInPhoto: false,
