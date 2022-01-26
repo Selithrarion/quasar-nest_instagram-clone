@@ -3,6 +3,7 @@ import { StateInterface } from '../index';
 import { UserStateInterface } from 'src/store/user/state';
 import { UserAuthResponse, UserLoginDTO, UserRegisterDTO, UserUpdateTokenResponse } from 'src/models/user/user.model';
 import authRepository from 'src/repositories/authRepository';
+import userRepository from 'src/repositories/userRepository';
 
 const actions: ActionTree<UserStateInterface, StateInterface> = {
   async login({ commit }, payload: UserLoginDTO): Promise<UserAuthResponse> {
@@ -50,6 +51,15 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
     commit('UPDATE_TOKENS', tokens);
 
     return tokens;
+  },
+
+  async follow({ commit }, id: number) {
+    await userRepository.follow(id);
+    commit('FOLLOW', id);
+  },
+  async unfollow({ commit }, id: number) {
+    await userRepository.unfollow(id);
+    commit('UNFOLLOW', id);
   },
 };
 

@@ -29,7 +29,17 @@ const mutation: MutationTree<UserStateInterface> = {
   },
 
   UPDATE_USER(state: UserStateInterface, payload: UserDTO) {
-    if (state.currentUser) state.currentUser = { ...state.currentUser, ...payload };
+    if (!state.currentUser) return;
+    state.currentUser = { ...state.currentUser, ...payload };
+  },
+
+  FOLLOW(state: UserStateInterface, id: number) {
+    if (!state.currentUser) return;
+    state.currentUser.followedUsersIDs.push(id);
+  },
+  UNFOLLOW(state: UserStateInterface, id: number) {
+    if (!state.currentUser) return;
+    state.currentUser.followedUsersIDs = state.currentUser.followedUsersIDs.filter((userID) => userID !== id);
   },
 };
 
