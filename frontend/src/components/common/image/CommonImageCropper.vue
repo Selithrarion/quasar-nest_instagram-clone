@@ -100,7 +100,7 @@ export default defineComponent({
       default: null,
     },
     imageCropData: {
-      type: String,
+      type: Object,
       default: null,
     },
     aspectRatio: {
@@ -130,13 +130,11 @@ export default defineComponent({
     }
     function getCroppedImageData() {
       const cropperData = cropper.value?.getData();
-      const cropperDataString = JSON.stringify(cropperData, null, 4);
-      emit('update:image-crop-data', cropperDataString);
+      emit('update:image-crop-data', cropperData);
     }
     function setCroppedImageData() {
       if (!props.imageCropData) return;
-      const parsedData = JSON.parse(props.imageCropData) as string;
-      cropper.value?.setData(parsedData);
+      cropper.value?.setData(JSON.stringify(props.imageCropData));
     }
 
     function setRawImage({ image = '' }) {
