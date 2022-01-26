@@ -12,16 +12,15 @@
     >
       <template #append>
         <BaseButton
+          v-if="isNotOwnLike(user.id)"
           color="primary"
           :loading="
-            currentUsernameLoading === user.username && user.isViewerFollowed
-              ? loading.custom.follow
-              : loading.custom.unfollow
+            currentUserIdLoading === user.id && user.isViewerFollowed ? loading.custom.follow : loading.custom.unfollow
           "
           :label="user.isViewerFollowed ? 'Unfollow' : 'Follow'"
           :flat="user.isViewerFollowed"
           unelevated
-          @click.stop="user.isViewerFollowed ? unfollow : follow"
+          @click.stop="user.isViewerFollowed ? unfollow(user.id) : follow(user.id)"
         />
       </template>
     </CommonUser>
@@ -69,7 +68,7 @@ export default defineComponent({
       availableUsers.value.map((u) => {
         return {
           ...u,
-          isViewerFollowed: currentUser.value ? u.followersIDs.includes(currentUser.value.id) : false,
+          isViewerFollowed: currentUser.value ? currentUser.value.followedUsersIDs.includes(u.id) : false,
         };
       })
     );
@@ -84,21 +83,25 @@ export default defineComponent({
       }
     );
 
-    const currentUsernameLoading = ref('');
-    function follow(username: string) {
+    function isNotOwnLike(userID: number) {
+      return userID !== currentUser.value?.id;
+    }
+
+    const currentUserIdLoading = ref(-1);
+    async function follow(id: number) {
       try {
         loading.start('follow');
-        currentUsernameLoading.value = username;
-        console.log('follow');
+        currentUserIdLoading.value = id;
+        await store.dispatch('user/follow', id);
       } finally {
         loading.stop('follow');
       }
     }
-    function unfollow(username: string) {
+    async function unfollow(id: number) {
       try {
         loading.start('unfollow');
-        currentUsernameLoading.value = username;
-        console.log('unfollow');
+        currentUserIdLoading.value = id;
+        await store.dispatch('user/unfollow', id);
       } finally {
         loading.stop('unfollow');
       }
@@ -114,7 +117,9 @@ export default defineComponent({
       availableUsers,
       formattedUsers,
 
-      currentUsernameLoading,
+      isNotOwnLike,
+
+      currentUserIdLoading,
       follow,
       unfollow,
       openUser,

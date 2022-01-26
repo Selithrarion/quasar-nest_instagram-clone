@@ -6,6 +6,7 @@
         v-if="!isOwnPost"
         :label="isViewerFollowed ? 'Unfollow' : 'Follow'"
         :danger="isViewerFollowed"
+        :loading="isViewerFollowed ? loading.custom.follow : loading.custom.unfollow"
         @click="isViewerFollowed ? unfollow() : follow()"
       />
 
@@ -25,6 +26,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'src/store';
+import useLoading from 'src/composables/common/useLoading';
 
 import CommonClipboard from 'components/common/CommonClipboard.vue';
 
@@ -44,28 +46,42 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    isViewerFollowed: Boolean,
   },
 
   emits: ['delete', 'edit', 'share'],
 
   setup(props) {
     const store = useStore();
+    const loading = useLoading({ customNames: ['follow', 'unfollow'] });
 
     const isOwnPost = computed(() => props.authorId === store.state.user.currentUser?.id);
+    const isViewerFollowed = computed(() => store.state.user.currentUser?.followedUsersIDs.includes(props.authorId));
 
     function report() {
       console.log('report', props.postId);
     }
-    function follow() {
-      console.log('follow', props.postId);
+    async function follow() {
+      try {
+        loading.start('follow');
+        await store.dispatch('user/follow', props.authorId);
+      } finally {
+        loading.stop('follow');
+      }
     }
-    function unfollow() {
-      console.log('unfollow', props.postId);
+    async function unfollow() {
+      try {
+        loading.start('unfollow');
+        await store.dispatch('user/unfollow', props.authorId);
+      } finally {
+        loading.stop('unfollow');
+      }
     }
 
     return {
+      loading,
+
       isOwnPost,
+      isViewerFollowed,
 
       report,
       follow,

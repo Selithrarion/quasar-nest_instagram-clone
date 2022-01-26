@@ -48,7 +48,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    isViewerFollowed: Boolean,
   },
 
   emits: ['delete', 'edit', 'share'],
