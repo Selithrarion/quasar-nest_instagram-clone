@@ -57,4 +57,7 @@ export default {
   async deleteComment(id: number): Promise<void> {
     return await http.delete(`/posts/comment/${id}`);
   },
+  async toggleCommentLike(id: number): Promise<void> {
+    return await http.post(`/posts/comment/like/${id}`);
+  },
 };
