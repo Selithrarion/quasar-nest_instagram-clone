@@ -12,6 +12,7 @@ import { PublicFileEntity } from '../files/entity/public-file.entity';
 import { CreateUserGithubDTO } from './dto';
 import { NotificationEntity } from '../notifications/entity/notification.entity';
 import { FollowingEntity } from './entity/following.entity';
+import { CommentEntity } from '../posts/entity/comment.entity';
 
 @Injectable()
 export class UserService {
@@ -157,6 +158,10 @@ export class UserService {
   async getLikedPosts(id: number): Promise<PostEntity[]> {
     const user = await this.users.findOneOrFail(id, { relations: ['likedPosts'] });
     return user.likedPosts;
+  }
+  async getLikedComments(id: number): Promise<CommentEntity[]> {
+    const user = await this.users.findOneOrFail(id, { relations: ['likedComments'] });
+    return user.likedComments;
   }
   async getNotifications(id: number): Promise<NotificationEntity[]> {
     const user = await this.users
