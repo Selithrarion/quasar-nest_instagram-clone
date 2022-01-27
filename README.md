@@ -60,7 +60,7 @@ Github actions CI pipeline
 - Dbclick to like post (with cool animation haha) or like with button
 - Show users who liked this post
 - Comments CRUD
-- Comment system with 5 lvl reply nesting ❌
+- Comment system with infinity reply nesting ❌
 - Share to users (?) ❌
 - Bookmark (?) ❌
 ##### Story
