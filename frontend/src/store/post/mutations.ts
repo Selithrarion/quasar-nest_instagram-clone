@@ -48,6 +48,12 @@ const mutation: MutationTree<PostStateInterface> = {
     const index = post.comments.findIndex((c) => c.id === commentID);
     post.comments.splice(index, 1);
   },
+  TOGGLE_COMMENT_LIKE(state, { commentID, postID }: { commentID: number; postID: number }) {
+    const post = state.posts?.find((p) => p.id === postID);
+    if (!post) return;
+    const comment = post.comments.find((c) => c.id === commentID);
+    if (comment) comment.isViewerLiked = !comment.isViewerLiked;
+  },
 };
 
 export default mutation;

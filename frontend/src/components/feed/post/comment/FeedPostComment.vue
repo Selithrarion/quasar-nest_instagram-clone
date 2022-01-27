@@ -5,15 +5,15 @@
       {{ comment.text }}
     </div>
 
-    <BaseButton
-      class="self-center"
-      size="8px"
-      :text-color="comment % 2 ? 'red' : ''"
-      :icon="comment % 2 ? 'favorite' : 'favorite_border'"
-      :tooltip="comment % 2 ? 'Remove like' : 'Like'"
-      dense
-      @click="toggleLike"
-    />
+    <!--    <BaseButton-->
+    <!--      class="self-center"-->
+    <!--      size="8px"-->
+    <!--      :text-color="comment.isViewerLiked ? 'red' : ''"-->
+    <!--      :icon="comment.isViewerLiked ? 'favorite' : 'favorite_border'"-->
+    <!--      :tooltip="comment.isViewerLiked ? 'Remove like' : 'Like'"-->
+    <!--      dense-->
+    <!--      @click="toggleLike"-->
+    <!--    />-->
   </div>
 
   <div v-else>
@@ -32,9 +32,9 @@
         <BaseButton
           class="self-center"
           size="8px"
-          :text-color="comment % 2 ? 'red' : ''"
-          :icon="comment % 2 ? 'favorite' : 'favorite_border'"
-          :tooltip="comment % 2 ? 'Remove like' : 'Like'"
+          :text-color="comment.isViewerLiked ? 'red' : ''"
+          :icon="comment.isViewerLiked ? 'favorite' : 'favorite_border'"
+          :tooltip="comment.isViewerLiked ? 'Remove like' : 'Like'"
           dense
           @click="toggleLike"
         />
@@ -103,9 +103,9 @@ export default defineComponent({
     minimized: Boolean,
   },
 
-  emits: ['reply'],
+  emits: ['reply', 'toggle-like'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
     const dialog = useDialog();
     const { formatDate } = useFormat();
@@ -151,7 +151,9 @@ export default defineComponent({
     }
 
     function toggleLike() {
-      //
+      emit('toggle-like', props.comment.id);
+      const payload = { commentID: props.comment.id, postID: props.comment.postID };
+      void store.dispatch('post/toggleCommentLike', payload);
     }
 
     function closeDialog() {

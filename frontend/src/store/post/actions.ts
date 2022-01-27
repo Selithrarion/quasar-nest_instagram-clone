@@ -44,6 +44,10 @@ const actions: ActionTree<PostStateInterface, StateInterface> = {
     commit('DELETE_COMMENT', { commentID, postID });
     await postRepository.deleteComment(commentID);
   },
+  async toggleCommentLike({ commit }, { commentID, postID }: { commentID: number; postID: number }) {
+    commit('TOGGLE_COMMENT_LIKE', { commentID, postID });
+    await postRepository.toggleCommentLike(commentID);
+  },
 };
 
 export default actions;

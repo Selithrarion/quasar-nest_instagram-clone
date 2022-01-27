@@ -11,6 +11,8 @@ export interface CommentModel extends BaseModel {
 
   parentComment?: CommentModel;
   parentCommentID: number;
+
+  isViewerLiked: boolean;
 }
 
 export interface CommentDTO {

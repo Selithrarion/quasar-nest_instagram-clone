@@ -37,6 +37,7 @@
             @open-post="focusCommentInput"
             @open-likes="$emit('open-likes')"
             @reply="replyComment"
+            @toggle-comment-like="toggleCommentLike"
           />
 
           <FeedPostActions
@@ -136,6 +137,11 @@ export default defineComponent({
       await router.push(`/${props.post.author.username}`);
     }
 
+    function toggleCommentLike(commentID: number) {
+      const comment = postComments.value.find((c) => c.id === commentID);
+      if (comment) comment.isViewerLiked = !comment.isViewerLiked;
+    }
+
     return {
       loading,
 
@@ -149,6 +155,8 @@ export default defineComponent({
       replyComment,
 
       openAuthorProfile,
+
+      toggleCommentLike,
     };
   },
 });
