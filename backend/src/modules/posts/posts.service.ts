@@ -68,6 +68,15 @@ export class PostsService {
         createdAt: 'DESC',
       },
     });
+    // TODO: comment reply find trees no 'where' option
+    // const treeRepository = await getManager().getTreeRepository(CommentEntity);
+    // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // // @ts-ignore
+    // const trees = await treeRepository.findTrees({
+    //   where: { post },
+    //   relations: ['author'],
+    // });
+    // return trees;
   }
   async getLikes(id: number): Promise<UserEntity[]> {
     const post = await this.posts.findOneOrFail(id, { relations: ['likes'] });

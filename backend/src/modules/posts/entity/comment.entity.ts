@@ -1,8 +1,16 @@
-import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, RelationId } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { PostEntity } from './post.entity';
 
+// TODO: make comment replies with path enumeration
+// @Tree('materialized-path')
+//
+// @TreeParent()
+// parentComment: CommentEntity;
+// @TreeChildren()
+// replies: CommentEntity[];
+// problem - can't get comments tree only for needed post.
 @Entity()
 export class CommentEntity extends BaseEntity {
   @Column()
@@ -35,22 +43,22 @@ export class CommentEntity extends BaseEntity {
   @RelationId('likes')
   likesUserIDs: number[];
 
-  @OneToOne(() => CommentEntity, (comment) => comment.childComment, {
+  @ManyToOne(() => CommentEntity, (comment) => comment.replies, {
     cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     nullable: true,
   })
-  @JoinColumn()
+  @JoinColumn({ name: 'parentCommentID' })
   @Index()
   parentComment: CommentEntity;
   @RelationId('parentComment')
   parentCommentID: number;
 
-  @OneToOne(() => CommentEntity, (comment) => comment.parentComment, {
+  @OneToMany(() => CommentEntity, (comment) => comment.parentComment, {
     nullable: true,
   })
-  childComment: CommentEntity;
-  @RelationId('childComment')
-  childCommentID: number;
+  replies: CommentEntity;
+  @RelationId('replies')
+  repliesIDs: number;
 }

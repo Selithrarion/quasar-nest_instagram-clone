@@ -2,7 +2,7 @@
   <BaseItem :clickable="clickable && !useSkeleton">
     <q-item-section :class="{ 'self-start': alignAvatarToTop }" side>
       <q-skeleton v-if="useSkeleton" type="QAvatar" :size="size" />
-      <BaseAvatar v-else :size="size" :src="user?.avatar?.url" :item-name="user.username" :item-color="user.color" />
+      <BaseAvatar v-else :size="size" :src="user.avatar?.url" :item-name="user.username" :item-color="user.color" />
     </q-item-section>
 
     <q-item-section>
@@ -45,7 +45,9 @@ export default defineComponent({
 
     user: {
       type: Object as PropType<UserModel>,
-      default: null,
+      default: () => {
+        return {};
+      },
     },
     hideName: Boolean,
     alignAvatarToTop: Boolean,
