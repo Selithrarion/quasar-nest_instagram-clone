@@ -39,15 +39,12 @@ export class PostsService {
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 
-    // TODO: comments. i think we need to load from db only 2-3 most popular comments
-    // and load the rest only on post detail page with pagination
-    // if user wants to see them all
-    // coz if post have 10000+ comments it may be bad
     const formattedPosts = (await Promise.all(
       items.map(async (p) => ({
         ...p,
         comments: await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
         fileURL: p.file?.url,
+        // TOOD: should be replaced with query
         isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
         isViewerSaved: false,
         isViewerInPhoto: false,
@@ -59,15 +56,26 @@ export class PostsService {
   async getByID(id: number): Promise<PostEntity> {
     return await this.posts.findOneOrFail(id, { relations: ['users'] });
   }
-  async getComments(id: number): Promise<CommentEntity[]> {
+  async getComments(id: number, userID: number): Promise<CommentEntity[]> {
     const post = await this.posts.findOneOrFail(id);
-    return await this.postComments.find({
+    const currentUser = await this.userService.getByID(userID);
+
+    const comments = await this.postComments.find({
       where: { post },
       relations: ['author'],
       order: {
         createdAt: 'DESC',
       },
     });
+    return await Promise.all(
+      comments.map((c) => {
+        return {
+          ...c,
+          // TOOD: should be replaced with query
+          isViewerLiked: currentUser.likedCommentsIDs.includes(c.id),
+        };
+      })
+    );
     // TODO: comment reply find trees no 'where' option
     // const treeRepository = await getManager().getTreeRepository(CommentEntity);
     // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -120,7 +128,7 @@ export class PostsService {
     if (postIndex !== -1) {
       userLikedPosts.splice(postIndex, 1);
     } else {
-      const post = await this.posts.findOne(postID);
+      const post = await this.posts.findOneOrFail(postID);
       userLikedPosts.push(post);
     }
 
@@ -150,5 +158,18 @@ export class PostsService {
   }
   async deleteComment(id: number): Promise<void> {
     await this.postComments.delete(id);
+  }
+  async toggleCommentLike(commentID: number, userID: number): Promise<void> {
+    const userLikedComments = await this.userService.getLikedComments(userID);
+    const commentIndex = userLikedComments.findIndex((c) => c.id === commentID);
+
+    if (commentIndex !== -1) {
+      userLikedComments.splice(commentIndex, 1);
+    } else {
+      const comment = await this.postComments.findOneOrFail(commentID);
+      userLikedComments.push(comment);
+    }
+
+    await this.userService.update(userID, { likedComments: userLikedComments });
   }
 }

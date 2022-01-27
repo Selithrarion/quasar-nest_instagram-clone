@@ -20,7 +20,7 @@ import { PostsService } from './posts.service';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CommentEntity } from './entity/comment.entity';
-import { UserEntity } from "../user/entity/user.entity";
+import { UserEntity } from '../user/entity/user.entity';
 
 @Controller('posts')
 export class PostsController {
@@ -36,8 +36,8 @@ export class PostsController {
     return await this.postsService.getByID(id);
   }
   @Get('comments/:id')
-  async getComments(@Param('id') id: number): Promise<CommentEntity[]> {
-    return await this.postsService.getComments(id);
+  async getComments(@Param('id') id: number, @Request() req): Promise<CommentEntity[]> {
+    return await this.postsService.getComments(id, req.user.id);
   }
   // TODO: need to add likes pagination. on frontend fetch next page when user scrolls to dialog bottom
   @Get('likes/:id')
@@ -88,5 +88,10 @@ export class PostsController {
   @Delete('comment/:id')
   async deleteComment(@Param('id') id: number): Promise<void> {
     return await this.postsService.deleteComment(id);
+  }
+  @Post('comment/like/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async toggleCommentLike(@Param('id') id: number, @Request() req): Promise<void> {
+    return await this.postsService.toggleCommentLike(Number(id), req.user.id);
   }
 }
