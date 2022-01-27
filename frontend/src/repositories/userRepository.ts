@@ -23,8 +23,8 @@ export default {
     return data;
   },
 
-  async getByID(id: number): Promise<UserModel> {
-    const { data }: ApiResponseModel<UserModel> = await http.get(`/user/${id}`);
+  async getProfileByUsername(username: string): Promise<UserModel> {
+    const { data }: ApiResponseModel<UserModel> = await http.get(`/user/${username}`);
     return data;
   },
 

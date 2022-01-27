@@ -54,8 +54,8 @@ export class UserService {
   async getByID(id: number): Promise<UserEntity> {
     return await this.users.findOne(id);
   }
-  async getProfileByID(id: number): Promise<UserEntity> {
-    return await this.users.findOneOrFail(id);
+  async getProfileByUsername(username: string): Promise<UserEntity> {
+    return await this.users.findOneOrFail({ where: { username } });
   }
 
   async create(payload: CreateUserDTO): Promise<UserEntity> {

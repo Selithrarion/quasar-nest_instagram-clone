@@ -52,9 +52,9 @@ export class UserController {
     return await this.userService.setUserImage(file, 'avatar', req.user.id);
   }
 
-  @Get(':id')
-  async getProfileByID(@Param('id') id: number): Promise<UserEntity> {
-    return await this.userService.getProfileByID(id);
+  @Get(':username')
+  async getProfileByUsername(@Param('username') username: string): Promise<UserEntity> {
+    return await this.userService.getProfileByUsername(username);
   }
   @Patch(':id')
   async update(@Param('id') id: number, @Body() payload: Partial<UserEntity>): Promise<UserEntity> {
