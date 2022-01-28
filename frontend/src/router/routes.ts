@@ -16,7 +16,15 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/', name: 'feed', component: () => import('pages/Index.vue'), meta: { auth: true } }],
+    children: [
+      { path: '/', name: 'feed', component: () => import('pages/Index.vue'), meta: { auth: true } },
+      {
+        path: '/profile/:profileUsername',
+        name: 'profile',
+        component: () => import('pages/Profile.vue'),
+        meta: { auth: true },
+      },
+    ],
   },
 
   {

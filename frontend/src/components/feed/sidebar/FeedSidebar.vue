@@ -47,7 +47,7 @@ export default defineComponent({
 
     const currentUser = computed(() => store.state.user.currentUser);
     async function openCurrentUserProfile() {
-      if (currentUser.value) await router.push(`/${currentUser.value.username}`);
+      if (currentUser.value) await router.push(`/profile/${currentUser.value.username}`);
     }
 
     return {

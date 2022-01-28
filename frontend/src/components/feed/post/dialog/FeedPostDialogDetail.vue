@@ -134,7 +134,7 @@ export default defineComponent({
     }
 
     async function openAuthorProfile() {
-      await router.push(`/${props.post.author.username}`);
+      await router.push(`/profile/${props.post.author.username}`);
     }
 
     function toggleCommentLike(commentID: number) {

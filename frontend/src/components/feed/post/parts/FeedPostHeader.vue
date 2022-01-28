@@ -56,7 +56,7 @@ export default defineComponent({
     const router = useRouter();
 
     async function openUserPage() {
-      await router.push(`/${props.username}`);
+      await router.push(`/profile/${props.username}`);
     }
 
     return {

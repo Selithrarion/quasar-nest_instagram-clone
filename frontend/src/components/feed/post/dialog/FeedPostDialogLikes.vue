@@ -108,7 +108,7 @@ export default defineComponent({
     }
 
     function openUser(username: string) {
-      void router.push(`/${username}`);
+      void router.push(`/profile/${username}`);
     }
 
     return {
