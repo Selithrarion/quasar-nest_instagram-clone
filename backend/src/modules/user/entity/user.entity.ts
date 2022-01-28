@@ -127,14 +127,10 @@ export class UserEntity extends BaseEntity {
   @JoinColumn()
   avatar: PublicFileEntity;
 
-  @Column({ nullable: true })
-  position: string;
-  @Column({ nullable: true })
-  department: string;
-  @Column({ nullable: true })
-  organisation: string;
-  @Column({ nullable: true })
-  location: string;
+  @Column({ length: 1024, nullable: true })
+  description: string;
+  @Column({ length: 512, nullable: true })
+  website: string;
 
   @ManyToMany(() => PostEntity, (post) => post.likes, {
     onUpdate: 'CASCADE',
