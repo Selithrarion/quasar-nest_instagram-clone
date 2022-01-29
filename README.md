@@ -34,6 +34,7 @@ Github actions CI pipeline
 #### Global
 - English lanugage (wow!)
 - User notifications ❌
+- User following system
 
 #### Auth
 - Login / Register / Forgot password ❌
@@ -57,9 +58,10 @@ Github actions CI pipeline
 - Image filters
 - Tags suggestion ❌
 - Dbclick to like post (with cool animation haha) or like with button
-- Show users who liked this post ❌
+- Show users who liked this post
 - Comments CRUD
-- Comment system with 5 lvl reply nesting ❌
+- Like comment
+- Comment system with infinity reply nesting ❌
 - Share to users (?) ❌
 - Bookmark (?) ❌
 ##### Story
