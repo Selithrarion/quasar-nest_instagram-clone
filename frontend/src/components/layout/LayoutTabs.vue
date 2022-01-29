@@ -4,13 +4,7 @@
 
     <CommonIconMessages tooltip="Messages" disabled />
 
-    <BaseButton
-      icon="add_box"
-      size="18px"
-      tooltip="Add post"
-      dense
-      @click="dialog.open('createPost')"
-    />
+    <BaseButton icon="add_box" size="18px" tooltip="Add post" dense @click="dialog.open('createPost')" />
 
     <BaseButton icon="explore" size="18px" tooltip="Explore" disabled dense />
 
@@ -66,8 +60,8 @@ export default defineComponent({
     const currentUser = computed(() => store.state.user.currentUser);
 
     async function openProfilePage() {
-      const userID = currentUser.value?.id;
-      if (userID) await router.push(`/people/${userID}`);
+      const username = currentUser.value?.username;
+      if (username) await router.push(`/profile/${username}`);
     }
     async function logout() {
       try {
