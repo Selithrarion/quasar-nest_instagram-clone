@@ -14,7 +14,7 @@ export class PostEntity extends BaseEntity {
   @Column('text', { array: true, nullable: true })
   tags: string[];
 
-  @ManyToOne(() => UserEntity, {
+  @ManyToOne(() => UserEntity, (user) => user.posts, {
     eager: true,
     cascade: true,
   })
@@ -45,4 +45,5 @@ export class PostEntity extends BaseEntity {
   })
   @JoinColumn()
   file: PublicFileEntity;
+  fileURL: string;
 }
