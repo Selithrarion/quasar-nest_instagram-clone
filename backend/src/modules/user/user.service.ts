@@ -65,6 +65,8 @@ export class UserService {
     const formattedPosts = user.posts.map((p) => {
       return {
         ...p,
+        // TODO: should be replaced with query
+        isViewerLiked: user.likedPostsIDs.includes(p.id),
         fileURL: p.file?.url,
       };
     });
