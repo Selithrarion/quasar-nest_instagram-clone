@@ -15,8 +15,9 @@
             <CommonUser
               class="full-width q-px-xs"
               size="32px"
-              tooltip="Open author's profile"
+              :tooltip="isProfileMode ? null : `Open author's profile`"
               :user="formattedPost.author"
+              :clickable="!isProfileMode"
               hide-name
               @click="openAuthorProfile"
             />
@@ -95,6 +96,13 @@ export default defineComponent({
       type: Object as PropType<PostModel>,
       default: null,
     },
+    mode: {
+      type: String,
+      default: 'feed',
+      validator: (v: string): boolean => {
+        return ['feed', 'profile'].includes(v);
+      },
+    },
   },
 
   emits: ['close', 'open-likes', 'delete', 'edit', 'share'],
@@ -144,6 +152,8 @@ export default defineComponent({
       if (comment) comment.isViewerLiked = !comment.isViewerLiked;
     }
 
+    const isProfileMode = computed(() => props.mode === 'profile');
+
     return {
       loading,
 
@@ -159,6 +169,8 @@ export default defineComponent({
       openAuthorProfile,
 
       toggleCommentLike,
+
+      isProfileMode,
     };
   },
 });
