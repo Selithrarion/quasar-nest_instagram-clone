@@ -25,7 +25,7 @@
               :author-id="formattedPost.author.id"
               @share="$emit('share')"
               @edit="$emit('edit')"
-              @delete="$emit('edit')"
+              @delete="$emit('delete')"
             />
           </div>
 
@@ -103,6 +103,8 @@ export default defineComponent({
     const router = useRouter();
     const loading = useLoading({ customNames: ['comments'] });
 
+    // TODO: add cache like
+    // postID: [comments]
     watch(
       () => props.modelValue,
       async () => {

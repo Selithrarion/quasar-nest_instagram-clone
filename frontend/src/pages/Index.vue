@@ -64,7 +64,6 @@
     >
       Are you sure you want to delete this post?
     </BaseDialog>
-
     <FeedPostDialogEdit
       :model-value="dialog.openedName.value === 'editPost'"
       :post="dialog.openedItem.value"
