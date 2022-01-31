@@ -132,6 +132,12 @@ export class UserEntity extends BaseEntity {
   @Column({ length: 512, nullable: true })
   website: string;
 
+  @OneToMany(() => PostEntity, (post) => post.author, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  posts: PostEntity[]
+
   @ManyToMany(() => PostEntity, (post) => post.likes, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
