@@ -55,7 +55,23 @@ export class UserService {
     return await this.users.findOne(id);
   }
   async getProfileByUsername(username: string): Promise<UserEntity> {
-    return await this.users.findOneOrFail({ where: { username } });
+    const user = await this.users
+      .createQueryBuilder('user')
+      .where('user.username = :username', { username })
+      .leftJoinAndSelect('user.posts', 'posts')
+      .leftJoinAndSelect('posts.file', 'file')
+      .orderBy('posts.createdAt', 'DESC')
+      .getOneOrFail();
+    const formattedPosts = user.posts.map((p) => {
+      return {
+        ...p,
+        fileURL: p.file?.url,
+      };
+    });
+    return {
+      ...user,
+      posts: formattedPosts,
+    } as UserEntity;
   }
 
   async create(payload: CreateUserDTO): Promise<UserEntity> {
