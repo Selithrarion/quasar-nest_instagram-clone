@@ -20,12 +20,16 @@ export interface UserModel extends BaseModel {
   avatar: PublicFileModel | null;
 
   posts?: PostModel[];
+  postsNumber?: number;
 
   isViewerFollowed?: boolean;
   isViewerBlocked?: boolean;
 
   followersIDs: number[];
+  followersNumber?: number;
+
   followedUsersIDs: number[];
+  followedNumber?: number;
 
   accessToken?: string;
   refreshToken?: string;
