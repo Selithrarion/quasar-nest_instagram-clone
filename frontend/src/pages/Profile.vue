@@ -11,19 +11,19 @@
           <div class="row gap-6 text-body1">
             <div>
               <b>
-                {{ profile.postsNumber || 0 }}
+                {{ profile.postsNumber }}
               </b>
               posts
             </div>
             <div>
               <b>
-                {{ profile.followersNumber || 0 }}
+                {{ profile.followersNumber }}
               </b>
               followers
             </div>
             <div>
               <b>
-                {{ profile.followedNumber || 0 }}
+                {{ profile.followedNumber }}
               </b>
               following
             </div>
