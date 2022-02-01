@@ -91,7 +91,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, onBeforeMount } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useStore } from 'src/store';
 import { useI18n } from 'vue-i18n';
 import useDialog from 'src/composables/common/useDialog';
@@ -132,7 +132,6 @@ export default defineComponent({
 
   setup() {
     const router = useRouter();
-    const route = useRoute();
     const store = useStore();
     const { t } = useI18n();
     const dialog = useDialog();
