@@ -1,5 +1,6 @@
 import userRepository from 'src/repositories/userRepository';
 import { useI18n } from 'vue-i18n';
+import { UserModel } from 'src/models/user/user.model';
 
 interface UseFormValidation {
   required: (v: FormValue) => ValidationResult;
@@ -21,7 +22,7 @@ interface UseFormValidation {
 type FormValue = string | number;
 type ValidationResult = Promise<boolean | string> | boolean | string;
 
-export default function useFormValidation(): UseFormValidation {
+export default function useFormValidation(currentUser?: UserModel | null): UseFormValidation {
   const { t } = useI18n();
 
   function required(v: FormValue): ValidationResult {
@@ -33,10 +34,12 @@ export default function useFormValidation(): UseFormValidation {
     return emailRegex.test(String(v)) || t('validation.incorrectEmailFormat');
   }
   async function uniqueUsername(v: FormValue): Promise<boolean | string> {
+    if (v === currentUser?.username) return true;
     const isTaken = await userRepository.isUsernameTaken(v);
     return !isTaken || t('validation.usernameTaken');
   }
   async function uniqueEmail(v: FormValue): Promise<boolean | string> {
+    if (v === currentUser?.email) return true;
     const isTaken = await userRepository.isEmailTaken(v);
     return !isTaken || t('validation.emailTaken');
   }
