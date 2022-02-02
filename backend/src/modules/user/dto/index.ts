@@ -21,16 +21,27 @@ export class CreateUserDTO {
 
 export class UpdateUserDTO {
   @IsString()
-  position: string;
+  @MaxLength(64)
+  username?: string;
+  @IsString()
+  @MaxLength(24)
+  name?: string;
+  @IsString()
+  @IsEmail()
+  email?: string;
 
   @IsString()
-  department: string;
-
+  @MaxLength(1024)
+  description?: string;
   @IsString()
-  organisation: string;
-
+  @MaxLength(512)
+  website?: string;
   @IsString()
-  location: string;
+  @MaxLength(64)
+  phone?: string;
+  @IsString()
+  @MaxLength(64)
+  gender?: string;
 }
 
 export class CreateUserGithubDTO {
