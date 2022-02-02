@@ -38,7 +38,6 @@ export default {
     const { data }: ApiResponseModel<UserAuthResponse> = await http.post('/auth/google-auth', { token });
     return data;
   },
-
   async authWithGithub(code: string): Promise<string> {
     const { data }: ApiResponseModel<string> = await http.post('/auth/github-auth', { code });
     return data;

@@ -1,7 +1,13 @@
 import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { UserStateInterface } from 'src/store/user/state';
-import { UserAuthResponse, UserLoginDTO, UserRegisterDTO, UserUpdateTokenResponse } from 'src/models/user/user.model';
+import {
+  UserAuthResponse,
+  UserDTO,
+  UserLoginDTO,
+  UserRegisterDTO,
+  UserUpdateTokenResponse,
+} from 'src/models/user/user.model';
 import authRepository from 'src/repositories/authRepository';
 import userRepository from 'src/repositories/userRepository';
 
@@ -24,6 +30,11 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
   logout({ commit }) {
     commit('LOGOUT_USER');
     return;
+  },
+
+  async update({ commit }, { id, payload }: { id: number; payload: UserDTO }) {
+    const data = await userRepository.update(id, payload);
+    commit('UPDATE_USER', data);
   },
 
   async authWithGoogle({ commit }, token) {

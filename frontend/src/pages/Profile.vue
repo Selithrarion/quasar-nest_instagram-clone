@@ -7,6 +7,13 @@
         <div class="profile__header-info">
           <h5 class="row items-center gap-3 no-margin">
             {{ profile.username }}
+            <BaseButton
+              v-if="isOwnProfile"
+              label="Edit profile"
+              color="primary"
+              flat
+              @click="dialog.open('editProfile')"
+            />
           </h5>
           <div class="row gap-6 text-body1">
             <div>
@@ -35,6 +42,11 @@
             <div v-if="profile.description">
               {{ profile.description }}
             </div>
+            <div>
+              <BaseButton v-if="profile.website" plain-style @click="openExternalPage(profile.website)">
+                {{ profile.website }}
+              </BaseButton>
+            </div>
           </div>
         </div>
       </div>
@@ -49,6 +61,14 @@
           />
         </ProfilePostList>
       </div>
+
+      <ProfileDialogEdit
+        v-if="isOwnProfile"
+        :model-value="dialog.openedName.value === 'editProfile'"
+        :profile="profile"
+        @updated="updateProfile"
+        @close="dialog.close"
+      />
 
       <FeedPostDialogDetail
         :model-value="dialog.openedName.value === 'postDetail'"
@@ -98,13 +118,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref, watch } from 'vue';
+import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue';
+import { useStore } from 'src/store';
 import { useRoute } from 'vue-router';
 import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
+import openExternalPage from 'app/utils/openExternalPage';
 
 import ProfilePostList from 'components/profile/ProfilePostList.vue';
 import ProfilePost from 'components/profile/ProfilePost.vue';
+import ProfileDialogEdit from 'components/profile/dialog/ProfileDialogEdit.vue';
 import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
 import FeedPostDialogLikes from 'components/feed/post/dialog/FeedPostDialogLikes.vue';
 import FeedPostDialogEdit from 'components/feed/post/dialog/FeedPostDialogEdit.vue';
@@ -120,6 +143,7 @@ export default defineComponent({
   components: {
     ProfilePostList,
     ProfilePost,
+    ProfileDialogEdit,
     FeedPostDialogDetail,
     FeedPostDialogLikes,
     FeedPostDialogEdit,
@@ -128,10 +152,12 @@ export default defineComponent({
   },
 
   setup() {
+    const store = useStore();
     const route = useRoute();
     const dialog = useDialog();
     const loading = useLoading({ default: true });
 
+    const isOwnProfile = computed(() => profile.value?.id === store.state.user.currentUser?.id);
     const profile = ref<UserModel | null>(null);
     onBeforeMount(async () => {
       const { profileUsername } = route.params;
@@ -146,11 +172,18 @@ export default defineComponent({
         loading.stop();
       }
     );
+    function updateProfile(user: UserModel) {
+      profile.value = { ...profile.value, ...user };
+    }
 
     return {
       dialog,
       loading,
+      openExternalPage,
+
+      isOwnProfile,
       profile,
+      updateProfile,
     };
   },
 });
