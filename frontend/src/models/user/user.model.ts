@@ -40,9 +40,13 @@ export interface UserModel extends BaseModel {
 export interface UserDTO {
   username?: string;
   name?: string;
+  email?: string;
   avatar?: PublicFileModel;
-  location?: string;
+
+  description?: string;
+  website?: string;
   phone?: string;
+  gender?: string;
 }
 
 export interface UserSuggestionModel {
