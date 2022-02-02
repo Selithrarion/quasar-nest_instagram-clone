@@ -131,6 +131,10 @@ export class UserEntity extends BaseEntity {
   description: string;
   @Column({ length: 512, nullable: true })
   website: string;
+  @Column({ length: 64, nullable: true })
+  gender: string;
+  @Column({ length: 64, nullable: true })
+  phone: string;
 
   @OneToMany(() => PostEntity, (post) => post.author, {
     onUpdate: 'CASCADE',

@@ -7,9 +7,11 @@ export interface UserModel extends BaseModel {
   username: string;
   password: string;
   email: string;
-  phone?: string;
+
   description: string;
   website: string;
+  gender: string;
+  phone: string;
 
   isActive: boolean;
   isEmailConfirmed: boolean;
