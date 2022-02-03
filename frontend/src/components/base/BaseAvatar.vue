@@ -1,5 +1,12 @@
 <template>
-  <q-avatar class="base-avatar" :class="classes" :size="size" :style="styles" v-bind="$attrs">
+  <q-avatar
+    class="base-avatar"
+    :class="classes"
+    :size="size"
+    :style="styles"
+    v-bind="$attrs"
+    @click="uploadAvatar ? $refs.avatarInput.click() : null"
+  >
     <slot>
       <BaseLoader
         v-if="loading"
@@ -34,11 +41,21 @@
     <BaseTooltip :label="tooltip || itemName" />
 
     <div v-if="clickable" class="base-avatar__hover" />
+
+    <!--TODO: add image crop? gif support?-->
+    <input
+      v-if="uploadAvatar"
+      ref="avatarInput"
+      class="hidden absolute-full"
+      type="file"
+      accept="image/*"
+      @input="emitAvatarFile"
+    />
   </q-avatar>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 
 export default defineComponent({
   name: 'BaseAvatar',
@@ -72,6 +89,7 @@ export default defineComponent({
     whiteLoader: Boolean,
 
     clickable: Boolean,
+    uploadAvatar: Boolean,
 
     size: {
       type: String,
@@ -86,7 +104,9 @@ export default defineComponent({
     },
   },
 
-  setup(props) {
+  emits: ['select-avatar'],
+
+  setup(props, { emit }) {
     const itemInitials = computed(() => String(props.itemName).slice(0, 2).toUpperCase());
     const isHslOrRgbItemColor = computed(() => props.itemColor?.includes('hsl') || props.itemColor?.includes('rgb'));
 
@@ -105,10 +125,20 @@ export default defineComponent({
       return styles;
     });
 
+    const avatarInput = ref<HTMLInputElement | null>(null);
+    function emitAvatarFile() {
+      const file = avatarInput.value?.files?.[0];
+      if (!file) return;
+      emit('select-avatar', file);
+    }
+
     return {
       itemInitials,
       classes,
       styles,
+
+      avatarInput,
+      emitAvatarFile,
     };
   },
 });
