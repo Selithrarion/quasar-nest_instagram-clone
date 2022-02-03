@@ -1,6 +1,15 @@
 <template>
   <div class="profile-header">
-    <BaseAvatar size="150px" :src="profile.avatar?.url" :item-name="profile.username" :item-color="profile.color" />
+    <BaseAvatar
+      size="150px"
+      :src="profile.avatar?.url"
+      :item-name="profile.username"
+      :item-color="profile.color"
+      :clickable="isOwnProfile"
+      :upload-avatar="isOwnProfile"
+      :tooltip="isOwnProfile ? 'Upload new avatar' : null"
+      @select-avatar="uploadAvatar"
+    />
     <div class="profile-header__info">
       <h5 class="row items-center gap-3 no-margin">
         {{ profile.username }}
@@ -44,8 +53,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useStore } from 'src/store';
+import useLoading from 'src/composables/common/useLoading';
+
 import { UserModel } from 'src/models/user/user.model';
+import { PublicFileModel } from 'src/models/common/public-file.model';
 
 export default defineComponent({
   name: 'ProfileHeader',
@@ -58,10 +72,32 @@ export default defineComponent({
     isOwnProfile: Boolean,
   },
 
-  emits: ['edit-profile'],
+  emits: ['edit-profile', 'update-avatar'],
 
-  setup() {
-    return {};
+  setup(_, { emit }) {
+    const q = useQuasar();
+    const store = useStore();
+    const loading = useLoading();
+
+    async function uploadAvatar(file: File) {
+      try {
+        loading.start();
+
+        const avatar = (await store.dispatch('user/updateAvatar', file)) as PublicFileModel;
+        emit('update-avatar', { avatar });
+
+        q.notify({
+          type: 'positive',
+          message: 'Avatar updated',
+        });
+      } finally {
+        loading.stop();
+      }
+    }
+
+    return {
+      uploadAvatar,
+    };
   },
 });
 </script>

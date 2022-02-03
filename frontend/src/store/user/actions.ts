@@ -36,6 +36,11 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
     const data = await userRepository.update(id, payload);
     commit('UPDATE_USER', data);
   },
+  async updateAvatar({ commit }, file) {
+    const avatar = await userRepository.uploadAvatar(file);
+    commit('UPDATE_USER', { avatar });
+    return avatar;
+  },
 
   async authWithGoogle({ commit }, token) {
     const data = await authRepository.authWithGoogle(token);
