@@ -37,13 +37,12 @@ Github actions CI pipeline
 - User following system
 
 #### Auth
-- Login / Register / Forgot password ❌
+- Login / Register / Forgot password (dev smtp)
 - OAuth with Google / Github ❌
-- Unique username / email validation ❌
-
-- Send email verification mail ❌
-- Automaticly redirect to requested page after login (/auth?redirect=/profile/1) ❌
-- JWT access (1d exp) and refresh (30d exp) tokens, auto relogin if access token expired ❌
+- Unique username / email
+- Send email verification mail (dev smtp)
+- Automaticly redirect to requested page after login (/auth?redirect=/profile/1)
+- JWT access (1d exp) and refresh ❌ (30d exp) tokens, auto relogin if access token expired 
 
 #### Feed
 - View all recent posts (photos/videos) from subscriptions or trends ❌
@@ -61,6 +60,7 @@ Github actions CI pipeline
 - Show users who liked this post
 - Comments CRUD
 - Like comment
+- Report post ❌
 - Comment system with infinity reply nesting ❌
 - Share to users (?) ❌
 - Bookmark (?) ❌
@@ -71,9 +71,10 @@ Github actions CI pipeline
 #### Messenger (?)
 
 #### Profile page
-- View all own photos/videos ❌
-- Edit info - change username / name / email / about etc... ❌
-- Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp)) ❌
+- View all own photos/videos(❌)
+- Edit info - change username / name / email (❌) / bio etc...
+- Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp))
+- Upload gif avatar (?) ❌
 
 ### Install  
 1. Clone project  
