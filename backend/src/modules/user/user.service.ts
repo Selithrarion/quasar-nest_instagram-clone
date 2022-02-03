@@ -58,6 +58,7 @@ export class UserService {
     const user = await this.users
       .createQueryBuilder('user')
       .where('user.username = :username', { username })
+      .leftJoinAndSelect('user.avatar', 'avatar')
       .leftJoinAndSelect('user.posts', 'posts')
       .leftJoinAndSelect('posts.file', 'file')
       .orderBy('posts.createdAt', 'DESC')
