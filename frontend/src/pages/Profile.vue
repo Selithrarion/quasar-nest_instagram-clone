@@ -2,65 +2,16 @@
   <q-page class="profile q-pa-xl">
     <BaseLoader v-if="loading.active.value" page-margin />
     <template v-else>
-      <div class="profile__header">
-        <BaseAvatar size="150px" :src="profile.avatar?.url" :item-name="profile.username" :item-color="profile.color" />
-        <div class="profile__header-info">
-          <h5 class="row items-center gap-3 no-margin">
-            {{ profile.username }}
-            <BaseButton
-              v-if="isOwnProfile"
-              label="Edit profile"
-              color="primary"
-              flat
-              @click="dialog.open('editProfile')"
-            />
-          </h5>
-          <div class="row gap-6 text-body1">
-            <div>
-              <b>
-                {{ profile.postsNumber }}
-              </b>
-              posts
-            </div>
-            <div>
-              <b>
-                {{ profile.followersNumber }}
-              </b>
-              followers
-            </div>
-            <div>
-              <b>
-                {{ profile.followedNumber }}
-              </b>
-              following
-            </div>
-          </div>
-          <div class="column gap-2">
-            <div class="text-body1 text-weight-bold">
-              {{ profile.name }}
-            </div>
-            <div v-if="profile.description">
-              {{ profile.description }}
-            </div>
-            <div>
-              <BaseButton v-if="profile.website" plain-style @click="openExternalPage(profile.website)">
-                {{ profile.website }}
-              </BaseButton>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProfileHeader :profile="profile" :is-own-profile="isOwnProfile" @edit-profile="dialog.open('editProfile')" />
 
-      <div class="profile__content">
-        <ProfilePostList>
-          <ProfilePost
-            v-for="post in profile.posts"
-            :key="post.id"
-            :post="post"
-            @click="dialog.open('postDetail', { item: post })"
-          />
-        </ProfilePostList>
-      </div>
+      <ProfilePostList>
+        <ProfilePost
+          v-for="post in profile.posts"
+          :key="post.id"
+          :post="post"
+          @click="dialog.open('postDetail', { item: post })"
+        />
+      </ProfilePostList>
 
       <ProfileDialogEdit
         v-if="isOwnProfile"
@@ -127,6 +78,7 @@ import openExternalPage from 'app/utils/openExternalPage';
 
 import ProfilePostList from 'components/profile/ProfilePostList.vue';
 import ProfilePost from 'components/profile/ProfilePost.vue';
+import ProfileHeader from 'components/profile/ProfileHeader.vue';
 import ProfileDialogEdit from 'components/profile/dialog/ProfileDialogEdit.vue';
 import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
 import FeedPostDialogLikes from 'components/feed/post/dialog/FeedPostDialogLikes.vue';
@@ -143,6 +95,7 @@ export default defineComponent({
   components: {
     ProfilePostList,
     ProfilePost,
+    ProfileHeader,
     ProfileDialogEdit,
     FeedPostDialogDetail,
     FeedPostDialogLikes,
@@ -194,15 +147,5 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   gap: 64px;
-
-  &__header {
-    display: flex;
-    gap: 32px;
-  }
-  &__header-info {
-    display: flex;
-    flex-flow: column;
-    gap: 16px;
-  }
 }
 </style>
