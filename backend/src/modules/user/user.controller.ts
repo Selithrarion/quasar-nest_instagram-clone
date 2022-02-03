@@ -47,6 +47,7 @@ export class UserController {
   }
 
   @Post('avatar')
+  @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('file'))
   async uploadAvatar(@UploadedFile() file: Express.Multer.File, @Request() req): Promise<PublicFileEntity> {
     return await this.userService.setUserImage(file, 'avatar', req.user.id);
