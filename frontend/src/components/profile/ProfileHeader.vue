@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { useQuasar } from 'quasar';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
