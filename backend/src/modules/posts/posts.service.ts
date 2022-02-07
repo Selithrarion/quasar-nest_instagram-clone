@@ -5,10 +5,11 @@ import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from './dto';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate/index';
 
 import { PostEntity } from './entity/post.entity';
+import { CommentEntity } from './entity/comment.entity';
+import { ReportEntity } from './entity/report.entity';
 
 import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
-import { CommentEntity } from './entity/comment.entity';
 import { UserEntity } from '../user/entity/user.entity';
 
 @Injectable()
@@ -16,6 +17,8 @@ export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
     private posts: Repository<PostEntity>,
+    @InjectRepository(ReportEntity)
+    private postReports: Repository<ReportEntity>,
     @InjectRepository(CommentEntity)
     private postComments: Repository<CommentEntity>,
 
@@ -117,6 +120,15 @@ export class PostsService {
     await this.posts.delete(id);
   }
 
+  async report(id: number, reasonID: number, userID: number): Promise<void> {
+    const post = await this.posts.findOneOrFail(id);
+    const user = await this.userService.getByID(userID);
+    await this.postReports.save({
+      reporter: user,
+      reported: post,
+      reasonID,
+    });
+  }
   async share(id: number, userID: number): Promise<void> {
     console.log('share', id, userID);
   }

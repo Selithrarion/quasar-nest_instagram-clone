@@ -65,6 +65,11 @@ export class PostsController {
     return await this.postsService.delete(id);
   }
 
+  @Post('report/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async report(@Param('id') id: number, @Body('reasonID') reasonID: number, @Request() req): Promise<void> {
+    return await this.postsService.report(id, reasonID, req.user.id);
+  }
   @Post('share/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async share(@Param('id') id: number, @Request() req): Promise<void> {
