@@ -21,6 +21,7 @@ import { CommentEntity } from '../../posts/entity/comment.entity';
 import { PostEntity } from '../../posts/entity/post.entity';
 
 import stringToHslColor from '../../../common/utils/stringToHslColor';
+import { ReportEntity } from '../../posts/entity/report.entity';
 // import { FollowingEntity } from './following.entity';
 
 export interface UserGoogleData {
@@ -203,6 +204,9 @@ export class UserEntity extends BaseEntity {
     onDelete: 'CASCADE',
   })
   comments: CommentEntity[];
+
+  @OneToMany(() => ReportEntity, (report) => report.reporter)
+  postReports: ReportEntity[];
 
   @OneToMany(() => NotificationEntity, (notification) => notification.user, {
     onUpdate: 'CASCADE',
