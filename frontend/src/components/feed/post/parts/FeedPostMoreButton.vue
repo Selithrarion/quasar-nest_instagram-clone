@@ -1,7 +1,7 @@
 <template>
   <BaseButtonMore>
     <BaseMenu>
-      <BaseItem v-if="!isOwnPost" label="Report" danger @click="report" />
+      <BaseItem v-if="!isOwnPost" label="Report" danger @click="$emit('report')" />
       <BaseItem
         v-if="!isOwnPost"
         :label="isViewerFollowed ? 'Unfollow' : 'Follow'"
@@ -48,7 +48,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['delete', 'edit', 'share'],
+  emits: ['delete', 'edit', 'share', 'report'],
 
   setup(props) {
     const store = useStore();
@@ -57,9 +57,6 @@ export default defineComponent({
     const isOwnPost = computed(() => props.authorId === store.state.user.currentUser?.id);
     const isViewerFollowed = computed(() => store.state.user.currentUser?.followedUsersIDs.includes(props.authorId));
 
-    function report() {
-      console.log('report', props.postId);
-    }
     async function follow() {
       try {
         loading.start('follow');
@@ -83,7 +80,6 @@ export default defineComponent({
       isOwnPost,
       isViewerFollowed,
 
-      report,
       follow,
       unfollow,
     };

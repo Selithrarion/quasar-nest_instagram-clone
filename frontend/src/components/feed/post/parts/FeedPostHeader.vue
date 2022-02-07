@@ -11,6 +11,7 @@
       @share="$emit('share')"
       @delete="$emit('delete')"
       @edit="$emit('edit')"
+      @report="$emit('report')"
     />
   </div>
 </template>
@@ -50,7 +51,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['delete', 'edit', 'share'],
+  emits: ['delete', 'edit', 'share', 'report'],
 
   setup(props) {
     const router = useRouter();

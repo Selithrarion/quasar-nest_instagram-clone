@@ -25,6 +25,7 @@
         @delete="$emit('delete')"
         @edit="$emit('edit')"
         @share="$emit('share')"
+        @report="$emit('report')"
       />
 
       <FeedPostImage :post-id="post.id" :src="post.fileURL" :is-viewer-liked="post.isViewerLiked" />
@@ -78,7 +79,7 @@ export default defineComponent({
     useSkeleton: Boolean,
   },
 
-  emits: ['open-post', 'open-likes', 'delete', 'edit', 'share', 'share-to-user'],
+  emits: ['open-post', 'open-likes', 'delete', 'edit', 'share', 'share-to-user', 'report'],
 });
 </script>
 

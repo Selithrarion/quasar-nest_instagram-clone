@@ -27,6 +27,7 @@
               @share="$emit('share')"
               @edit="$emit('edit')"
               @delete="$emit('delete')"
+              @report="$emit('report')"
             />
           </div>
 
@@ -105,7 +106,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'open-likes', 'delete', 'edit', 'share'],
+  emits: ['close', 'open-likes', 'delete', 'edit', 'share', 'report'],
 
   setup(props) {
     const router = useRouter();

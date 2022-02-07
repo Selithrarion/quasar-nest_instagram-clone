@@ -31,6 +31,7 @@
           @delete="dialog.open('deletePost', { item: post })"
           @share="dialog.open('share', { item: post })"
           @share-to-user="dialog.open('shareToUser', { item: post })"
+          @report="dialog.open('report', { item: post })"
           @open-post="dialog.open('postDetail', { item: post })"
           @open-likes="dialog.open('postLikes', { item: post })"
         />
@@ -51,6 +52,7 @@
       @edit="dialog.open('editPost', { item: dialog.openedItem.value })"
       @delete="dialog.open('deletePost', { item: dialog.openedItem.value })"
       @share="dialog.open('share', { item: dialog.openedItem.value })"
+      @report="dialog.open('report', { item: post })"
       @close="dialog.close"
     />
 
@@ -86,6 +88,12 @@
       :post-id="dialog.openedItem.value?.id"
       @close="dialog.close"
     />
+
+    <FeedPostDialogReport
+      :model-value="dialog.openedName.value === 'report'"
+      :post="dialog.openedItem.value"
+      @close="dialog.close"
+    />
   </q-page>
 </template>
 
@@ -108,6 +116,7 @@ import FeedPostDialogLikes from 'components/feed/post/dialog/FeedPostDialogLikes
 import FeedPostDialogEdit from 'components/feed/post/dialog/FeedPostDialogEdit.vue';
 import FeedPostDialogShare from 'components/feed/post/dialog/FeedPostDialogShare.vue';
 import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialogShareToUser.vue';
+import FeedPostDialogReport from 'components/feed/post/dialog/FeedPostDialogReport.vue';
 
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
 
@@ -126,6 +135,7 @@ export default defineComponent({
     FeedPostDialogEdit,
     FeedPostDialogShare,
     FeedPostDialogShareToUser,
+    FeedPostDialogReport,
 
     FeedSidebar,
   },
