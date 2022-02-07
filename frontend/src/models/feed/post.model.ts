@@ -27,3 +27,15 @@ export interface PostDTO {
   file: Blob;
   description: string;
 }
+
+export enum PostReportTypes {
+  SPAM = 1,
+  NUDITY,
+  HATE,
+  BULLING,
+  AUTHOR_RIGHTS,
+  SUICIDE,
+  SCAM,
+  FALSE_INFORMATION,
+  DONT_LIKE,
+}
