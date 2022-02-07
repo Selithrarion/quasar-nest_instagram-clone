@@ -38,6 +38,9 @@ export default {
   async share(id: number): Promise<void> {
     return await http.post(`/posts/share/${id}`);
   },
+  async report(id: number, reasonID: number): Promise<void> {
+    return await http.post(`/posts/report/${id}`, { reasonID });
+  },
 
   async toggleLike(id: number): Promise<void> {
     return await http.post(`/posts/like/${id}`);
