@@ -59,6 +59,7 @@ export interface UserSuggestion {
   color: string;
   avatar?: PublicFileEntity | null;
   username: string;
+  suggestion: string;
 }
 // TODO: should remove relation ids and refactor.
 // cuz if user have lots of subscribers/subscriptions/likes etc it'll send to frontend

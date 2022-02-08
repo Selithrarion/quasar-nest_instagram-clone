@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Not, Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { CreateUserDTO } from './dto';
-import { UserEntity } from './entity/user.entity';
+import { UserEntity, UserSuggestion } from './entity/user.entity';
 import { PostEntity } from '../posts/entity/post.entity';
 
 import { FilesService } from '../files/files.service';
@@ -249,5 +249,43 @@ export class UserService {
     // const following = await this.followings.findOneOrFail({ where: { follower: currentUser } });
     // console.log('unfollow', following);
     // await this.followings.remove(following);
+  }
+
+  async getSuggestions(currentUserID: number): Promise<UserSuggestion[]> {
+    // TODO: figure out
+    // const currentUser = await this.users.findOneOrFail(currentUserID, { relations: ['followers', 'followedUsers'] });
+    // const followersThatCurrentUserDontFollow = await this.users
+    //   .createQueryBuilder('user')
+    //   .leftJoinAndSelect('user.followedUsers', 'followedUsers')
+    //   .where('followedUsers NOT IN (:currentUserFollowers)', { currentUserFollowers: currentUser.followers })
+    //   .take(1)
+    //   .getMany();
+    // // suggestion: Follows you
+
+    // const followedByYourFollowed = await this.users
+    //   .createQueryBuilder('user')
+    //   .leftJoinAndSelect('user.followedUsers', 'followedUsers')
+    //   .leftJoinAndSelect('user.followers', 'followers')
+    //   .where('followers IN (:currentUserFollowedUsers)', { currentUserFollowedUsers: currentUser.followedUsers })
+    //   .andWhere('followers IN (:currentUserFollowedUsers)', { currentUserFollowedUsers: currentUser.followedUsers })
+    //   .take(1)
+    //   .getMany();
+    // // suggestion: Followed by USERNAME
+
+    const last3NewUsers = await this.users.find({
+      where: {
+        id: Not(currentUserID),
+      },
+      take: 3,
+    });
+    return last3NewUsers.map((u) => {
+      return {
+        id: u.id,
+        color: u.color,
+        avatar: u.avatar,
+        username: u.username,
+        suggestion: 'New to Instagram',
+      };
+    });
   }
 }

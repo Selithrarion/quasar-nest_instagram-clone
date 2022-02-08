@@ -14,7 +14,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 
-import { UserEntity } from './entity/user.entity';
+import { UserEntity, UserSuggestion } from './entity/user.entity';
 import { UserService } from './user.service';
 
 import { Public } from '../auth/decorators/public.decorator';
@@ -33,6 +33,11 @@ export class UserController {
   @Get('self')
   async getSelf(@Request() req): Promise<UserEntity> {
     return await this.userService.getByID(req.user.id);
+  }
+
+  @Get('suggestions')
+  async getSuggestions(@Request() req): Promise<UserSuggestion[]> {
+    return await this.userService.getSuggestions(req.user.id);
   }
 
   @Public()
