@@ -54,7 +54,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { useQuasar } from 'quasar';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
@@ -72,10 +71,9 @@ export default defineComponent({
     isOwnProfile: Boolean,
   },
 
-  emits: ['edit-profile', 'update-avatar'],
+  emits: ['edit-profile', 'update-avatar', 'toggle-follow'],
 
-  setup(_, { emit }) {
-    const q = useQuasar();
+  setup(props, { emit }) {
     const store = useStore();
     const loading = useLoading();
 
@@ -85,13 +83,27 @@ export default defineComponent({
 
         const avatar = (await store.dispatch('user/updateAvatar', file)) as PublicFileModel;
         emit('update-avatar', { avatar });
-
-        q.notify({
-          type: 'positive',
-          message: 'Avatar updated',
-        });
       } finally {
         loading.stop();
+      }
+    }
+
+    async function follow() {
+      try {
+        loading.start('follow');
+        await store.dispatch('user/follow', props.profile.id);
+        emit('toggle-follow');
+      } finally {
+        loading.stop('follow');
+      }
+    }
+    async function unfollow() {
+      try {
+        loading.start('unfollow');
+        await store.dispatch('user/unfollow', props.profile.id);
+        emit('toggle-follow');
+      } finally {
+        loading.stop('unfollow');
       }
     }
 

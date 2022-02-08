@@ -11,6 +11,7 @@ import {
 } from 'src/models/user/user.model';
 import authRepository from 'src/repositories/authRepository';
 import userRepository from 'src/repositories/userRepository';
+import { Notify } from 'quasar';
 
 const actions: ActionTree<UserStateInterface, StateInterface> = {
   async login({ commit }, payload: UserLoginDTO): Promise<UserAuthResponse> {
@@ -39,6 +40,10 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
   },
   async updateAvatar({ commit }, file) {
     const avatar = await userRepository.uploadAvatar(file);
+    Notify.create({
+      type: 'positive',
+      message: 'Avatar updated',
+    });
     commit('UPDATE_USER', { avatar });
     return avatar;
   },
@@ -72,10 +77,18 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
 
   async follow({ commit }, id: number) {
     await userRepository.follow(id);
+    Notify.create({
+      type: 'positive',
+      message: 'Successfully followed',
+    });
     commit('FOLLOW', id);
   },
   async unfollow({ commit }, id: number) {
     await userRepository.unfollow(id);
+    Notify.create({
+      type: 'positive',
+      message: 'Successfully unfollowed',
+    });
     commit('UNFOLLOW', id);
   },
 
