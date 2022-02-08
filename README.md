@@ -38,7 +38,7 @@ Github actions CI pipeline
 
 #### Auth
 - Login / Register / Forgot password (dev smtp)
-- OAuth with Google / Github ❌
+- OAuth with Google / Github
 - Unique username / email
 - Send email verification mail (dev smtp)
 - Automaticly redirect to requested page after login (/auth?redirect=/profile/1)
@@ -60,9 +60,9 @@ Github actions CI pipeline
 - Show users who liked this post
 - Comments CRUD
 - Like comment
-- Report post ❌
+- Report post
 - Comment system with infinity reply nesting ❌
-- Share to users (?) ❌
+- Share to users in messanger (?) ❌
 - Bookmark (?) ❌
 ##### Story
 - Story CR❌U❌D❌
