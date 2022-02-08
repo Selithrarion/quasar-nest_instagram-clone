@@ -6,6 +6,7 @@ import {
   UserDTO,
   UserLoginDTO,
   UserRegisterDTO,
+  UserSuggestionModel,
   UserUpdateTokenResponse,
 } from 'src/models/user/user.model';
 import authRepository from 'src/repositories/authRepository';
@@ -76,6 +77,11 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
   async unfollow({ commit }, id: number) {
     await userRepository.unfollow(id);
     commit('UNFOLLOW', id);
+  },
+
+  async getSuggestions({ commit }) {
+    const data: UserSuggestionModel[] = await userRepository.getSuggestions();
+    commit('SET_SUGGESTIONS', data);
   },
 };
 

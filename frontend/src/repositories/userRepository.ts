@@ -1,5 +1,5 @@
 import { http } from 'boot/axios';
-import { UserDTO, UserModel } from 'src/models/user/user.model';
+import { UserDTO, UserModel, UserSuggestionModel } from 'src/models/user/user.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
 import { PublicFileModel } from 'src/models/common/public-file.model';
 
@@ -61,5 +61,10 @@ export default {
   },
   async unfollow(id: number): Promise<void> {
     await http.post(`/user/unfollow/${id}`);
+  },
+
+  async getSuggestions(): Promise<UserSuggestionModel[]> {
+    const { data }: ApiResponseModel<UserSuggestionModel[]> = await http.get('/user/suggestions');
+    return data;
   },
 };

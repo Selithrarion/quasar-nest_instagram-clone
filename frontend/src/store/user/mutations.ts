@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex';
 import { Cookies } from 'quasar';
 import { UserStateInterface } from './state';
-import { UserAuthResponse, UserDTO, UserUpdateTokenResponse } from 'src/models/user/user.model';
+import { UserAuthResponse, UserDTO, UserSuggestionModel, UserUpdateTokenResponse } from 'src/models/user/user.model';
 import { http } from 'boot/axios';
 
 const mutation: MutationTree<UserStateInterface> = {
@@ -40,6 +40,10 @@ const mutation: MutationTree<UserStateInterface> = {
   UNFOLLOW(state: UserStateInterface, id: number) {
     if (!state.currentUser) return;
     state.currentUser.followedUsersIDs = state.currentUser.followedUsersIDs.filter((userID) => userID !== id);
+  },
+
+  SET_SUGGESTIONS(state: UserStateInterface, payload: UserSuggestionModel[]) {
+    state.suggestions = payload;
   },
 };
 
