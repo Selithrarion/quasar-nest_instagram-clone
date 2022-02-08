@@ -1,7 +1,7 @@
 <template>
   <BaseDialog title="Likes" :model-value="modelValue" :actions="false" @close="$emit('close')">
     <CommonUser
-      v-for="user in formattedUsers"
+      v-for="(user, userIndex) in availableUsers"
       :key="user.id"
       size="44px"
       :user="user"
@@ -20,7 +20,7 @@
           :label="user.isViewerFollowed ? 'Unfollow' : 'Follow'"
           :flat="user.isViewerFollowed"
           unelevated
-          @click.stop="user.isViewerFollowed ? unfollow(user.id) : follow(user.id)"
+          @click.stop="user.isViewerFollowed ? unfollow(user.id, userIndex) : follow(user.id, userIndex)"
         />
       </template>
     </CommonUser>
@@ -64,14 +64,6 @@ export default defineComponent({
     const currentUser = computed(() => store.state.user.currentUser);
 
     const availableUsers = ref<UserModel[]>([]);
-    const formattedUsers = computed(() =>
-      availableUsers.value.map((u) => {
-        return {
-          ...u,
-          isViewerFollowed: currentUser.value ? currentUser.value.followedUsersIDs.includes(u.id) : false,
-        };
-      })
-    );
 
     watch(
       () => props.modelValue,
@@ -88,20 +80,22 @@ export default defineComponent({
     }
 
     const currentUserIdLoading = ref(-1);
-    async function follow(id: number) {
+    async function follow(id: number, index: number) {
       try {
         loading.start('follow');
         currentUserIdLoading.value = id;
         await store.dispatch('user/follow', id);
+        availableUsers.value[index].isViewerFollowed = true;
       } finally {
         loading.stop('follow');
       }
     }
-    async function unfollow(id: number) {
+    async function unfollow(id: number, index: number) {
       try {
         loading.start('unfollow');
         currentUserIdLoading.value = id;
         await store.dispatch('user/unfollow', id);
+        availableUsers.value[index].isViewerFollowed = false;
       } finally {
         loading.stop('unfollow');
       }
@@ -115,7 +109,6 @@ export default defineComponent({
       loading,
 
       availableUsers,
-      formattedUsers,
 
       isNotOwnLike,
 
