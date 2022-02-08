@@ -41,8 +41,8 @@ export class PostsController {
   }
   // TODO: need to add likes pagination. on frontend fetch next page when user scrolls to dialog bottom
   @Get('likes/:id')
-  async getLikes(@Param('id') id: number): Promise<UserEntity[]> {
-    return await this.postsService.getLikes(id);
+  async getLikes(@Param('id') id: number, @Request() req): Promise<UserEntity[]> {
+    return await this.postsService.getLikes(id, req.user.id);
   }
 
   @UseInterceptors(FileInterceptor('file'))

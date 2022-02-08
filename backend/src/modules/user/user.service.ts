@@ -267,6 +267,9 @@ export class UserService {
     //   .getMany();
     // // suggestion: Followed by USERNAME
 
+    // SELECT * FROM Customers
+    // WHERE Country IN (SELECT Country FROM Suppliers);
+
     const last3NewUsers = await this.users.find({
       where: {
         id: Not(currentUserID),
