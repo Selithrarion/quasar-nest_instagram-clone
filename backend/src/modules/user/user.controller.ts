@@ -59,8 +59,8 @@ export class UserController {
   }
 
   @Get(':username')
-  async getProfileByUsername(@Param('username') username: string): Promise<UserEntity> {
-    return await this.userService.getProfileByUsername(username);
+  async getProfileByUsername(@Param('username') username: string, @Request() req): Promise<UserEntity> {
+    return await this.userService.getProfileByUsername(username, req.user.id);
   }
   @Patch(':id')
   async update(@Param('id') id: number, @Body() payload: Partial<UserEntity>): Promise<UserEntity> {

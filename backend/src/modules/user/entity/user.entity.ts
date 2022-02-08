@@ -214,4 +214,7 @@ export class UserEntity extends BaseEntity {
     onDelete: 'CASCADE',
   })
   notifications: NotificationEntity[];
+
+  isViewerFollowed?: boolean;
+  isViewerBlocked?: boolean;
 }

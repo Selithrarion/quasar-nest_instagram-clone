@@ -54,7 +54,7 @@ export class UserService {
   async getByID(id: number): Promise<UserEntity> {
     return await this.users.findOne(id);
   }
-  async getProfileByUsername(username: string): Promise<UserEntity> {
+  async getProfileByUsername(username: string, currentUserID: number): Promise<UserEntity> {
     const user = await this.users
       .createQueryBuilder('user')
       .where('user.username = :username', { username })
@@ -77,6 +77,9 @@ export class UserService {
     });
     return {
       ...user,
+      // TODO: should be replaced with query
+      isViewerFollowed: user.followersIDs.includes(currentUserID),
+      isViewerBlocked: false,
       posts: formattedPosts,
     } as UserEntity;
   }
