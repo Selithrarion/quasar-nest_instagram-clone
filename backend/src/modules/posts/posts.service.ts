@@ -89,9 +89,14 @@ export class PostsService {
     // });
     // return trees;
   }
-  async getLikes(id: number): Promise<UserEntity[]> {
+  async getLikes(id: number, currentUserID: number): Promise<UserEntity[]> {
     const post = await this.posts.findOneOrFail(id, { relations: ['likes'] });
-    return post.likes;
+    return post.likes.map((user) => {
+      return {
+        ...user,
+        isViewerFollowed: user.followersIDs.includes(currentUserID),
+      };
+    }) as UserEntity[];
   }
 
   async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {
