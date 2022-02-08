@@ -14,6 +14,14 @@
       <h5 class="row items-center gap-3 no-margin">
         {{ profile.username }}
         <BaseButton v-if="isOwnProfile" label="Edit profile" color="primary" flat @click="$emit('edit-profile')" />
+        <template v-else>
+          <BaseButton
+            color="primary"
+            :label="profile.isViewerFollowed ? 'Unfollow' : 'Follow'"
+            :flat="profile.isViewerFollowed"
+            @click="profile.isViewerFollowed ? unfollow() : follow()"
+          />
+        </template>
       </h5>
       <div class="row gap-6 text-body1">
         <div>
@@ -109,6 +117,8 @@ export default defineComponent({
 
     return {
       uploadAvatar,
+      follow,
+      unfollow,
     };
   },
 });

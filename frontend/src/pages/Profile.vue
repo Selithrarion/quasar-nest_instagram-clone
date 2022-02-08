@@ -2,7 +2,13 @@
   <q-page class="profile q-pa-xl">
     <BaseLoader v-if="loading.active.value" page-margin />
     <template v-else>
-      <ProfileHeader :profile="profile" :is-own-profile="isOwnProfile" @edit-profile="dialog.open('editProfile')"  @update-avatar="updateProfile"/>
+      <ProfileHeader
+        :profile="profile"
+        :is-own-profile="isOwnProfile"
+        @edit-profile="dialog.open('editProfile')"
+        @update-avatar="updateProfile"
+        @toggle-follow="profile.isViewerFollowed = !profile.isViewerFollowed"
+      />
 
       <ProfilePostList>
         <ProfilePost
