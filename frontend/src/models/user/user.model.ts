@@ -54,6 +54,7 @@ export interface UserSuggestionModel {
   color: string;
   avatar?: PublicFileModel | null;
   username: string;
+  suggestion: string;
 }
 
 export interface UserLoginDTO {
