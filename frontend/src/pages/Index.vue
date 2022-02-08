@@ -154,7 +154,10 @@ export default defineComponent({
     const currentUser = computed(() => store.state.user.currentUser);
 
     onBeforeMount(async () => {
-      if (!availablePosts.value) await store.dispatch('post/getAll');
+      if (!availablePosts.value) {
+        await store.dispatch('post/getAll');
+        await store.dispatch('user/getSuggestions');
+      }
     });
 
     function openStory(storyID: number) {

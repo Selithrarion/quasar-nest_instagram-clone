@@ -6,20 +6,27 @@
     </div>
 
     <div>
-      <CommonUser v-for="user in suggestions" :key="user.id" class="q-px-xs" size="32px" :user="user" hide-name>
-        <template #name> Follows you / Followed by USERNAME / New to Instagram </template>
+      <CommonUser
+        v-for="user in suggestions"
+        :key="user.id"
+        class="q-px-xs"
+        size="32px"
+        :user="user"
+        hide-name
+        @click="openProfile(user.username)"
+      >
+        <template #name> {{ user.suggestion }} </template>
       </CommonUser>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'src/store';
 
 import CommonUser from 'components/common/CommonUser.vue';
-
-import { UserSuggestionModel } from 'src/models/user/user.model';
 
 export default defineComponent({
   name: 'FeedSidebarRecommendations',
@@ -30,32 +37,21 @@ export default defineComponent({
 
   setup() {
     const router = useRouter();
+    const store = useStore();
 
-    const suggestions = ref<UserSuggestionModel[]>([
-      {
-        id: 1,
-        color: 'rgb(221, 179, 230)',
-        username: 'test',
-      },
-      {
-        id: 2,
-        color: 'rgb(221, 179, 230)',
-        username: 'test2',
-      },
-      {
-        id: 3,
-        color: 'rgb(221, 179, 230)',
-        username: 'test23',
-      },
-    ]);
+    const suggestions = computed(() => store.state.user.suggestions);
 
-    async function openExplorePeoplePage() {
-      await router.push('/explore/people');
+    function openExplorePeoplePage() {
+      void router.push('/explore/people');
+    }
+    function openProfile(username: string) {
+      void router.push(`/profile/${username}`);
     }
 
     return {
       suggestions,
       openExplorePeoplePage,
+      openProfile,
     };
   },
 });
