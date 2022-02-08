@@ -155,8 +155,7 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       if (!availablePosts.value) {
-        await store.dispatch('post/getAll');
-        await store.dispatch('user/getSuggestions');
+        await Promise.all([store.dispatch('post/getAll'), store.dispatch('user/getSuggestions')]);
       }
     });
 
