@@ -42,6 +42,7 @@ export class PostsService {
     queryBuilder.orderBy('post.createdAt', 'DESC');
     queryBuilder.leftJoinAndSelect('post.author', 'author');
     queryBuilder.leftJoinAndSelect('post.file', 'file');
+    queryBuilder.leftJoinAndSelect('post.tags', 'tags');
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 
@@ -49,6 +50,9 @@ export class PostsService {
       items.map(async (p) => ({
         ...p,
         comments: await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
+        tags: p.tags.map((t) => {
+          return t.name;
+        }),
         fileURL: p.file?.url,
         // TODO: should be replaced with query
         isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
@@ -122,18 +126,43 @@ export class PostsService {
       imageMaxSizeMB: 20,
       type: 'image',
     });
-    return await this.posts.save({
-      ...payload,
+    const post = await this.posts.save({
+      description: payload.description,
       file: uploadedFile,
       author: user,
     });
+
+    try {
+      const parsedTags = JSON.parse(payload.tags);
+      await this.posts.save({
+        ...post,
+        tags: parsedTags.map((t) => {
+          return {
+            name: t,
+            post,
+          };
+        }),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    return post;
   }
 
-  async update(id: number, postData: UpdatePostDTO): Promise<PostEntity> {
-    const toUpdate = await this.posts.findOneOrFail(id);
-    const updated = this.posts.create({ ...toUpdate, ...postData });
-    await this.posts.save(updated);
-    return updated;
+  async update(id: number, payload: UpdatePostDTO): Promise<PostEntity> {
+    try {
+      const formattedPayload = {
+        ...payload,
+        tags: JSON.parse(payload.tags),
+      };
+      const toUpdate = await this.posts.findOneOrFail(id);
+      const updated = this.posts.create({ ...toUpdate, ...formattedPayload });
+      await this.posts.save(updated);
+      return updated;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async delete(id: number): Promise<void> {
