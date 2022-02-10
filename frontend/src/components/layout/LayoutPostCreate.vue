@@ -44,7 +44,12 @@
       />
       <div class="w-33 flex-shrink-0">
         <CommonUser class="q-pl-none" size="28px" :user="currentUser" :clickable="false" hide-name />
-        <q-input v-model="form.description" label="Description" autogrow counter />
+        <BaseInput v-model="form.description" label="Description" autofocus counter />
+        <BaseInput v-model:tags="form.tags" class="q-pt-sm" label="Tags" use-hashtags />
+        <!--TODO: fix padding RTL-->
+        <div class="text-caption text-blue-grey-4 row flex-center-end q-pr-sm">
+          {{ form.tags.length }}
+        </div>
       </div>
     </div>
   </BaseDialog>
@@ -60,6 +65,17 @@ import CommonImageFilter from 'components/common/image/CommonImageFilter.vue';
 import CommonUser from 'components/common/CommonUser.vue';
 
 import postRepository from 'src/repositories/postRepository';
+
+interface PostForm {
+  imageRaw: string | null;
+  imageAspectRatio: number;
+  imageBlob: Blob | null;
+  imageBlobWithFilter: Blob | null;
+  imageCropData: unknown;
+
+  description: string;
+  tags: string[];
+}
 
 enum CreatePostEnum {
   SELECT = 'selectFile',
@@ -115,6 +131,7 @@ export default defineComponent({
         imageBlobWithFilter: null,
         imageCropData: null,
         description: '',
+        tags: [],
       };
     }
 
@@ -125,7 +142,7 @@ export default defineComponent({
       else return '';
     });
 
-    const form = ref({
+    const form = ref<PostForm>({
       imageRaw: null,
       imageAspectRatio: 1,
       imageBlob: null,
@@ -133,6 +150,7 @@ export default defineComponent({
       imageCropData: null,
 
       description: '',
+      tags: [],
     });
     const imageBlobURL = computed(() => {
       const blob = form.value.imageBlob;
@@ -152,6 +170,7 @@ export default defineComponent({
         const formData = new FormData();
         formData.append('file', form.value.imageBlobWithFilter || '');
         formData.append('description', form.value.description);
+        formData.append('tags', JSON.stringify(form.value.tags));
         await postRepository.create(formData);
 
         close();
