@@ -44,12 +44,18 @@ export default defineComponent({
       opacity: 1;
     }
   }
+  &:active {
+    .profile-post__content {
+      background: rgba(12, 7, 48, 0.36);
+    }
+  }
   &__content {
     font-size: 16px;
     font-weight: 700;
     color: white;
     opacity: 0;
     background: rgba(25, 18, 78, 0.26);
+    transition: background-color 100ms ease-in;
   }
 }
 </style>
