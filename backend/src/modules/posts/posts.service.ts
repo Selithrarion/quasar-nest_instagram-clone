@@ -7,6 +7,7 @@ import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginat
 import { PostEntity } from './entity/post.entity';
 import { CommentEntity } from './entity/comment.entity';
 import { ReportEntity } from './entity/report.entity';
+import { TagEntity } from './entity/tag.entity';
 
 import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
@@ -21,6 +22,8 @@ export class PostsService {
     private postReports: Repository<ReportEntity>,
     @InjectRepository(CommentEntity)
     private postComments: Repository<CommentEntity>,
+    @InjectRepository(TagEntity)
+    private postTags: Repository<TagEntity>,
 
     @Inject(FilesService)
     private readonly filesService: FilesService,
@@ -97,6 +100,18 @@ export class PostsService {
         isViewerFollowed: user.followersIDs.includes(currentUserID),
       };
     }) as UserEntity[];
+  }
+  async getTags(search: string): Promise<TagEntity[]> {
+    if (!search.length)
+      return this.postTags.find({
+        take: 20,
+      });
+
+    return this.postTags
+      .createQueryBuilder()
+      .where('name ILIKE :search', { search: `%${search}%` })
+      .take(20)
+      .getMany();
   }
 
   async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {

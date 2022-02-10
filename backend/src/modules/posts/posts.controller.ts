@@ -21,6 +21,7 @@ import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CommentEntity } from './entity/comment.entity';
 import { UserEntity } from '../user/entity/user.entity';
+import { TagEntity } from './entity/tag.entity';
 
 @Controller('posts')
 export class PostsController {
@@ -43,6 +44,10 @@ export class PostsController {
   @Get('likes/:id')
   async getLikes(@Param('id') id: number, @Request() req): Promise<UserEntity[]> {
     return await this.postsService.getLikes(id, req.user.id);
+  }
+  @Get('tags')
+  async getTags(@Query('search') search: string): Promise<TagEntity[]> {
+    return await this.postsService.getTags(search);
   }
 
   @UseInterceptors(FileInterceptor('file'))
