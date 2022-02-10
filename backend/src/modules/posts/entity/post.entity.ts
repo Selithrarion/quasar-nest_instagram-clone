@@ -2,18 +2,18 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { CommentEntity } from './comment.entity';
-import { Exclude } from 'class-transformer';
 import { PublicFileEntity } from '../../files/entity/public-file.entity';
 import { ReportEntity } from './report.entity';
+import { TagEntity } from './tag.entity';
 
 @Entity()
 export class PostEntity extends BaseEntity {
   @Column({ nullable: true })
   description: string;
 
-  @Exclude()
-  @Column('text', { array: true, nullable: true })
-  tags: string[];
+  @ManyToMany(() => TagEntity, (t) => t.post, { cascade: true, nullable: true })
+  @JoinTable()
+  tags: TagEntity[] | string[];
 
   @ManyToOne(() => UserEntity, (user) => user.posts, {
     eager: true,
