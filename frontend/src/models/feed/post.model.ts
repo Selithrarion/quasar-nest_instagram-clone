@@ -5,6 +5,7 @@ import { CommentModel } from 'src/models/feed/comment.model';
 export interface PostModel extends BaseModel {
   fileURL: string;
   description: string;
+  tags: string[];
 
   author: UserModel;
   likes?: UserModel[];
@@ -26,6 +27,7 @@ export interface PostModel extends BaseModel {
 export interface PostDTO {
   file: Blob;
   description: string;
+  tags: string[];
 }
 
 export enum PostReportTypes {
