@@ -92,7 +92,7 @@ export default defineComponent({
 
   props: {
     modelValue: {
-      type: String,
+      type: [String, Blob],
       default: null,
     },
     imageRaw: {
