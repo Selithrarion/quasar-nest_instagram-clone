@@ -61,7 +61,7 @@ export class PostsService {
   }
 
   async getByID(id: number): Promise<PostEntity> {
-    return await this.posts.findOneOrFail(id, { relations: ['users'] });
+    return await this.posts.findOneOrFail(id, { relations: ['users', 'tags'] });
   }
   async getComments(id: number, userID: number): Promise<CommentEntity[]> {
     const post = await this.posts.findOneOrFail(id);
