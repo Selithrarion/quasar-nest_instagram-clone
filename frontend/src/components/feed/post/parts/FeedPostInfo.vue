@@ -30,6 +30,7 @@
       <div class="feed-post-info__description break-word">
         <b>{{ post.author.username }}</b>
         {{ formattedDescription }}
+        <div class="text-caption text-blue-grey-4">{{ post.tags.map((t) => `#${t}`).join(' ') }}</div>
         <BaseButton
           v-if="clampDescriptionLocal && post.description?.length >= 101"
           label="Show more"
