@@ -50,9 +50,6 @@ export class PostsService {
       items.map(async (p) => ({
         ...p,
         comments: await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
-        tags: p.tags.map((t) => {
-          return t.name;
-        }),
         fileURL: p.file?.url,
         // TODO: should be replaced with query
         isViewerLiked: currentUser.likedPostsIDs.includes(p.id),

@@ -1,4 +1,15 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, RelationId } from 'typeorm';
+import {
+  AfterLoad,
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  RelationId,
+} from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { CommentEntity } from './comment.entity';
@@ -14,6 +25,10 @@ export class PostEntity extends BaseEntity {
   @ManyToMany(() => TagEntity, (t) => t.post, { cascade: true, nullable: true })
   @JoinTable()
   tags: TagEntity[] | string[];
+  @AfterLoad()
+  flatTags(): void {
+    this.tags = this.tags?.map((t) => t.name) || [];
+  }
 
   @ManyToOne(() => UserEntity, (user) => user.posts, {
     eager: true,
