@@ -2,7 +2,7 @@
   <q-input
     class="base-input"
     :class="{ 'base-input--hashtags': useHashtags }"
-    :model-value="modelValue"
+    :model-value="localModelValue"
     :filled="filled"
     :autogrow="autogrow"
     v-bind="$attrs"
