@@ -3,6 +3,7 @@ import { PostDTO, PostModel } from 'src/models/feed/post.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
 import { CommentDTO, CommentModel } from 'src/models/feed/comment.model';
 import { UserModel } from 'src/models/user/user.model';
+import { TagModel } from 'src/models/feed/tag.model';
 
 export default {
   async getAll({ page = 1, limit = 10 } = { page: 1, limit: 10 }): Promise<PostModel[]> {
@@ -20,6 +21,10 @@ export default {
   },
   async getLikes(id: number): Promise<UserModel[]> {
     const { data }: ApiResponseModel<UserModel[]> = await http.get(`/posts/likes/${id}`);
+    return data;
+  },
+  async getTags(search: string): Promise<TagModel[]> {
+    const { data }: ApiResponseModel<TagModel[]> = await http.get('/posts/tags', { params: { search } });
     return data;
   },
 
