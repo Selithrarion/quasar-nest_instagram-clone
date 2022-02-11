@@ -31,6 +31,10 @@ export class PostsController {
   async getAll(@Query() query: IPaginationOptions, @Request() req): Promise<Pagination<PostEntity>> {
     return await this.postsService.getAll(query, req.user.id);
   }
+  @Get('tags')
+  async getTags(@Query('search') search: string): Promise<TagEntity[]> {
+    return await this.postsService.getTags(search);
+  }
 
   @Get(':id')
   async getByID(@Param('id') id: number): Promise<PostEntity> {
@@ -44,10 +48,6 @@ export class PostsController {
   @Get('likes/:id')
   async getLikes(@Param('id') id: number, @Request() req): Promise<UserEntity[]> {
     return await this.postsService.getLikes(id, req.user.id);
-  }
-  @Get('tags')
-  async getTags(@Query('search') search: string): Promise<TagEntity[]> {
-    return await this.postsService.getTags(search);
   }
 
   @UseInterceptors(FileInterceptor('file'))
