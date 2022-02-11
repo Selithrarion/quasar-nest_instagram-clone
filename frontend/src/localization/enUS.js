@@ -39,6 +39,10 @@ export default {
     search: 'Search',
   },
 
+  post: {
+    posts: 'posts | post | posts',
+  },
+
   user: {
     displayName: 'Name and surname',
     username: 'Username',
@@ -48,6 +52,8 @@ export default {
     profile: 'Profile',
     displayNameUsernameOrEmail: 'Their name, surname, username or email',
     max10Users: 'You can invite no more than 10 users at a time.',
+    followers: 'followers | follower | followers',
+    followings: 'following | following | followings',
   },
 
   auth: {
