@@ -28,19 +28,19 @@
           <b>
             {{ profile.postsNumber }}
           </b>
-          posts
+          {{ t('post.posts', profile.postsNumber) }}
         </div>
         <div>
           <b>
             {{ profile.followersNumber }}
           </b>
-          followers
+          {{ t('user.followers', profile.followersNumber) }}
         </div>
         <div>
           <b>
             {{ profile.followedNumber }}
           </b>
-          following
+          {{ t('user.followings', profile.followedNumber) }}
         </div>
       </div>
       <div class="column gap-2">
@@ -62,6 +62,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
@@ -82,6 +83,7 @@ export default defineComponent({
   emits: ['edit-profile', 'update-avatar', 'toggle-follow'],
 
   setup(props, { emit }) {
+    const { t } = useI18n();
     const store = useStore();
     const loading = useLoading();
 
@@ -116,6 +118,7 @@ export default defineComponent({
     }
 
     return {
+      t,
       uploadAvatar,
       follow,
       unfollow,
