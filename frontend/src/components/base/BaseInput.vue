@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, PropType, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'BaseInput',
@@ -49,6 +49,11 @@ export default defineComponent({
     },
 
     onlyNumber: Boolean,
+
+    tags: {
+      type: Array as PropType<string[]>,
+      default: () => [],
+    },
     useHashtags: Boolean,
   },
 
@@ -56,7 +61,15 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const localModelValue = ref(props.modelValue);
-    const allLocalTags = ref<string[]>([]);
+    const allLocalTags = ref<string[]>(props.tags);
+    watch(
+      () => props.modelValue,
+      () => (localModelValue.value = props.modelValue)
+    );
+    watch(
+      () => props.tags,
+      () => (allLocalTags.value = props.tags)
+    );
 
     function handleInput(v: string) {
       localModelValue.value = v;
@@ -94,6 +107,11 @@ export default defineComponent({
     }
     function addHashtag() {
       if (!localModelValue.value) return;
+      if (allLocalTags.value.find((t) => t === localModelValue.value)) {
+        localModelValue.value = '';
+        emit('update:model-value', '');
+      }
+
       allLocalTags.value.push(localModelValue.value);
       localModelValue.value = '';
       emit('update:model-value', '');
