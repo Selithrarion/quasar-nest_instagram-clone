@@ -131,14 +131,23 @@ export class PostsService {
 
     try {
       const parsedTags = JSON.parse(payload.tags);
+      const formattedTags = await Promise.all(
+        parsedTags?.map(async (t) => {
+          const tagEntity = await this.postTags.findOne({ where: { name: t } });
+          if (!tagEntity)
+            return {
+              name: t,
+            };
+          else
+            return {
+              id: tagEntity.id,
+            };
+        })
+      );
+
       await this.posts.save({
         ...post,
-        tags: parsedTags.map((t) => {
-          return {
-            name: t,
-            post,
-          };
-        }),
+        tags: formattedTags,
       });
     } catch (e) {
       console.log(e);
@@ -149,9 +158,23 @@ export class PostsService {
 
   async update(id: number, payload: UpdatePostDTO): Promise<PostEntity> {
     try {
+      const parsedTags = JSON.parse(payload.tags);
+      const formattedTags = await Promise.all(
+        parsedTags?.map(async (t) => {
+          const tagEntity = await this.postTags.findOne({ where: { name: t } });
+          if (!tagEntity)
+            return {
+              name: t,
+            };
+          else
+            return {
+              id: tagEntity.id,
+            };
+        })
+      );
       const formattedPayload = {
         ...payload,
-        tags: JSON.parse(payload.tags),
+        tags: formattedTags,
       };
       const toUpdate = await this.posts.findOneOrFail(id);
       const updated = this.posts.create({ ...toUpdate, ...formattedPayload });
