@@ -11,5 +11,5 @@ export class TagEntity extends BaseEntity {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  post: PostEntity;
+  posts: PostEntity[];
 }

@@ -22,7 +22,7 @@ export class PostEntity extends BaseEntity {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToMany(() => TagEntity, (t) => t.post, { cascade: true, nullable: true })
+  @ManyToMany(() => TagEntity, (t) => t.posts, { cascade: true, nullable: true })
   @JoinTable()
   tags: TagEntity[] | string[];
   @AfterLoad()
