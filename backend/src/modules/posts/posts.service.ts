@@ -103,16 +103,24 @@ export class PostsService {
     }) as UserEntity[];
   }
   async getTags(search: string): Promise<TagEntity[]> {
-    if (!search.length)
-      return this.postTags.find({
-        take: 20,
-      });
-
-    return this.postTags
-      .createQueryBuilder()
-      .where('name ILIKE :search', { search: `%${search}%` })
-      .take(20)
-      .getMany();
+    // TODO: add order by count
+    if (!search.length) return [];
+    return (
+      this.postTags
+        .createQueryBuilder('tags')
+        .where('name ILIKE :search', { search: `%${search}%` })
+        .leftJoin('tags.posts', 'posts')
+        // TODO: how to add where with array
+        // .addSelect((qb) => {
+        //   return qb.select('COUNT(posts)', 'count').from(PostEntity, 'post').where('');
+        // }, 'count')
+        .loadRelationCountAndMap('tags.count', 'tags.posts')
+        // .orderBy('count', 'DESC')
+        // TODO: loadRelationCountAndMap not work with orderBy
+        // .orderBy('tags.count', 'DESC')
+        .take(20)
+        .getMany()
+    );
   }
 
   async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {
