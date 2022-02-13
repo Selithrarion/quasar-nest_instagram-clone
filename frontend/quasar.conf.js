@@ -29,6 +29,7 @@ module.exports = configure(function (ctx) {
       'vue-google-oauth',
       'vue-i18n',
       'vue-socket-io',
+      'vue-observe-visibility'
     ],
 
     css: ['app.sass'],
