@@ -45,8 +45,8 @@ Github actions CI pipeline
 - JWT access (1d exp) and refresh ❌ (30d exp) tokens, auto relogin if access token expired 
 
 #### Feed
-- View all recent posts (photos/videos) from subscriptions or trends ❌
-- Search posts with selected tags ❌
+- View all recent posts (photos/videos ❌) from (subscriptions ❌) or (trends ❌)
+- View posts with selected tag ❌
 - User suggestions in sidebar who follows you / followed by who you follow or just new to instagram ❌
 ##### Post
 - Posts CRUD
@@ -55,7 +55,7 @@ Github actions CI pipeline
 - Image crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
 - Image aspect ratio (1:1, 4:5, 16:9, original)
 - Image filters
-- Tags suggestion ❌
+- Tags system and tag suggestion
 - Dbclick to like post (with cool animation haha) or like with button
 - Show users who liked this post
 - Comments CRUD
