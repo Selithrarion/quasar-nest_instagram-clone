@@ -6,7 +6,8 @@ import { CommentModel } from 'src/models/feed/comment.model';
 
 const mutation: MutationTree<PostStateInterface> = {
   SET_POSTS(state, posts: PaginationData<PostModel[]>) {
-    state.posts = posts.items;
+    if (posts.meta.currentPage === 1) state.posts = posts.items;
+    else state.posts = [...(state.posts || []), ...posts.items];
     state.postsMeta = posts.meta;
   },
   UPDATE_POST(state, post: PostModel) {

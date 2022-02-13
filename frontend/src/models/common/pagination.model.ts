@@ -33,6 +33,6 @@ export interface PaginationTableProps {
 export interface PaginationApiPayload {
   page: number;
   limit: number;
-  sortBy: string;
-  descending: boolean;
+  sortBy?: string;
+  descending?: boolean;
 }

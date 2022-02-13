@@ -35,6 +35,15 @@
           @open-post="dialog.open('postDetail', { item: post })"
           @open-likes="dialog.open('postLikes', { item: post })"
         />
+        <BaseLoader
+          v-if="!isLoadingState && !isLastPostsPage"
+          v-observe-visibility="{
+            callback: loadNextPostsPage,
+            throttle: 200,
+          }"
+          class="q-mb-xl q-mt-lg"
+          medium
+        />
       </FeedPostList>
     </div>
 
@@ -98,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onBeforeMount } from 'vue';
+import { defineComponent, computed, onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'src/store';
 import { useI18n } from 'vue-i18n';
@@ -174,6 +183,23 @@ export default defineComponent({
       }
     }
 
+    const postsMeta = computed(() => store.state.post.postsMeta);
+    const postsPagination = ref({
+      page: 1,
+    });
+    const isLastPostsPage = computed(() => postsMeta.value && postsPagination.value.page >= postsMeta.value.totalPages);
+    async function loadNextPostsPage(isVisible: boolean) {
+      if (!isVisible) return;
+      if (loading.active.value) return;
+
+      loading.start();
+
+      postsPagination.value.page++;
+      await store.dispatch('post/getAll', postsPagination.value);
+
+      loading.stop();
+    }
+
     return {
       dialog,
       loading,
@@ -188,6 +214,9 @@ export default defineComponent({
       openStory,
 
       deletePost,
+
+      isLastPostsPage,
+      loadNextPostsPage,
     };
   },
 });
