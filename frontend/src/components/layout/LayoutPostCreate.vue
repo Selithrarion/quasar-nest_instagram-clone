@@ -45,11 +45,28 @@
       <div class="w-33 flex-shrink-0">
         <CommonUser class="q-pl-none" size="28px" :user="currentUser" :clickable="false" hide-name />
         <BaseInput v-model="form.description" label="Description" autofocus counter />
-        <BaseInput v-model:tags="form.tags" class="q-pt-sm" label="Tags" use-hashtags />
-        <!--TODO: fix padding RTL-->
-        <div class="text-caption text-blue-grey-4 row flex-center-end q-pr-sm">
-          {{ form.tags.length }}
-        </div>
+        <BaseInput
+          v-model="tagSearch"
+          v-model:tags="form.tags"
+          class="q-pt-sm"
+          label="Tags"
+          debounce="400"
+          use-hashtags
+          @update:model-value="searchTags"
+        />
+        <q-list v-if="tagSuggestion.length" class="q-mt-sm shadow-4" style="max-height: 255px; overflow-y: scroll">
+          <BaseItem
+            v-for="tag in tagSuggestion"
+            :key="tag.name"
+            style="height: 51px"
+            @click="addSuggestedTag(tag.name)"
+          >
+            <q-item-section>
+              <q-item-label>#{{ tag.name }}</q-item-label>
+              <q-item-label caption>{{ tag.count }} {{ t('post.posts', tag.count) }}</q-item-label>
+            </q-item-section>
+          </BaseItem>
+        </q-list>
       </div>
     </div>
   </BaseDialog>
@@ -57,6 +74,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
@@ -65,6 +83,7 @@ import CommonImageFilter from 'components/common/image/CommonImageFilter.vue';
 import CommonUser from 'components/common/CommonUser.vue';
 
 import postRepository from 'src/repositories/postRepository';
+import { TagModel } from 'src/models/feed/tag.model';
 
 interface PostForm {
   imageRaw: string | null;
@@ -96,6 +115,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const store = useStore();
+    const { t } = useI18n();
     const loading = useLoading();
 
     const cropper = ref<InstanceType<typeof CommonImageCropper>>();
@@ -124,6 +144,8 @@ export default defineComponent({
     function close() {
       emit('close');
       step.value = CreatePostEnum.SELECT;
+      tagSearch.value = '';
+      tagSuggestion.value = [];
       form.value = {
         imageRaw: null,
         imageAspectRatio: 1,
@@ -163,6 +185,21 @@ export default defineComponent({
       return URL.createObjectURL(blob);
     });
 
+    const tagSearch = ref('');
+    const tagSuggestion = ref<TagModel[]>([]);
+    function addSuggestedTag(tag: string) {
+      if (form.value.tags.find((t) => t === tagSearch.value)) {
+        tagSearch.value = '';
+        tagSuggestion.value = [];
+      }
+      tagSearch.value = '';
+      tagSuggestion.value = [];
+      form.value.tags.push(tag);
+    }
+    async function searchTags() {
+      tagSuggestion.value = await postRepository.getTags(tagSearch.value);
+    }
+
     async function uploadPost() {
       try {
         loading.start();
@@ -183,6 +220,7 @@ export default defineComponent({
     const currentUser = computed(() => store.state.user.currentUser);
 
     return {
+      t,
       loading,
 
       cropper,
@@ -199,6 +237,11 @@ export default defineComponent({
       form,
       imageBlobURL,
       imageBlobWithFilterURL,
+
+      tagSearch,
+      tagSuggestion,
+      addSuggestedTag,
+      searchTags,
 
       currentUser,
     };
