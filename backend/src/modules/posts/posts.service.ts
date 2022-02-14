@@ -120,6 +120,9 @@ export class PostsService {
         // .orderBy('tags.count', 'DESC')
         .take(20)
         .getMany()
+
+      // ?
+      // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#using-subqueries
     );
   }
 
