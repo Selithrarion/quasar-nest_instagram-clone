@@ -72,7 +72,7 @@ Github actions CI pipeline
 #### Messenger (?)
 
 #### Profile page
-- View all own photos/videos(❌)
+- View all own photos/videos
 - Edit info - change username / name / email (❌) / bio etc...
 - Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp))
 - Upload gif avatar (?) ❌
