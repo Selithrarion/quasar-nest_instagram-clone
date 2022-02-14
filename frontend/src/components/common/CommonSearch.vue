@@ -1,20 +1,24 @@
 <template>
-  <q-input
-    :model-value="modelValue"
-    :placeholder="computedPlaceholder"
-    :outlined="outlined"
-    :debounce="clientSearch ? 0 : 500"
-    dense
-    v-bind="$attrs"
-    @update:model-value="emitSearch"
-  >
-    <template v-if="prependIcon" #prepend>
-      <q-icon name="search" />
-    </template>
-    <template v-else-if="appendIcon" #prepend>
-      <q-icon name="search" />
-    </template>
-  </q-input>
+  <div class="relative-position">
+    <q-input
+      :model-value="modelValue"
+      :placeholder="computedPlaceholder"
+      :outlined="outlined"
+      :debounce="clientSearch ? 0 : 500"
+      dense
+      v-bind="$attrs"
+      @update:model-value="emitSearch"
+    >
+      <template v-if="prependIcon" #prepend>
+        <q-icon name="search" />
+      </template>
+      <template v-else-if="appendIcon" #prepend>
+        <q-icon name="search" />
+      </template>
+    </q-input>
+
+    <slot />
+  </div>
 </template>
 
 <script lang="ts">
@@ -31,11 +35,7 @@ export default defineComponent({
       default: null,
     },
 
-    clientSearch: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+    clientSearch: Boolean,
 
     placeholder: {
       type: String,
@@ -47,16 +47,8 @@ export default defineComponent({
       required: false,
       default: true,
     },
-    prependIcon: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    appendIcon: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+    prependIcon: Boolean,
+    appendIcon: Boolean,
   },
 
   emits: ['update:model-value', 'search'],
