@@ -12,6 +12,10 @@ export default {
     const { data }: ApiResponseModel<UserModel[]> = await http.get('/user', { params });
     return data;
   },
+  async getRecentSearch(): Promise<(UserModel | TagModel)[]> {
+    const { data }: ApiResponseModel<(UserModel | TagModel)[]> = await http.get('/user/recent-search');
+    return data;
+  },
 
   async isUsernameTaken(username: string | number): Promise<boolean> {
     const params = { username };
