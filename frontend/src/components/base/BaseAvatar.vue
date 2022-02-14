@@ -31,7 +31,7 @@
         </template>
       </q-img>
 
-      <q-icon v-else-if="showIcon" name="person" color="white" :size="iconSize" />
+      <q-icon v-else-if="showIcon" :name="icon" :color="iconColor" :size="iconSize" />
 
       <span v-else-if="itemName" class="text-white">{{ itemInitials }}</span>
     </slot>
@@ -83,6 +83,16 @@ export default defineComponent({
       required: false,
       default: '16px',
     },
+    iconColor: {
+      type: String,
+      required: false,
+      default: 'white',
+    },
+    icon: {
+      type: String,
+      required: false,
+      default: 'person',
+    },
     showIcon: Boolean,
 
     loading: Boolean,
@@ -90,6 +100,8 @@ export default defineComponent({
 
     clickable: Boolean,
     uploadAvatar: Boolean,
+
+    border: Boolean,
 
     size: {
       type: String,
@@ -114,6 +126,7 @@ export default defineComponent({
       return {
         [`bg-${props.itemColor}`]: !isHslOrRgbItemColor.value && !props.src,
         'base-avatar--clickable': props.clickable,
+        'base-avatar--border': props.border,
       };
     });
     const styles = computed(() => {
@@ -170,6 +183,9 @@ export default defineComponent({
       opacity: 0;
       border-radius: 100%;
     }
+  }
+  &.base-avatar--border {
+    border: 1px solid $blue-grey-3;
   }
 }
 </style>
