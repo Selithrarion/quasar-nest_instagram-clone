@@ -105,7 +105,7 @@ export default defineComponent({
     async function searchUsers(value = '') {
       try {
         loading.start();
-        suggestedUsers.value = await userRepository.searchUsers(value);
+        suggestedUsers.value = await userRepository.getUsers(value);
       } finally {
         loading.stop();
       }

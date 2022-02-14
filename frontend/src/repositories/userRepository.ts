@@ -2,9 +2,10 @@ import { http } from 'boot/axios';
 import { UserDTO, UserModel, UserSuggestionModel } from 'src/models/user/user.model';
 import { ApiResponseModel } from 'src/models/common/apiResponse.model';
 import { PublicFileModel } from 'src/models/common/public-file.model';
+import { TagModel } from 'src/models/feed/tag.model';
 
 export default {
-  async searchUsers(search = ''): Promise<UserModel[]> {
+  async getUsers(search = ''): Promise<UserModel[]> {
     const params = {
       search,
     };

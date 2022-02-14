@@ -50,7 +50,7 @@ export default defineComponent({
     type SelectUpdateFunction = (arg0?: () => void) => void;
     async function searchUsers(value: string, update: SelectUpdateFunction) {
       const normalized = value.toLowerCase();
-      options.value = await userRepository.searchUsers(normalized);
+      options.value = await userRepository.getUsers(normalized);
       emit('update:options', options.value);
       update();
     }
