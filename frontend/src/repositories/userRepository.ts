@@ -12,10 +12,6 @@ export default {
     const { data }: ApiResponseModel<UserModel[]> = await http.get('/user', { params });
     return data;
   },
-  async getRecentSearch(): Promise<(UserModel | TagModel)[]> {
-    const { data }: ApiResponseModel<(UserModel | TagModel)[]> = await http.get('/user/recent-search');
-    return data;
-  },
 
   async isUsernameTaken(username: string | number): Promise<boolean> {
     const params = { username };
@@ -37,7 +33,6 @@ export default {
     const { data }: ApiResponseModel<UserModel> = await http.patch(`/user/${id}`, payload);
     return data;
   },
-
   async uploadAvatar(file: File): Promise<PublicFileModel> {
     const form = new FormData();
     form.append('file', file);
@@ -71,5 +66,16 @@ export default {
   async getSuggestions(): Promise<UserSuggestionModel[]> {
     const { data }: ApiResponseModel<UserSuggestionModel[]> = await http.get('/user/suggestions');
     return data;
+  },
+
+  async getRecentSearch(): Promise<(UserModel | TagModel)[]> {
+    const { data }: ApiResponseModel<(UserModel | TagModel)[]> = await http.get('/user/recent-search');
+    return data;
+  },
+  async addRecentSearch(id: number, type: 'user' | 'tag'): Promise<void> {
+    await http.post('/user/recent-search', { id, type });
+  },
+  async removeRecentSearch(id: number): Promise<void> {
+    await http.delete(`/user/recent-search/${id}`);
   },
 };
