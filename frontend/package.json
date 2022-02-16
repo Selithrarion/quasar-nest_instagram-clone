@@ -23,6 +23,7 @@
     "@joeattardi/emoji-button": "^4.6.2",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.2",
+    "click-outside-vue3": "^4.0.1",
     "core-js": "^3.6.5",
     "date-fns": "^2.23.0",
     "dotenv": "^10.0.0",
