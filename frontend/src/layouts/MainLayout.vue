@@ -6,7 +6,68 @@
           <CommonLogo style="margin-top: 6px" />
         </div>
 
-        <CommonSearch v-model="searchValue" class="mobile-hide" prepend-icon @search="search" />
+        <CommonSearch
+          v-model="searchValue"
+          v-click-outside="closeSearchMenu"
+          class="mobile-hide"
+          prepend-icon
+          @focus="isSearchMenu = true"
+          @search="search"
+          @click="getRecentSearch"
+        >
+          <q-list v-if="isSearchMenu" class="search-menu shadow-4">
+            <BaseLoader v-if="loading.active.value" center medium />
+
+            <template v-else>
+              <div v-if="isRecentSearchMode" class="q-pa-md text-body1 text-weight-bold">Recent</div>
+              <div
+                v-if="(!recentSearch.length && isRecentSearchMode) || (!searchData.length && !isRecentSearchMode)"
+                class="flex-center absolute-full text-blue-grey-4 text-subtitle2"
+              >
+                <span v-if="isRecentSearchMode"> No recent searches </span>
+                <span v-else>No results found</span>
+              </div>
+
+              <BaseItem
+                v-for="(item, index) in isRecentSearchMode ? recentSearch : searchData"
+                :key="item.id"
+                @click="item.username ? openProfile(item) : openTag(item)"
+              >
+                <q-item-section side>
+                  <BaseAvatar
+                    size="44px"
+                    icon="tag"
+                    icon-color="blue-grey-6"
+                    :src="item.avatar?.url"
+                    :item-name="item.username"
+                    :item-color="item.color"
+                    :show-icon="!Boolean(item.username)"
+                    :border="!Boolean(item.username)"
+                  />
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>
+                    {{ item.username || `#${item.name}` }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    {{ item.count === undefined ? item.name : item.count }}
+                    <span v-if="item.count !== undefined">
+                      {{ t('post.posts', item.count) }}
+                    </span>
+                  </q-item-label>
+                </q-item-section>
+
+                <q-item-section v-if="isRecentSearchMode" side>
+                  <BaseButtonCloseIcon
+                    tooltip="Remove recent search"
+                    @click.stop="removeRecentSearchItem(item.id, index)"
+                  />
+                </q-item-section>
+              </BaseItem>
+            </template>
+          </q-list>
+        </CommonSearch>
 
         <LayoutTabs />
       </q-toolbar>
@@ -19,12 +80,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import useLoading from 'src/composables/common/useLoading';
 
 import CommonSearch from 'components/common/CommonSearch.vue';
 import CommonLogo from 'components/common/CommonLogo.vue';
 import LayoutTabs from 'components/layout/LayoutTabs.vue';
+
+import { TagModel } from 'src/models/feed/tag.model';
+import { UserModel } from 'src/models/user/user.model';
+import userRepository from 'src/repositories/userRepository';
+import postRepository from 'src/repositories/postRepository';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -36,20 +104,96 @@ export default defineComponent({
   },
 
   setup() {
+    const { t } = useI18n();
     const router = useRouter();
+    const loading = useLoading();
 
-    const searchValue = ref('');
-    function search() {
-      console.log(searchValue.value);
+    function closeSearchMenu() {
+      isSearchMenu.value = false;
     }
 
-    async function goToMainPage() {
-      await router.push('/');
+    const isSearchMenu = ref(false);
+    const isTagsSearch = ref(false);
+    const searchValue = ref('');
+    const searchData = ref<(UserModel | TagModel)[]>([]);
+    async function search() {
+      if (!searchValue.value) return;
+      if (searchValue.value.trim()[0] === '#') {
+        isTagsSearch.value = true;
+        if (searchValue.value.length === 1) return;
+      }
+
+      try {
+        loading.start();
+        if (isTagsSearch.value) searchData.value = await postRepository.getTags(searchValue.value.slice(1));
+        else searchData.value = await userRepository.getUsers(searchValue.value);
+      } finally {
+        loading.stop();
+      }
+    }
+
+    const isRecentSearchMode = computed(() => {
+      if (!searchValue.value) return true;
+      return isTagsSearch.value && searchValue.value.length === 1;
+    });
+    const recentSearch = ref<(UserModel | TagModel)[]>([]);
+    async function getRecentSearch() {
+      if (recentSearch.value.length) return;
+
+      try {
+        loading.start();
+        recentSearch.value = await userRepository.getRecentSearch();
+      } finally {
+        loading.stop();
+      }
+    }
+    async function removeRecentSearchItem(id: number, index: number) {
+      recentSearch.value.splice(index);
+      await userRepository.removeRecentSearch(id);
+    }
+
+    async function openProfile(user: UserModel) {
+      isSearchMenu.value = false;
+      searchValue.value = '';
+      searchData.value = [];
+      await router.push(`/profile/${user.username}`);
+      if (!isRecentSearchMode.value) {
+        recentSearch.value.push(user);
+        await userRepository.addRecentSearch(user.id, 'user');
+      }
+    }
+    async function openTag(tag: TagModel) {
+      isSearchMenu.value = false;
+      searchValue.value = '';
+      searchData.value = [];
+      await router.push(`/explore/tags/${tag.name}`);
+      if (!isRecentSearchMode.value) {
+        recentSearch.value.push(tag);
+        await userRepository.addRecentSearch(tag.id, 'tag');
+      }
+    }
+    function goToMainPage() {
+      void router.push('/');
     }
 
     return {
+      t,
+      loading,
+
+      closeSearchMenu,
+
+      isSearchMenu,
+      isTagsSearch,
       searchValue,
+      searchData,
       search,
+
+      isRecentSearchMode,
+      recentSearch,
+      getRecentSearch,
+      removeRecentSearchItem,
+      openProfile,
+      openTag,
 
       goToMainPage,
     };
@@ -71,5 +215,16 @@ export default defineComponent({
   justify-content: space-between;
   cursor: pointer;
   flex-grow: 1;
+}
+.search-menu {
+  position: absolute;
+  top: 58px;
+  left: -75px;
+  right: 0;
+  bottom: 0;
+  height: 300px;
+  width: 375px;
+  background: white;
+  overflow-y: scroll;
 }
 </style>
