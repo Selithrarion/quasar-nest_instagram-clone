@@ -4,7 +4,7 @@
       :model-value="modelValue"
       :placeholder="computedPlaceholder"
       :outlined="outlined"
-      :debounce="clientSearch ? 0 : 500"
+      :debounce="clientSearch ? 0 : 300"
       dense
       v-bind="$attrs"
       @update:model-value="emitSearch"
