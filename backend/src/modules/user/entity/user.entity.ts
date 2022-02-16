@@ -22,6 +22,7 @@ import { PostEntity } from '../../posts/entity/post.entity';
 
 import stringToHslColor from '../../../common/utils/stringToHslColor';
 import { ReportEntity } from '../../posts/entity/report.entity';
+import { RecentSearchEntity } from './recentSearch.entity';
 // import { FollowingEntity } from './following.entity';
 
 export interface UserGoogleData {
@@ -214,6 +215,12 @@ export class UserEntity extends BaseEntity {
     onDelete: 'CASCADE',
   })
   notifications: NotificationEntity[];
+
+  @OneToMany(() => RecentSearchEntity, (s) => s.user, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  recentSearch: RecentSearchEntity[];
 
   isViewerFollowed?: boolean;
   isViewerBlocked?: boolean;

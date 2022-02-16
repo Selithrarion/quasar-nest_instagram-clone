@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -13,6 +13,9 @@ import { CreateUserGithubDTO } from './dto';
 import { NotificationEntity } from '../notifications/entity/notification.entity';
 import { FollowingEntity } from './entity/following.entity';
 import { CommentEntity } from '../posts/entity/comment.entity';
+import { PostsService } from '../posts/posts.service';
+import { RecentSearchEntity } from './entity/recentSearch.entity';
+import { TagEntity } from '../posts/entity/tag.entity';
 
 @Injectable()
 export class UserService {
@@ -21,9 +24,13 @@ export class UserService {
     private readonly users: Repository<UserEntity>,
     @InjectRepository(FollowingEntity)
     private readonly followings: Repository<FollowingEntity>,
+    @InjectRepository(RecentSearchEntity)
+    private readonly recentSearch: Repository<RecentSearchEntity>,
 
     @Inject(FilesService)
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    @Inject(forwardRef(() => PostsService))
+    private readonly postsService: PostsService
   ) {}
 
   async getAll(search: string, currentUserID: number): Promise<UserEntity[]> {
@@ -290,5 +297,27 @@ export class UserService {
         suggestion: 'New to Instagram',
       };
     });
+  }
+
+  async getRecentSearch(userID: number): Promise<(UserEntity | TagEntity)[]> {
+    const { recentSearch } = await this.users.findOneOrFail(userID, { relations: ['recentSearch'] });
+    return await Promise.all(
+      recentSearch.map(async (item) => {
+        return item.type === 'user'
+          ? await this.users.findOne(item.itemID)
+          : await this.postsService.getTagByID(item.itemID);
+      })
+    );
+  }
+  async addRecentSearch(id: number, type: 'user' | 'tag', userID: number): Promise<void> {
+    const user = await this.users.findOneOrFail(userID, { relations: ['recentSearch'] });
+    await this.recentSearch.save({
+      itemID: id,
+      type,
+      user,
+    });
+  }
+  async removeRecentSearch(id: number): Promise<void> {
+    await this.recentSearch.delete(id);
   }
 }

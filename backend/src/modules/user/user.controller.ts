@@ -20,6 +20,7 @@ import { UserService } from './user.service';
 import { Public } from '../auth/decorators/public.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PublicFileEntity } from '../files/entity/public-file.entity';
+import { TagEntity } from '../posts/entity/tag.entity';
 
 @Controller('user')
 export class UserController {
@@ -38,6 +39,20 @@ export class UserController {
   @Get('suggestions')
   async getSuggestions(@Request() req): Promise<UserSuggestion[]> {
     return await this.userService.getSuggestions(req.user.id);
+  }
+
+  @Get('recent-search')
+  async getRecentSearch(@Request() req): Promise<(UserEntity | TagEntity)[]> {
+    return await this.userService.getRecentSearch(req.user.id);
+  }
+  @Post('recent-search')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async addRecentSearch(@Body('id') id: number, @Body('type') type: 'user' | 'tag', @Request() req): Promise<void> {
+    return await this.userService.addRecentSearch(id, type, req.user.id);
+  }
+  @Delete('recent-search/:id')
+  async removeRecentSearch(@Param('id') id: number): Promise<void> {
+    return await this.userService.removeRecentSearch(id);
   }
 
   @Public()
