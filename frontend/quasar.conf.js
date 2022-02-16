@@ -29,7 +29,8 @@ module.exports = configure(function (ctx) {
       'vue-google-oauth',
       'vue-i18n',
       'vue-socket-io',
-      'vue-observe-visibility'
+      'vue-observe-visibility',
+      'v-click-outside',
     ],
 
     css: ['app.sass'],
@@ -61,7 +62,7 @@ module.exports = configure(function (ctx) {
         //
       },
 
-      env: require('dotenv').config().parsed
+      env: require('dotenv').config().parsed,
     },
 
     devServer: {
