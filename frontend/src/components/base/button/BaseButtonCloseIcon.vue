@@ -1,5 +1,5 @@
 <template>
-  <BaseButton v-close-popup icon="close" tooltip="Close" :flat="flat" :round="round" :dense="dense" />
+  <BaseButton v-close-popup icon="close" :tooltip="tooltip" :flat="flat" :round="round" :dense="dense" />
 </template>
 
 <script lang="ts">
@@ -23,6 +23,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true,
+    },
+    tooltip: {
+      type: String,
+      required: false,
+      default: 'Close',
     },
   },
 });
