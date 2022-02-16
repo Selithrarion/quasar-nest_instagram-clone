@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from './dto';
@@ -28,7 +28,7 @@ export class PostsService {
     @Inject(FilesService)
     private readonly filesService: FilesService,
 
-    @Inject(UserService)
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService
   ) {}
 
@@ -102,6 +102,7 @@ export class PostsService {
       };
     }) as UserEntity[];
   }
+
   async getTags(search: string): Promise<TagEntity[]> {
     // TODO: add order by count
     if (!search.length) return [];
@@ -124,6 +125,9 @@ export class PostsService {
       // ?
       // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#using-subqueries
     );
+  }
+  async getTagByID(id: number): Promise<TagEntity> {
+    return await this.postTags.findOneOrFail(id);
   }
 
   async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {
