@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-header">
+  <div class="explore-header">
     <BaseAvatar
       size="150px"
       :src="profile.avatar?.url"
@@ -10,7 +10,7 @@
       :tooltip="isOwnProfile ? 'Upload new avatar' : null"
       @select-avatar="uploadAvatar"
     />
-    <div class="profile-header__info">
+    <div class="profile-explore__info">
       <h5 class="row items-center gap-3 no-margin">
         {{ profile.username }}
         <BaseButton v-if="isOwnProfile" label="Edit profile" color="primary" flat @click="$emit('edit-profile')" />
@@ -30,20 +30,22 @@
           </b>
           {{ t('post.posts', profile.postsNumber) }}
         </div>
-        <div>
-          <b>
-            {{ profile.followersNumber }}
-          </b>
-          {{ t('user.followers', profile.followersNumber) }}
-        </div>
-        <div>
-          <b>
-            {{ profile.followedNumber }}
-          </b>
-          {{ t('user.followings', profile.followedNumber) }}
-        </div>
+        <template v-if="isUserProfileMode">
+          <div>
+            <b>
+              {{ profile.followersNumber }}
+            </b>
+            {{ t('user.followers', profile.followersNumber) }}
+          </div>
+          <div>
+            <b>
+              {{ profile.followedNumber }}
+            </b>
+            {{ t('user.followings', profile.followedNumber) }}
+          </div>
+        </template>
       </div>
-      <div class="column gap-2">
+      <div v-if="isUserProfileMode" class="column gap-2">
         <div class="text-body1 text-weight-bold">
           {{ profile.name }}
         </div>
@@ -61,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
@@ -70,7 +72,7 @@ import { UserModel } from 'src/models/user/user.model';
 import { PublicFileModel } from 'src/models/common/public-file.model';
 
 export default defineComponent({
-  name: 'ProfileHeader',
+  name: 'ExploreHeader',
 
   props: {
     profile: {
@@ -128,7 +130,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.profile-header {
+.explore-header {
   display: flex;
   gap: 32px;
   &__info {

@@ -2,7 +2,7 @@
   <q-page class="profile q-pa-xl">
     <BaseLoader v-if="loading.active.value" page-margin />
     <template v-else>
-      <ProfileHeader
+      <ExploreHeader
         :profile="profile"
         :is-own-profile="isOwnProfile"
         @edit-profile="dialog.open('editProfile')"
@@ -10,14 +10,9 @@
         @toggle-follow="profile.isViewerFollowed = !profile.isViewerFollowed"
       />
 
-      <ProfilePostList>
-        <ProfilePost
-          v-for="post in profile.posts"
-          :key="post.id"
-          :post="post"
-          @click="dialog.open('postDetail', { item: post })"
-        />
-      </ProfilePostList>
+      <ExplorePostList>
+        <ExplorePost v-for="post in profile.posts" :key="post.id" :post="post" @click="openPost(post)" />
+      </ExplorePostList>
 
       <ProfileDialogEdit
         v-if="isOwnProfile"
@@ -45,9 +40,9 @@ import { useRoute } from 'vue-router';
 import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
 
-import ProfilePostList from 'components/profile/ProfilePostList.vue';
-import ProfilePost from 'components/profile/ProfilePost.vue';
-import ProfileHeader from 'components/profile/ProfileHeader.vue';
+import ExplorePostList from 'components/explore/ExplorePostList.vue';
+import ExplorePost from 'components/explore/ExplorePost.vue';
+import ExploreHeader from 'components/explore/ExploreHeader.vue';
 import ProfileDialogEdit from 'components/profile/dialog/ProfileDialogEdit.vue';
 import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
 
@@ -59,9 +54,9 @@ export default defineComponent({
   name: 'Profile',
 
   components: {
-    ProfilePostList,
-    ProfilePost,
-    ProfileHeader,
+    ExplorePostList,
+    ExplorePost,
+    ExploreHeader,
     ProfileDialogEdit,
     FeedPostDialogDetail,
   },

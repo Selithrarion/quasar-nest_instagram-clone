@@ -1,14 +1,14 @@
 <template>
-  <div class="profile-post">
+  <div class="explore-post">
     <q-img :src="post.fileURL" ratio="1" />
-    <div class="profile-post__content absolute-center flex-center gap-8 full-height full-width">
+    <div class="explore-post__content absolute-center flex-center gap-8 full-height full-width">
       <div class="flex-center gap-2">
         <q-icon name="favorite" size="22px" />
-        {{ post.likesUserIDs.length }}
+        {{ post.likesUserIDs?.length }}
       </div>
       <div class="flex-center gap-2">
         <q-icon name="forum" size="22px" />
-        {{ post.commentIDs.length }}
+        {{ post.commentIDs?.length }}
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@ import { defineComponent, PropType } from 'vue';
 import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
-  name: 'ProfilePost',
+  name: 'ExplorePost',
 
   props: {
     post: {
@@ -35,17 +35,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.profile-post {
+.explore-post {
   position: relative;
   width: 30%;
   cursor: pointer;
   &:hover {
-    .profile-post__content {
+    .explore-post__content {
       opacity: 1;
     }
   }
   &:active {
-    .profile-post__content {
+    .explore-post__content {
       background: rgba(12, 7, 48, 0.36);
     }
   }
