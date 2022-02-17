@@ -29,52 +29,9 @@
 
       <FeedPostDialogDetail
         :model-value="dialog.openedName.value === 'postDetail'"
-        :post="{ ...dialog.openedItem.value, author: profile }"
+        :post="openedPost"
         mode="profile"
-        @open-likes="dialog.open('postLikes', { item: dialog.openedItem.value })"
-        @edit="dialog.open('editPost', { item: dialog.openedItem.value })"
-        @delete="dialog.open('deletePost', { item: dialog.openedItem.value })"
-        @share="dialog.open('share', { item: dialog.openedItem.value })"
-        @report="dialog.open('report', { item: dialog.openedItem.value })"
-        @close="dialog.close"
-      />
-
-      <BaseDialog
-        type="delete"
-        title="Delete post"
-        :model-value="dialog.openedName.value === 'deletePost'"
-        :confirm-loading="dialog.loading.value"
-        @close="dialog.close"
-        @confirm="deletePost(dialog.openedItem.value.id)"
-      >
-        Are you sure you want to delete this post?
-      </BaseDialog>
-      <FeedPostDialogEdit
-        :model-value="dialog.openedName.value === 'editPost'"
-        :post="dialog.openedItem.value"
-        @close="dialog.close"
-      />
-
-      <FeedPostDialogLikes
-        :model-value="dialog.openedName.value === 'postLikes'"
-        :post="dialog.openedItem.value"
-        @close="dialog.close"
-      />
-
-      <FeedPostDialogShare
-        :model-value="dialog.openedName.value === 'share'"
-        :post="dialog.openedItem.value"
-        @close="dialog.close"
-      />
-      <FeedPostDialogShareToUser
-        :model-value="dialog.openedName.value === 'shareToUser'"
-        :post-id="dialog.openedItem.value?.id"
-        @close="dialog.close"
-      />
-
-      <FeedPostDialogReport
-        :model-value="dialog.openedName.value === 'report'"
-        :post="dialog.openedItem.value"
+        @edit="updatePost"
         @close="dialog.close"
       />
     </template>
@@ -87,21 +44,16 @@ import { useStore } from 'src/store';
 import { useRoute } from 'vue-router';
 import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
-import openExternalPage from 'app/utils/openExternalPage';
 
 import ProfilePostList from 'components/profile/ProfilePostList.vue';
 import ProfilePost from 'components/profile/ProfilePost.vue';
 import ProfileHeader from 'components/profile/ProfileHeader.vue';
 import ProfileDialogEdit from 'components/profile/dialog/ProfileDialogEdit.vue';
 import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
-import FeedPostDialogLikes from 'components/feed/post/dialog/FeedPostDialogLikes.vue';
-import FeedPostDialogEdit from 'components/feed/post/dialog/FeedPostDialogEdit.vue';
-import FeedPostDialogShare from 'components/feed/post/dialog/FeedPostDialogShare.vue';
-import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialogShareToUser.vue';
-import FeedPostDialogReport from 'components/feed/post/dialog/FeedPostDialogReport.vue';
 
 import userRepository from 'src/repositories/userRepository';
 import { UserModel } from 'src/models/user/user.model';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'Profile',
@@ -112,11 +64,6 @@ export default defineComponent({
     ProfileHeader,
     ProfileDialogEdit,
     FeedPostDialogDetail,
-    FeedPostDialogLikes,
-    FeedPostDialogEdit,
-    FeedPostDialogShare,
-    FeedPostDialogShareToUser,
-    FeedPostDialogReport,
   },
 
   setup() {
@@ -140,18 +87,35 @@ export default defineComponent({
         loading.stop();
       }
     );
+
+    const openedPost = ref<PostModel | null>(null);
+    function openPost(post: PostModel) {
+      if (!profile.value) return;
+      openedPost.value = { ...post, author: profile.value };
+      dialog.open('postDetail', { item: post });
+    }
     function updateProfile(user: UserModel) {
       profile.value = { ...profile.value, ...user };
+    }
+    function updatePost(updatedPost: PostModel) {
+      if (!profile.value || !profile.value.posts || !openedPost.value) return;
+
+      const postIndex = profile.value.posts.findIndex((p) => p.id === openedPost.value?.id);
+      profile.value.posts[postIndex] = { ...profile.value.posts[postIndex], ...updatedPost };
+      openedPost.value = { ...openedPost.value, ...updatedPost };
     }
 
     return {
       dialog,
       loading,
-      openExternalPage,
 
       isOwnProfile,
       profile,
+
+      openedPost,
+      openPost,
       updateProfile,
+      updatePost,
     };
   },
 });

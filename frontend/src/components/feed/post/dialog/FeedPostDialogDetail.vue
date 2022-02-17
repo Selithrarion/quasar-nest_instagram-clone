@@ -24,10 +24,10 @@
             <FeedPostMoreButton
               :post-id="formattedPost.id"
               :author-id="formattedPost.author.id"
-              @share="$emit('share')"
-              @edit="$emit('edit')"
-              @delete="$emit('delete')"
-              @report="$emit('report')"
+              @edit="dialog.open('editPost')"
+              @delete="dialog.open('deletePost')"
+              @share="dialog.open('share')"
+              @report="dialog.open('report')"
             />
           </div>
 
@@ -37,7 +37,7 @@
             hide-view-all-comments
             use-scroll
             @open-post="focusCommentInput"
-            @open-likes="$emit('open-likes')"
+            @open-likes="dialog.open('postLikes')"
             @reply="replyComment"
             @toggle-comment-like="toggleCommentLike"
           />
@@ -60,11 +60,49 @@
       </div>
     </template>
   </BaseDialog>
+
+  <BaseDialog
+    type="delete"
+    title="Delete post"
+    :model-value="dialog.openedName.value === 'deletePost'"
+    :confirm-loading="dialog.loading.value"
+    @close="dialog.close"
+    @confirm="deletePost(formattedPost.id)"
+  >
+    Are you sure you want to delete this post?
+  </BaseDialog>
+  <FeedPostDialogEdit
+    :model-value="dialog.openedName.value === 'editPost'"
+    :post="formattedPost"
+    @edit="$emit('edit', $event)"
+    @close="dialog.close"
+  />
+
+  <FeedPostDialogLikes
+    :model-value="dialog.openedName.value === 'postLikes'"
+    :post="formattedPost"
+    @close="dialog.close"
+  />
+
+  <FeedPostDialogShare :model-value="dialog.openedName.value === 'share'" :post="formattedPost" @close="dialog.close" />
+  <FeedPostDialogShareToUser
+    :model-value="dialog.openedName.value === 'shareToUser'"
+    :post-id="formattedPost?.id"
+    @close="dialog.close"
+  />
+
+  <FeedPostDialogReport
+    :model-value="dialog.openedName.value === 'report'"
+    :post="formattedPost"
+    @close="dialog.close"
+  />
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref, watch } from 'vue';
+import { useStore } from 'src/store';
 import { useRouter } from 'vue-router';
+import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonUser from 'components/common/CommonUser.vue';
@@ -73,6 +111,11 @@ import FeedPostActions from 'components/feed/post/parts/FeedPostActions.vue';
 import FeedPostInfo from 'components/feed/post/parts/FeedPostInfo.vue';
 import FeedPostCommentInput from 'components/feed/post/comment/FeedPostCommentInput.vue';
 import FeedPostMoreButton from 'components/feed/post/parts/FeedPostMoreButton.vue';
+import FeedPostDialogLikes from 'components/feed/post/dialog/FeedPostDialogLikes.vue';
+import FeedPostDialogEdit from 'components/feed/post/dialog/FeedPostDialogEdit.vue';
+import FeedPostDialogShare from 'components/feed/post/dialog/FeedPostDialogShare.vue';
+import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialogShareToUser.vue';
+import FeedPostDialogReport from 'components/feed/post/dialog/FeedPostDialogReport.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
 import { CommentModel } from 'src/models/feed/comment.model';
@@ -89,6 +132,11 @@ export default defineComponent({
     FeedPostInfo,
     FeedPostCommentInput,
     FeedPostMoreButton,
+    FeedPostDialogLikes,
+    FeedPostDialogEdit,
+    FeedPostDialogShare,
+    FeedPostDialogShareToUser,
+    FeedPostDialogReport,
   },
 
   props: {
@@ -106,10 +154,12 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'open-likes', 'delete', 'edit', 'share', 'report'],
+  emits: ['close', 'edit'],
 
-  setup(props) {
+  setup(props, { emit }) {
+    const store = useStore();
     const router = useRouter();
+    const dialog = useDialog();
     const loading = useLoading({ customNames: ['comments'] });
 
     // TODO: add cache like
@@ -155,7 +205,19 @@ export default defineComponent({
 
     const isProfileMode = computed(() => props.mode === 'profile');
 
+    async function deletePost(postID: number) {
+      try {
+        dialog.startLoading();
+        await store.dispatch('post/delete', postID);
+        dialog.close();
+        emit('close');
+      } finally {
+        dialog.stopLoading();
+      }
+    }
+
     return {
+      dialog,
       loading,
 
       postComments,
@@ -172,6 +234,8 @@ export default defineComponent({
       toggleCommentLike,
 
       isProfileMode,
+
+      deletePost,
     };
   },
 });

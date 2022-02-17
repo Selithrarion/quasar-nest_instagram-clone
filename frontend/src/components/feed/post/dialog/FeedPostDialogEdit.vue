@@ -28,7 +28,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'confirm'],
+  emits: ['close', 'edit'],
 
   setup(props, { emit }) {
     const store = useStore();
@@ -51,6 +51,7 @@ export default defineComponent({
         };
         await store.dispatch('post/update', { id: props.post.id, payload });
 
+        emit('edit', payload);
         emit('close');
       } finally {
         loading.stop();

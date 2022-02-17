@@ -57,11 +57,6 @@
     <FeedPostDialogDetail
       :model-value="dialog.openedName.value === 'postDetail'"
       :post="dialog.openedItem.value"
-      @open-likes="dialog.open('postLikes', { item: dialog.openedItem.value })"
-      @edit="dialog.open('editPost', { item: dialog.openedItem.value })"
-      @delete="dialog.open('deletePost', { item: dialog.openedItem.value })"
-      @share="dialog.open('share', { item: dialog.openedItem.value })"
-      @report="dialog.open('report', { item: post })"
       @close="dialog.close"
     />
 
