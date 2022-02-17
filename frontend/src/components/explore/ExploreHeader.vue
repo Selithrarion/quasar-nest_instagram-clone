@@ -67,6 +67,7 @@ import { computed, defineComponent, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
+import openExternalPage from 'app/utils/openExternalPage';
 
 import { UserModel } from 'src/models/user/user.model';
 import { PublicFileModel } from 'src/models/common/public-file.model';
@@ -79,6 +80,14 @@ export default defineComponent({
       type: Object as PropType<UserModel>,
       required: true,
     },
+    mode: {
+      type: String,
+      default: 'explore',
+      validator: (v: string): boolean => {
+        return ['explore', 'userProfile'].includes(v);
+      },
+    },
+
     isOwnProfile: Boolean,
   },
 
@@ -88,6 +97,9 @@ export default defineComponent({
     const { t } = useI18n();
     const store = useStore();
     const loading = useLoading();
+
+    const isExploreMode = computed(() => props.mode === 'explore');
+    const isUserProfileMode = computed(() => props.mode === 'userProfile');
 
     async function uploadAvatar(file: File) {
       try {
@@ -121,6 +133,11 @@ export default defineComponent({
 
     return {
       t,
+      openExternalPage,
+
+      isExploreMode,
+      isUserProfileMode,
+
       uploadAvatar,
       follow,
       unfollow,
