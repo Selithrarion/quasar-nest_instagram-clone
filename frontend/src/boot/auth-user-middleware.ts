@@ -7,19 +7,14 @@ export default boot(({ router }) => {
 
   router.beforeEach((to, from, next) => {
     const matchedRoutes = to.matched;
-    const isNeedAuth = matchedRoutes.some((record) => record.meta.auth);
     const isNeedGuest = matchedRoutes.some((record) => record.meta.guest);
 
-    if (isNeedAuth) {
-      if (!userToken) {
-        console.log('need auth and no token');
-        next('/auth');
-      } else next();
-    } else if (isNeedGuest) {
+    if (isNeedGuest) {
       if (userToken) next('/');
       next();
-    } else {
-      next();
-    }
+    } else if (!userToken) {
+      console.log('need auth and no token');
+      next('/auth');
+    } else next();
   });
 });

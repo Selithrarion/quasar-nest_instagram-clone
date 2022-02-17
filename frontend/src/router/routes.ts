@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/', name: 'feed', component: () => import('pages/Index.vue'), meta: { auth: true } },
+      { path: '/', name: 'feed', component: () => import('pages/Index.vue') },
       {
         path: '/profile/:profileUsername',
         name: 'profile',
@@ -35,13 +35,12 @@ const routes: RouteRecordRaw[] = [
         path: '/story',
         name: 'storyFeed',
         component: () => import('pages/StoryFeed.vue'),
-        meta: { auth: true },
+
         children: [
           {
             path: '/story/:storyID',
             name: 'story',
             component: () => import('components/story/StoryItem.vue'),
-            meta: { auth: true },
           },
         ],
       },
