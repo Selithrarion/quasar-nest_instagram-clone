@@ -34,6 +34,7 @@ export class PostsService {
 
   async getAll(
     queryOptions: IPaginationOptions = { page: 1, limit: 10 },
+    tag = '',
     userID: number
   ): Promise<Pagination<PostEntity>> {
     const currentUser = await this.userService.getByID(userID);
@@ -43,6 +44,7 @@ export class PostsService {
     queryBuilder.leftJoinAndSelect('post.author', 'author');
     queryBuilder.leftJoinAndSelect('post.file', 'file');
     queryBuilder.leftJoinAndSelect('post.tags', 'tags');
+    if (tag) queryBuilder.where('tags.name IN :tag', { tag });
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 

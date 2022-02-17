@@ -28,8 +28,13 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  async getAll(@Query() query: IPaginationOptions, @Request() req): Promise<Pagination<PostEntity>> {
-    return await this.postsService.getAll(query, req.user.id);
+  async getAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('tab') tab = '',
+    @Request() req
+  ): Promise<Pagination<PostEntity>> {
+    return await this.postsService.getAll({ page, limit }, tab, req.user.id);
   }
   @Get('tags')
   async getTags(@Query('search') search: string): Promise<TagEntity[]> {
