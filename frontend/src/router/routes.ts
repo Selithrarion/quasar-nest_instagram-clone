@@ -22,7 +22,11 @@ const routes: RouteRecordRaw[] = [
         path: '/profile/:profileUsername',
         name: 'profile',
         component: () => import('pages/Profile.vue'),
-        meta: { auth: true },
+      },
+      {
+        path: '/explore/tags/:tag',
+        name: 'tags',
+        component: () => import('pages/Explore.vue'),
       },
     ],
   },
