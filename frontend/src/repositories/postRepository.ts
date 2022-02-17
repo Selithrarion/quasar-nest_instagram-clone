@@ -4,10 +4,15 @@ import { ApiResponseModel } from 'src/models/common/apiResponse.model';
 import { CommentDTO, CommentModel } from 'src/models/feed/comment.model';
 import { UserModel } from 'src/models/user/user.model';
 import { TagModel } from 'src/models/feed/tag.model';
+import { PaginationData } from 'src/models/common/pagination.model';
 
 export default {
-  async getAll({ page = 1, limit = 10 } = { page: 1, limit: 10 }): Promise<PostModel[]> {
-    const { data }: ApiResponseModel<PostModel[]> = await http.get('/posts', { params: { page, limit } });
+  async getAll(
+    { page = 1, limit = 10, tag = '' } = { page: 1, limit: 10, tag: '' }
+  ): Promise<PaginationData<PostModel[]>> {
+    const { data }: ApiResponseModel<PaginationData<PostModel[]>> = await http.get('/posts', {
+      params: { page, limit, tag },
+    });
     return data;
   },
 
