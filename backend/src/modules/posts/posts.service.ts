@@ -174,31 +174,39 @@ export class PostsService {
   }
 
   async update(id: number, payload: UpdatePostDTO): Promise<PostEntity> {
-    try {
-      const parsedTags = JSON.parse(payload.tags);
-      const formattedTags = await Promise.all(
-        parsedTags?.map(async (t) => {
-          const tagEntity = await this.postTags.findOne({ where: { name: t } });
-          if (!tagEntity)
-            return {
-              name: t,
-            };
-          else
-            return {
-              id: tagEntity.id,
-            };
-        })
-      );
-      const formattedPayload = {
-        ...payload,
-        tags: formattedTags,
-      };
+    if (payload.tags) {
+      try {
+        const parsedTags = JSON.parse(payload.tags);
+        const formattedTags = await Promise.all(
+          parsedTags?.map(async (t) => {
+            const tagEntity = await this.postTags.findOne({ where: { name: t } });
+            if (!tagEntity)
+              return {
+                name: t,
+              };
+            else
+              return {
+                id: tagEntity.id,
+              };
+          })
+        );
+        const formattedPayload = {
+          ...payload,
+          tags: formattedTags,
+        };
+        const toUpdate = await this.posts.findOneOrFail(id);
+        const updated = this.posts.create({ ...toUpdate, ...formattedPayload });
+        await this.posts.save(updated);
+        return updated;
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      const { tags, ...formattedPayload } = payload;
       const toUpdate = await this.posts.findOneOrFail(id);
       const updated = this.posts.create({ ...toUpdate, ...formattedPayload });
       await this.posts.save(updated);
       return updated;
-    } catch (e) {
-      console.log(e);
     }
   }
 
