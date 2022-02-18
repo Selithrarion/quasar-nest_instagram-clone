@@ -42,6 +42,7 @@ export class PostsService {
     const queryBuilder = this.posts.createQueryBuilder('post');
     queryBuilder.orderBy('post.createdAt', 'DESC');
     queryBuilder.leftJoinAndSelect('post.author', 'author');
+    queryBuilder.leftJoinAndSelect('author.avatar', 'avatar');
     queryBuilder.leftJoinAndSelect('post.file', 'file');
     queryBuilder.leftJoinAndSelect('post.tags', 'tags');
     if (tag) queryBuilder.where('tags.name IN :tag', { tag });
