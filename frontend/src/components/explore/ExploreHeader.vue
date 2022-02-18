@@ -10,7 +10,7 @@
       :tooltip="isOwnProfile ? 'Upload new avatar' : null"
       @select-avatar="uploadAvatar"
     />
-    <div class="profile-explore__info">
+    <div class="explore-header__info">
       <h5 class="row items-center gap-3 no-margin">
         {{ profile.username }}
         <BaseButton v-if="isOwnProfile" label="Edit profile" color="primary" flat @click="$emit('edit-profile')" />

@@ -3,6 +3,7 @@
     <BaseLoader v-if="loading.active.value" page-margin />
     <template v-else>
       <ExploreHeader
+        mode="userProfile"
         :profile="profile"
         :is-own-profile="isOwnProfile"
         @edit-profile="dialog.open('editProfile')"
