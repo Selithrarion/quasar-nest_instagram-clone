@@ -45,6 +45,7 @@ export class PostsService {
     queryBuilder.leftJoinAndSelect('author.avatar', 'avatar');
     queryBuilder.leftJoinAndSelect('post.file', 'file');
     queryBuilder.leftJoinAndSelect('post.tags', 'tags');
+    // TODO: it finds not only 'test' but 'test1' and etc
     if (tag) queryBuilder.where('tags.name IN :tag', { tag });
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
@@ -130,7 +131,18 @@ export class PostsService {
     );
   }
   async getTagByID(id: number): Promise<TagEntity> {
-    return await this.postTags.findOneOrFail(id);
+    return await this.postTags
+      .createQueryBuilder('tag')
+      .where('tag.id = :id', { id })
+      .loadRelationCountAndMap('tag.postsNumber', 'tag.posts')
+      .getOneOrFail();
+  }
+  async getTagByName(name: string): Promise<TagEntity> {
+    return await this.postTags
+      .createQueryBuilder('tag')
+      .where('tag.name = :name', { name })
+      .loadRelationCountAndMap('tag.postsNumber', 'tag.posts')
+      .getOneOrFail();
   }
 
   async create(file: Express.Multer.File, payload: CreatePostDTO, userID: number): Promise<PostEntity> {

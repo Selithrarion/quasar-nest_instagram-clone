@@ -54,6 +54,10 @@ export class PostsController {
   async getLikes(@Param('id') id: number, @Request() req): Promise<UserEntity[]> {
     return await this.postsService.getLikes(id, req.user.id);
   }
+  @Get('tags/:name')
+  async getTagByName(@Param('name') name: string): Promise<TagEntity> {
+    return await this.postsService.getTagByName(name);
+  }
 
   @UseInterceptors(FileInterceptor('file'))
   @Post()
