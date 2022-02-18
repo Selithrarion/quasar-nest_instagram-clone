@@ -47,7 +47,7 @@ Github actions CI pipeline
 #### Feed
 - View all recent posts (photos/videos ❌) from (subscriptions ❌) or (trends ❌)
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
-- View posts with selected tag ❌
+- Search users, search tags
 - User suggestions in sidebar who follows you / followed by who you follow or just new to instagram ❌
 ##### Post
 - Posts CRUD
