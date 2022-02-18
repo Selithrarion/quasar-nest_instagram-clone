@@ -154,7 +154,7 @@ export default defineComponent({
 
     async function openProfile(user: UserModel) {
       if (!isRecentSearchMode.value) {
-        recentSearch.value.push(user);
+        if (!recentSearch.value.find((rc) => rc.id === user.id)) recentSearch.value.unshift(user);
         await userRepository.addRecentSearch(user.id, 'user');
       }
       isSearchMenu.value = false;
@@ -164,7 +164,7 @@ export default defineComponent({
     }
     async function openTag(tag: TagModel) {
       if (!isRecentSearchMode.value) {
-        recentSearch.value.push(tag);
+        if (!recentSearch.value.find((rc) => rc.id === tag.id)) recentSearch.value.unshift(tag);
         await userRepository.addRecentSearch(tag.id, 'tag');
       }
       isSearchMenu.value = false;
