@@ -63,8 +63,10 @@ export default {
     await http.post(`/user/unfollow/${id}`);
   },
 
-  async getSuggestions(): Promise<UserSuggestionModel[]> {
-    const { data }: ApiResponseModel<UserSuggestionModel[]> = await http.get('/user/suggestions');
+  async getSuggestions({ page = 1, limit = 3 } = { page: 1, limit: 3 }): Promise<UserSuggestionModel[]> {
+    const { data }: ApiResponseModel<UserSuggestionModel[]> = await http.get('/user/suggestions', {
+      params: { page, limit },
+    });
     return data;
   },
 
