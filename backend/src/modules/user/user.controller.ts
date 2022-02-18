@@ -37,8 +37,12 @@ export class UserController {
   }
 
   @Get('suggestions')
-  async getSuggestions(@Request() req): Promise<UserSuggestion[]> {
-    return await this.userService.getSuggestions(req.user.id);
+  async getSuggestions(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Request() req
+  ): Promise<UserSuggestion[]> {
+    return await this.userService.getSuggestions(page, limit, req.user.id);
   }
 
   @Get('recent-search')

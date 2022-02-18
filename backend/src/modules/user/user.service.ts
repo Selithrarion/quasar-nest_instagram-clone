@@ -254,7 +254,7 @@ export class UserService {
     // await this.followings.remove(following);
   }
 
-  async getSuggestions(currentUserID: number): Promise<UserSuggestion[]> {
+  async getSuggestions(page: number, limit: number, currentUserID: number): Promise<UserSuggestion[]> {
     // TODO: figure out
 
     // ?
@@ -282,13 +282,14 @@ export class UserService {
     // SELECT * FROM Customers
     // WHERE Country IN (SELECT Country FROM Suppliers);
 
-    const last3NewUsers = await this.users.find({
+    const lastNewUsers = await this.users.find({
       where: {
         id: Not(currentUserID),
       },
-      take: 3,
+      take: limit,
+      skip: (page - 1) * limit,
     });
-    return last3NewUsers.map((u) => {
+    return lastNewUsers.map((u) => {
       return {
         id: u.id,
         color: u.color,
