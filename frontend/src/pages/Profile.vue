@@ -11,9 +11,10 @@
         @toggle-follow="profile.isViewerFollowed = !profile.isViewerFollowed"
       />
 
-      <ExplorePostList>
+      <ExplorePostList v-if="profile.posts.length">
         <ExplorePost v-for="post in profile.posts" :key="post.id" :post="post" @click="openPost(post)" />
       </ExplorePostList>
+      <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
 
       <ProfileDialogEdit
         v-if="isOwnProfile"

@@ -2,7 +2,7 @@
   <q-page class="explore q-pa-xl">
     <ExploreHeader :profile="{}" />
 
-    <ExplorePostList>
+    <ExplorePostList v-if="posts.length">
       <ExplorePost
         v-for="post in posts"
         :key="post.id"
@@ -10,6 +10,7 @@
         @click="dialog.open('postDetail', { item: post })"
       />
     </ExplorePostList>
+    <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
 
     <FeedPostDialogDetail
       :model-value="dialog.openedName.value === 'postDetail'"
