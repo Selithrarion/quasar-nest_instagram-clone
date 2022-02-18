@@ -32,6 +32,10 @@ export default {
     const { data }: ApiResponseModel<TagModel[]> = await http.get('/posts/tags', { params: { search } });
     return data;
   },
+  async getTagByName(tag: string): Promise<TagModel> {
+    const { data }: ApiResponseModel<TagModel> = await http.get(`/posts/tags/${tag}`);
+    return data;
+  },
 
   async create(payload: FormData): Promise<PostModel> {
     const { data }: ApiResponseModel<PostModel> = await http.post('/posts', payload);

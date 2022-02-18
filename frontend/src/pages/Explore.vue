@@ -1,23 +1,29 @@
 <template>
   <q-page class="explore q-pa-xl">
-    <ExploreHeader :profile="{}" />
+    <BaseLoader v-if="loading.active.value" page-margin />
 
-    <ExplorePostList v-if="posts.length">
-      <ExplorePost
-        v-for="post in posts"
-        :key="post.id"
-        :post="post"
-        @click="dialog.open('postDetail', { item: post })"
+    <template v-else>
+      <ExploreHeader
+        :profile="{ avatar: { url: posts[0].fileURL }, postsNumber: tag.postsNumber, username: `#${tag.name}` }"
       />
-    </ExplorePostList>
-    <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
 
-    <FeedPostDialogDetail
-      :model-value="dialog.openedName.value === 'postDetail'"
-      :post="dialog.openedItem.value"
-      @edit="updatePost"
-      @close="dialog.close"
-    />
+      <ExplorePostList v-if="posts.length">
+        <ExplorePost
+          v-for="post in posts"
+          :key="post.id"
+          :post="post"
+          @click="dialog.open('postDetail', { item: post })"
+        />
+      </ExplorePostList>
+      <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
+
+      <FeedPostDialogDetail
+        :model-value="dialog.openedName.value === 'postDetail'"
+        :post="dialog.openedItem.value"
+        @edit="updatePost"
+        @close="dialog.close"
+      />
+    </template>
   </q-page>
 </template>
 
@@ -34,7 +40,8 @@ import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDeta
 
 import { PostModel } from 'src/models/feed/post.model';
 import postRepository from 'src/repositories/postRepository';
-import { PaginationData, PaginationMeta } from 'src/models/common/pagination.model';
+import { PaginationMeta } from 'src/models/common/pagination.model';
+import { TagModel } from 'src/models/feed/tag.model';
 
 export default defineComponent({
   name: 'ExplorePage',
@@ -51,11 +58,13 @@ export default defineComponent({
     const route = useRoute();
     const loading = useLoading();
 
+    const tag = ref<TagModel | null>(null);
     const posts = ref<PostModel[]>([]);
     const postsMeta = ref<PaginationMeta | null>(null);
 
-    async function loadPosts() {
+    async function loadPageData() {
       loading.start();
+      tag.value = await postRepository.getTagByName(String(route.params.tag));
       const { items, meta } = await postRepository.getAll({
         page: 1,
         limit: 10,
@@ -66,11 +75,11 @@ export default defineComponent({
       loading.stop();
     }
     onBeforeMount(async () => {
-      await loadPosts();
+      await loadPageData();
     });
     watch(
       () => route.params.tag,
-      () => loadPosts()
+      () => loadPageData()
     );
 
     function updatePost(updatedPost: PostModel) {
@@ -85,6 +94,7 @@ export default defineComponent({
       dialog,
       loading,
 
+      tag,
       posts,
       updatePost,
     };
