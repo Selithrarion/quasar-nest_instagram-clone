@@ -153,24 +153,24 @@ export default defineComponent({
     }
 
     async function openProfile(user: UserModel) {
-      isSearchMenu.value = false;
-      searchValue.value = '';
-      searchData.value = [];
-      await router.push(`/profile/${user.username}`);
       if (!isRecentSearchMode.value) {
         recentSearch.value.push(user);
         await userRepository.addRecentSearch(user.id, 'user');
       }
-    }
-    async function openTag(tag: TagModel) {
       isSearchMenu.value = false;
       searchValue.value = '';
       searchData.value = [];
-      await router.push(`/explore/tags/${tag.name}`);
+      await router.push(`/profile/${user.username}`);
+    }
+    async function openTag(tag: TagModel) {
       if (!isRecentSearchMode.value) {
         recentSearch.value.push(tag);
         await userRepository.addRecentSearch(tag.id, 'tag');
       }
+      isSearchMenu.value = false;
+      searchValue.value = '';
+      searchData.value = [];
+      await router.push(`/explore/tags/${tag.name}`);
     }
     function goToMainPage() {
       void router.push('/');
