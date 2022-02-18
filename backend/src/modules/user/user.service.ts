@@ -300,9 +300,14 @@ export class UserService {
   }
 
   async getRecentSearch(userID: number): Promise<(UserEntity | TagEntity)[]> {
-    const { recentSearch } = await this.users.findOneOrFail(userID, { relations: ['recentSearch'] });
+    const user = await this.users
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id: userID })
+      .leftJoinAndSelect('user.recentSearch', 'recentSearch')
+      .orderBy('recentSearch.createdAt', 'DESC')
+      .getOneOrFail();
     return await Promise.all(
-      recentSearch.map(async (item) => {
+      user.recentSearch.map(async (item) => {
         return item.type === 'user'
           ? await this.users.findOne(item.itemID)
           : await this.postsService.getTagByID(item.itemID);
@@ -311,6 +316,8 @@ export class UserService {
   }
   async addRecentSearch(id: number, type: 'user' | 'tag', userID: number): Promise<void> {
     const user = await this.users.findOneOrFail(userID, { relations: ['recentSearch'] });
+    const repeatIndex = user.recentSearch.findIndex((rc) => rc.itemID === id && rc.type === type);
+    if (repeatIndex !== -1) await this.recentSearch.delete(user.recentSearch[repeatIndex].id);
     await this.recentSearch.save({
       itemID: id,
       type,
