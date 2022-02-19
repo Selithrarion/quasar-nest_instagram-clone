@@ -102,7 +102,8 @@ export class PostsService {
     return post.likes.map((user) => {
       return {
         ...user,
-        isViewerFollowed: user.followersIDs.includes(currentUserID),
+        // TODO: replace with query
+        isViewerFollowed: like.user.followersIDs.includes(currentUserID),
       };
     }) as UserEntity[];
   }
