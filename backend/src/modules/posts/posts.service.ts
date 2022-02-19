@@ -135,7 +135,7 @@ export class PostsService {
       .createQueryBuilder('tag')
       .where('tag.id = :id', { id })
       .loadRelationCountAndMap('tag.postsNumber', 'tag.posts')
-      .getOneOrFail();
+      .getOne();
   }
   async getTagByName(name: string): Promise<TagEntity> {
     return await this.postTags
