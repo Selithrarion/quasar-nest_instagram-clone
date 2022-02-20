@@ -23,13 +23,13 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import useLoading from 'src/composables/common/useLoading';
 
 import CommonUser from 'components/common/CommonUser.vue';
 
 import userRepository from 'src/repositories/userRepository';
 import { UserSuggestionModel } from 'src/models/user/user.model';
 import { PaginationApiPayload } from 'src/models/common/pagination.model';
-import useLoading from 'src/composables/common/useLoading';
 
 export default defineComponent({
   name: 'ExplorePeople',
