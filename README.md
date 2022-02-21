@@ -37,10 +37,10 @@ Github actions CI pipeline
 - User following system
 
 #### Auth
-- Login / Register / Forgot password (dev smtp)
+- Login / Register / Forgot password
 - OAuth with Google / Github
 - Unique username / email
-- Send email verification mail (dev smtp)
+- Send email verification mail
 - Automaticly redirect to requested page after login (/auth?redirect=/profile/1)
 - JWT access (1d exp) and refresh ❌ (30d exp) tokens, auto relogin if access token expired 
 
