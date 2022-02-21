@@ -41,7 +41,8 @@ export class PostEntity extends BaseEntity {
   @OneToMany(() => PostLikeEntity, (pl) => pl.post, {
     cascade: true,
   })
-  likes: PostLikeEntity[]
+  likes: PostLikeEntity[];
+  likesNumber?: number;
 
   @OneToMany(() => CommentEntity, (comment) => comment.post, {
     cascade: true,
