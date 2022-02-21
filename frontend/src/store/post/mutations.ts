@@ -24,6 +24,10 @@ const mutation: MutationTree<PostStateInterface> = {
     const post = state.posts?.find((p) => p.id === id);
     if (post) post.isViewerLiked = !post.isViewerLiked;
   },
+  TOGGLE_FOLLOW(state, authorID) {
+    const post = state.posts?.find((p) => p.author.id === authorID);
+    if (post) post.author.isViewerFollowed = !post.author.isViewerFollowed;
+  },
 
   CREATE_COMMENT(state, comment: CommentModel) {
     if (!state.posts) return;

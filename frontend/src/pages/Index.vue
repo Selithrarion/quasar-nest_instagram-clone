@@ -58,6 +58,7 @@
       :model-value="dialog.openedName.value === 'postDetail'"
       :post="dialog.openedItem.value"
       @close="dialog.close"
+      @toggle-follow="toggleFollow(dialog.openedItem.value.id)"
     />
 
     <BaseDialog
@@ -123,6 +124,7 @@ import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialo
 import FeedPostDialogReport from 'components/feed/post/dialog/FeedPostDialogReport.vue';
 
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedIndex',
@@ -177,6 +179,13 @@ export default defineComponent({
         dialog.stopLoading();
       }
     }
+    function toggleFollow(postID: number) {
+      if (!availablePosts.value) return;
+
+      const postIndex = availablePosts.value.findIndex((p) => p.id === postID);
+      availablePosts.value[postIndex].author.isViewerFollowed =
+        !availablePosts.value[postIndex].author.isViewerFollowed;
+    }
 
     const postsMeta = computed(() => store.state.post.postsMeta);
     const postsPagination = ref({
@@ -209,6 +218,7 @@ export default defineComponent({
       openStory,
 
       deletePost,
+      toggleFollow,
 
       isLastPostsPage,
       loadNextPostsPage,

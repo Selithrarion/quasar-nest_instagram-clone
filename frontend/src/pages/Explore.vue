@@ -22,6 +22,7 @@
         :post="dialog.openedItem.value"
         @edit="updatePost"
         @close="dialog.close"
+        @toggle-follow="toggleFollow"
       />
     </template>
   </q-page>
@@ -89,6 +90,13 @@ export default defineComponent({
       const postIndex = posts.value.findIndex((p) => p.id === openedPost?.id);
       posts.value[postIndex] = { ...posts.value[postIndex], ...updatedPost };
     }
+    function toggleFollow() {
+      if (!posts.value) return;
+
+      const openedPost = dialog.openedItem.value as PostModel;
+      const postIndex = posts.value.findIndex((p) => p.id === openedPost?.id);
+      posts.value[postIndex].author.isViewerFollowed = !posts.value[postIndex].author.isViewerFollowed;
+    }
 
     return {
       dialog,
@@ -97,6 +105,7 @@ export default defineComponent({
       tag,
       posts,
       updatePost,
+      toggleFollow,
     };
   },
 });

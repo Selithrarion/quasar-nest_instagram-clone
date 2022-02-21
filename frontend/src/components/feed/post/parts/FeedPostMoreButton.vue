@@ -46,16 +46,19 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    isViewerFollowed: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   emits: ['delete', 'edit', 'share', 'report'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
     const loading = useLoading({ customNames: ['follow', 'unfollow'] });
 
     const isOwnPost = computed(() => props.authorId === store.state.user.currentUser?.id);
-    const isViewerFollowed = computed(() => store.state.user.currentUser?.followedUsersIDs.includes(props.authorId));
 
     async function follow() {
       try {
@@ -78,7 +81,6 @@ export default defineComponent({
       loading,
 
       isOwnPost,
-      isViewerFollowed,
 
       follow,
       unfollow,

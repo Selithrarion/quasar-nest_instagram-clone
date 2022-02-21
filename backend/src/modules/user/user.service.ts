@@ -5,7 +5,6 @@ import * as bcrypt from 'bcrypt';
 
 import { CreateUserDTO } from './dto';
 import { UserEntity, UserSuggestion } from './entity/user.entity';
-import { PostEntity } from '../posts/entity/post.entity';
 
 import { FilesService } from '../files/files.service';
 import { PublicFileEntity } from '../files/entity/public-file.entity';
@@ -23,7 +22,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly users: Repository<UserEntity>,
     @InjectRepository(FollowingEntity)
-    private readonly followings: Repository<FollowingEntity>,
+    private readonly userFollowings: Repository<FollowingEntity>,
     @InjectRepository(RecentSearchEntity)
     private readonly recentSearch: Repository<RecentSearchEntity>,
 
@@ -34,6 +33,8 @@ export class UserService {
   ) {}
 
   async getAll(search: string, currentUserID: number): Promise<UserEntity[]> {
+    console.log('all following entit', await this.userFollowings.find({ where: { id: currentUserID } }));
+
     if (!search.length)
       return this.users.find({
         where: {
@@ -88,8 +89,7 @@ export class UserService {
     );
     return {
       ...user,
-      // TODO: should be replaced with query
-      isViewerFollowed: user.followersIDs.includes(currentUserID),
+      isViewerFollowed: await this.getIsUserFollowed(user.id, currentUserID),
       isViewerBlocked: false,
       posts: formattedPosts,
     } as unknown as UserEntity;
@@ -140,7 +140,7 @@ export class UserService {
     const isAlreadyHaveFieldImage = Boolean(user[field]);
 
     if (isAlreadyHaveFieldImage) {
-      const updatedUser = await this.users.save({
+      await this.users.save({
         ...user,
         [field]: null,
       });
@@ -152,7 +152,7 @@ export class UserService {
       imageMaxSizeMB: 20,
       type: 'image',
     });
-    const updatedUser = await this.users.save({
+    await this.users.save({
       ...user,
       [field]: uploadedFile,
     });
@@ -164,7 +164,7 @@ export class UserService {
     const user = await this.users.findOneOrFail(id);
     const fileID = user[field]?.id;
     if (fileID) {
-      const updatedUser = await this.users.save({
+      await this.users.save({
         ...user,
         [field]: null,
       });
@@ -226,31 +226,28 @@ export class UserService {
   }
 
   async follow(id: number, currentUserID: number): Promise<void> {
-    const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
-    const currentUser = await this.users.findOneOrFail(currentUserID);
-    await this.users.save({ ...user, followers: [...user.followers, currentUser] });
-
-    // const user = await this.users.findOneOrFail(id);
-    // const currentUser = await this.users.findOneOrFail(currentUserID);
-    // // await this.users.save({ ...user, followers: [...user.followers, currentUser] });
-    // // await this.users.save({ ...currentUser, followedUsers: [...user.followedUsers, user] });
-    // console.log(user, currentUser);
-    // const following = await this.followings.save({ follower: currentUser, followedTo: user });
-    // console.log('following', following);
+    const target = await this.users.findOneOrFail(id);
+    const user = await this.users.findOneOrFail(currentUserID);
+    await this.userFollowings.save({
+      user,
+      target,
+    });
   }
-  async unfollow(id: number, currentUserID: number): Promise<void> {
-    const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
-    await this.users.save({ ...user, followers: user.followers.filter((f) => f.id !== currentUserID) });
-
-    // // const user = await this.users.findOneOrFail(id, { relations: ['followers'] });
-    // // const currentUser = await this.users.findOneOrFail(currentUserID, { relations: ['followedUsers'] });
-    // // await this.users.save({ ...user, followers: user.followers.filter((f) => f.id !== currentUserID) });
-    // // await this.users.save({ ...currentUser, followedUsers: user.followedUsers.filter((f) => f.id !== id) });
-    // // const user = await this.users.findOneOrFail(id);
-    // const currentUser = await this.users.findOneOrFail(currentUserID);
-    // const following = await this.followings.findOneOrFail({ where: { follower: currentUser } });
-    // console.log('unfollow', following);
-    // await this.followings.remove(following);
+  async unfollow(targetID: number, userID: number): Promise<void> {
+    const following = await this.getUserFollowedEntity(targetID, userID);
+    if (following) await this.userFollowings.delete(following.id);
+  }
+  async getUserFollowedEntity(targetID: number, userID: number): Promise<FollowingEntity> {
+    return await this.userFollowings
+      .createQueryBuilder('follow')
+      .leftJoin('follow.user', 'user')
+      .leftJoin('follow.target', 'target')
+      .where('user.id = :userID', { userID })
+      .andWhere('target.id = :targetID', { targetID })
+      .getOne();
+  }
+  async getIsUserFollowed(targetID: number, userID: number): Promise<boolean> {
+    return Boolean(this.getUserFollowedEntity(targetID, userID));
   }
 
   async getSuggestions(page: number, limit: number, currentUserID: number): Promise<UserSuggestion[]> {

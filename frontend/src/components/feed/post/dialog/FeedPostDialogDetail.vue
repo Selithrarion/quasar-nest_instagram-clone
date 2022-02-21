@@ -24,10 +24,12 @@
             <FeedPostMoreButton
               :post-id="formattedPost.id"
               :author-id="formattedPost.author.id"
+              :is-viewer-followed="formattedPost.author.isViewerFollowed"
               @edit="dialog.open('editPost')"
               @delete="dialog.open('deletePost')"
               @share="dialog.open('share')"
               @report="dialog.open('report')"
+              @toggle-follow="$emit('toggle-follow')"
             />
           </div>
 
@@ -154,7 +156,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'edit'],
+  emits: ['close', 'edit', 'toggle-follow'],
 
   setup(props, { emit }) {
     const store = useStore();

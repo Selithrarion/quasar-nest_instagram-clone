@@ -22,6 +22,7 @@
         :avatar="post.author?.avatar?.url"
         :username="post.author.username"
         :color="post.author.color"
+        :is-viewer-followed="post.author.isViewerFollowed"
         @delete="$emit('delete')"
         @edit="$emit('edit')"
         @share="$emit('share')"

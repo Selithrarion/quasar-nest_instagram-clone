@@ -33,15 +33,6 @@ const mutation: MutationTree<UserStateInterface> = {
     state.currentUser = { ...state.currentUser, ...payload };
   },
 
-  FOLLOW(state: UserStateInterface, id: number) {
-    if (!state.currentUser) return;
-    state.currentUser.followedUsersIDs.push(id);
-  },
-  UNFOLLOW(state: UserStateInterface, id: number) {
-    if (!state.currentUser) return;
-    state.currentUser.followedUsersIDs = state.currentUser.followedUsersIDs.filter((userID) => userID !== id);
-  },
-
   SET_SUGGESTIONS(state: UserStateInterface, payload: UserSuggestionModel[]) {
     state.suggestions = payload;
   },

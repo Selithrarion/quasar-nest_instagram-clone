@@ -30,6 +30,7 @@
         mode="profile"
         @edit="updatePost"
         @close="dialog.close"
+        @toggle-follow="profile.isViewerFollowed = !profile.isViewerFollowed"
       />
     </template>
   </q-page>

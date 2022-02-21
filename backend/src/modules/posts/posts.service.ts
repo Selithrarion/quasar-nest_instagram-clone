@@ -46,6 +46,10 @@ export class PostsService {
     queryBuilder.orderBy('post.createdAt', 'DESC');
     queryBuilder.leftJoinAndSelect('post.author', 'author');
     queryBuilder.leftJoinAndSelect('author.avatar', 'avatar');
+    // TODO: temp
+    queryBuilder.leftJoinAndSelect('author.followers', 'followers');
+    // TODO: temp
+    queryBuilder.leftJoinAndSelect('author.followedUsers', 'followedUsers');
     queryBuilder.leftJoinAndSelect('post.file', 'file');
     queryBuilder.leftJoinAndSelect('post.tags', 'tags');
     // TODO: it finds not only 'test' but 'test1' and etc
@@ -56,6 +60,11 @@ export class PostsService {
     const formattedPosts = (await Promise.all(
       items.map(async (p) => ({
         ...p,
+        author: {
+          ...p.author,
+          isViewerFollowed:
+            p.author.id === userID ? false : await this.userService.getIsUserFollowed(p.author.id, userID),
+        },
         comments: tag
           ? []
           : await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
@@ -104,13 +113,14 @@ export class PostsService {
   }
   async getLikes(id: number, currentUserID: number): Promise<UserEntity[]> {
     const post = await this.posts.findOneOrFail(id, { relations: ['likes'] });
-    return post.likes.map((like) => {
-      return {
-        ...like.user,
-        // TODO: replace with query
-        isViewerFollowed: like.user.followersIDs.includes(currentUserID),
-      };
-    }) as UserEntity[];
+    return (await Promise.all(
+      post.likes.map(async (like) => {
+        return {
+          ...like.user,
+          isViewerFollowed: await this.userService.getIsUserFollowed(like.user.id, currentUserID),
+        };
+      })
+    )) as UserEntity[];
   }
   async getLikedPostsByUserID(id: number): Promise<PostEntity[]> {
     const likes = await this.postLikes.createQueryBuilder('likes').where('user.id = :id', { id }).getMany();

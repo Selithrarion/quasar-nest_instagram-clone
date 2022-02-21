@@ -8,6 +8,7 @@
     <FeedPostMoreButton
       :post-id="postId"
       :author-id="authorId"
+      :is-viewer-followed="isViewerFollowed"
       @share="$emit('share')"
       @delete="$emit('delete')"
       @edit="$emit('edit')"
@@ -37,8 +38,13 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    isViewerFollowed: {
+      type: Boolean,
+      required: true,
+    },
     avatar: {
       type: String,
+      required: false,
       default: null,
     },
     username: {
@@ -51,7 +57,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['delete', 'edit', 'share', 'report'],
+  emits: ['delete', 'edit', 'share', 'report', 'toggle-follow'],
 
   setup(props) {
     const router = useRouter();
