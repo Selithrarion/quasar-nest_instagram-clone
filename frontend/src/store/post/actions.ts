@@ -26,9 +26,8 @@ const actions: ActionTree<PostStateInterface, StateInterface> = {
     await postRepository.delete(id);
     commit('DELETE_POST', id);
   },
-  async toggleLike({ commit, rootState }, id: number) {
-    const userID = rootState.user.currentUser?.id;
-    commit('TOGGLE_LIKE', { id, userID });
+  async toggleLike({ commit }, id: number) {
+    commit('TOGGLE_LIKE', { id });
     await postRepository.toggleLike(id);
   },
 

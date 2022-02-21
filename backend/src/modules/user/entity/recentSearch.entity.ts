@@ -4,8 +4,6 @@ import { UserEntity } from './user.entity';
 
 @Entity()
 export class RecentSearchEntity extends BaseEntity {
-  // @Column()
-  // item: UserEntity | TagEntity;
   @Column()
   itemID: number;
 

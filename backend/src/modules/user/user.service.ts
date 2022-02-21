@@ -69,27 +69,30 @@ export class UserService {
       .leftJoinAndSelect('user.posts', 'posts')
       .leftJoinAndSelect('posts.file', 'file')
       .leftJoinAndSelect('posts.tags', 'tags')
+      .leftJoinAndSelect('posts.likes', 'likes')
       .loadRelationCountAndMap('user.postsNumber', 'user.posts')
       .loadRelationCountAndMap('user.followersNumber', 'user.followers')
       .loadRelationCountAndMap('user.followedNumber', 'user.followedUsers')
       .orderBy('posts.createdAt', 'DESC')
       .getOneOrFail();
 
-    const formattedPosts = user.posts.map((p) => {
-      return {
-        ...p,
-        fileURL: p.file?.url,
-        // TODO: should be replaced with query
-        isViewerLiked: user.likedPostsIDs.includes(p.id),
-      };
-    });
+    const formattedPosts = await Promise.all(
+      user.posts.map(async (p) => {
+        return {
+          ...p,
+          fileURL: p.file?.url,
+          likesNumber: await this.postsService.getPostLikesCount(user, p),
+          isViewerLiked: await this.postsService.getIsUserLikedPost(user, p),
+        };
+      })
+    );
     return {
       ...user,
       // TODO: should be replaced with query
       isViewerFollowed: user.followersIDs.includes(currentUserID),
       isViewerBlocked: false,
       posts: formattedPosts,
-    } as UserEntity;
+    } as unknown as UserEntity;
   }
 
   async create(payload: CreateUserDTO): Promise<UserEntity> {
@@ -189,10 +192,6 @@ export class UserService {
     return true;
   }
 
-  async getLikedPosts(id: number): Promise<PostEntity[]> {
-    const user = await this.users.findOneOrFail(id, { relations: ['likedPosts'] });
-    return user.likedPosts;
-  }
   async getLikedComments(id: number): Promise<CommentEntity[]> {
     const user = await this.users.findOneOrFail(id, { relations: ['likedComments'] });
     return user.likedComments;

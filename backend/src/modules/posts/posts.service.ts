@@ -12,6 +12,7 @@ import { TagEntity } from './entity/tag.entity';
 import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/entity/user.entity';
+import { PostLikeEntity } from './entity/postLike.entity';
 
 @Injectable()
 export class PostsService {
@@ -24,6 +25,8 @@ export class PostsService {
     private postComments: Repository<CommentEntity>,
     @InjectRepository(TagEntity)
     private postTags: Repository<TagEntity>,
+    @InjectRepository(PostLikeEntity)
+    private postLikes: Repository<PostLikeEntity>,
 
     @Inject(FilesService)
     private readonly filesService: FilesService,
@@ -46,21 +49,23 @@ export class PostsService {
     queryBuilder.leftJoinAndSelect('post.file', 'file');
     queryBuilder.leftJoinAndSelect('post.tags', 'tags');
     // TODO: it finds not only 'test' but 'test1' and etc
-    if (tag) queryBuilder.where('tags.name IN :tag', { tag });
+    if (tag) queryBuilder.where('tags.name = :tag', { tag });
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 
     const formattedPosts = (await Promise.all(
       items.map(async (p) => ({
         ...p,
-        comments: await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
+        comments: tag
+          ? []
+          : await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
         fileURL: p.file?.url,
-        // TODO: should be replaced with query
-        isViewerLiked: currentUser.likedPostsIDs.includes(p.id),
+        likesNumber: await this.getPostLikesCount(currentUser, p),
+        isViewerLiked: await this.getIsUserLikedPost(currentUser, p),
         isViewerSaved: false,
         isViewerInPhoto: false,
       }))
-    )) as PostEntity[];
+    )) as unknown as PostEntity[];
     return { items: formattedPosts, meta };
   }
 
@@ -99,13 +104,23 @@ export class PostsService {
   }
   async getLikes(id: number, currentUserID: number): Promise<UserEntity[]> {
     const post = await this.posts.findOneOrFail(id, { relations: ['likes'] });
-    return post.likes.map((user) => {
+    return post.likes.map((like) => {
       return {
-        ...user,
+        ...like.user,
         // TODO: replace with query
         isViewerFollowed: like.user.followersIDs.includes(currentUserID),
       };
     }) as UserEntity[];
+  }
+  async getLikedPostsByUserID(id: number): Promise<PostEntity[]> {
+    const likes = await this.postLikes.createQueryBuilder('likes').where('user.id = :id', { id }).getMany();
+    return likes.map((l) => l.post);
+  }
+  async getIsUserLikedPost(user: UserEntity, post: PostEntity): Promise<boolean> {
+    return Boolean(await this.postLikes.findOne({ where: { user, post }, relations: ['user', 'post'] }));
+  }
+  async getPostLikesCount(user: UserEntity, post: PostEntity): Promise<number> {
+    return this.postLikes.count({ user, post });
   }
 
   async getTags(search: string): Promise<TagEntity[]> {
@@ -242,17 +257,15 @@ export class PostsService {
   }
 
   async toggleLike(postID: number, userID: number): Promise<void> {
-    const userLikedPosts = await this.userService.getLikedPosts(userID);
-    const postIndex = userLikedPosts.findIndex((p) => p.id === postID);
-
-    if (postIndex !== -1) {
-      userLikedPosts.splice(postIndex, 1);
-    } else {
-      const post = await this.posts.findOneOrFail(postID);
-      userLikedPosts.push(post);
-    }
-
-    await this.userService.update(userID, { likedPosts: userLikedPosts });
+    const like = await this.postLikes
+      .createQueryBuilder('likes')
+      .leftJoin('likes.user', 'user')
+      .leftJoin('likes.post', 'post')
+      .where('user.id = :userID', { userID })
+      .andWhere('post.id = :postID', { postID })
+      .getOne();
+    if (like) await this.postLikes.delete(like.id);
+    else await this.postLikes.save({ post: { id: postID }, user: { id: userID } });
   }
 
   async createComment({ text, postID, replyCommentID }: CreateCommentDTO, userID: number): Promise<CommentEntity> {

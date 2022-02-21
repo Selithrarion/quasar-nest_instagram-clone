@@ -4,10 +4,11 @@
     <div class="explore-post__content absolute-center flex-center gap-8 full-height full-width">
       <div class="flex-center gap-2">
         <q-icon name="favorite" size="22px" />
-        {{ post.likesUserIDs?.length }}
+        {{ post.likesNumber }}
       </div>
       <div class="flex-center gap-2">
         <q-icon name="forum" size="22px" />
+        <!--        TODO: commentsNumber-->
         {{ post.commentIDs?.length }}
       </div>
     </div>

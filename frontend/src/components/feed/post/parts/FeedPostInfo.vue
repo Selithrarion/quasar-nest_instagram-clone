@@ -2,14 +2,14 @@
   <div class="feed-post-info" :class="{ 'feed-post-info--scroll': useScroll }">
     <div class="feed-post-info__header">
       <BaseButton
-        v-if="post.likesUserIDs.length"
+        v-if="post.likesNumber"
         class="text-subtitle2 text-weight-bold w-fit-content"
         style="margin-left: -4px"
         dense
         flat
         @click="$emit('open-likes')"
       >
-        {{ post.likesUserIDs.length }} likes
+        {{ post.likesNumber }} likes
       </BaseButton>
       <BaseButton
         v-else
