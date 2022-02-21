@@ -71,9 +71,6 @@ export class UserService {
       .leftJoinAndSelect('posts.file', 'file')
       .leftJoinAndSelect('posts.tags', 'tags')
       .leftJoinAndSelect('posts.likes', 'likes')
-      .loadRelationCountAndMap('user.postsNumber', 'user.posts')
-      .loadRelationCountAndMap('user.followersNumber', 'user.followers')
-      .loadRelationCountAndMap('user.followedNumber', 'user.followedUsers')
       .orderBy('posts.createdAt', 'DESC')
       .getOneOrFail();
 

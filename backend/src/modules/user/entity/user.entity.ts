@@ -211,4 +211,34 @@ export class UserEntity extends BaseEntity {
 
   isViewerFollowed?: boolean;
   isViewerBlocked?: boolean;
+
+  @AfterLoad()
+  async count(): Promise<void> {
+    const connection = await getConnection();
+    const repository = connection.getRepository('UserEntity');
+
+    const { count: postsNumber } = await repository
+      .createQueryBuilder('user')
+      .leftJoin('user.posts', 'posts')
+      .leftJoin('posts.author', 'author')
+      .where('author.id = :id', { id: this.id })
+      .select('COUNT(*)', 'count')
+      .getRawOne();
+
+    const { count: followersNumber } = await repository
+      .createQueryBuilder('followers')
+      .where('followers.id = :id', { id: this.id })
+      .select('COUNT(*)', 'count')
+      .getRawOne();
+
+    const { count: followingNumber } = await repository
+      .createQueryBuilder('followedUsers')
+      .where('followedUsers.id = :id', { id: this.id })
+      .select('COUNT(*)', 'count')
+      .getRawOne();
+
+    this.postsNumber = postsNumber;
+    this.followersNumber = followersNumber;
+    this.followedNumber = followingNumber;
+  }
 }
