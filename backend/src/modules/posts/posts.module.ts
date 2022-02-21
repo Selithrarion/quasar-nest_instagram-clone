@@ -8,13 +8,14 @@ import { PostEntity } from './entity/post.entity';
 import { CommentEntity } from './entity/comment.entity';
 import { ReportEntity } from './entity/report.entity';
 import { TagEntity } from './entity/tag.entity';
+import { PostLikeEntity } from './entity/postLike.entity';
 
 import { FilesModule } from '../files/files.module';
 import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PostEntity, CommentEntity, ReportEntity, TagEntity]),
+    TypeOrmModule.forFeature([PostEntity, CommentEntity, ReportEntity, TagEntity, PostLikeEntity]),
     FilesModule,
     forwardRef(() => UserModule),
   ],

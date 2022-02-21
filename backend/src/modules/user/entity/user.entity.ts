@@ -23,6 +23,7 @@ import { PostEntity } from '../../posts/entity/post.entity';
 import stringToHslColor from '../../../common/utils/stringToHslColor';
 import { ReportEntity } from '../../posts/entity/report.entity';
 import { RecentSearchEntity } from './recentSearch.entity';
+import { PostLikeEntity } from "../../posts/entity/postLike.entity";
 // import { FollowingEntity } from './following.entity';
 
 export interface UserGoogleData {
@@ -146,13 +147,10 @@ export class UserEntity extends BaseEntity {
   posts: PostEntity[];
   postsNumber?: number;
 
-  @ManyToMany(() => PostEntity, (post) => post.likes, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+  @ManyToMany(() => PostLikeEntity, (pl) => pl.user, {
+    cascade: true
   })
-  likedPosts: PostEntity[];
-  @RelationId('likedPosts')
-  likedPostsIDs: number[];
+  likedPosts: PostLikeEntity[];
 
   @ManyToMany(() => CommentEntity, (comment) => comment.likes, {
     onUpdate: 'CASCADE',
