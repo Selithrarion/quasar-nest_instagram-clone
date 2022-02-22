@@ -101,9 +101,10 @@ export default {
     markUnread: 'Mark as unread',
 
     typeTitles: {
-      news: 'News on the Jira app',
-      issueAssign: 'You have been assigned a task',
-      issueWatchUpdate: 'The observed task has been updated',
+      likedPhoto: 'liked your photo',
+      likedVideo: 'liked your video',
+      likedComment: 'liked your comment',
+      followed: 'started following you',
     },
   },
 
