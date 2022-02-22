@@ -250,24 +250,22 @@ export class UserService {
   async getSuggestions(page: number, limit: number, currentUserID: number): Promise<UserSuggestion[]> {
     // TODO: figure out
 
-    // ?
     // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#using-subqueries
 
     // const currentUser = await this.users.findOneOrFail(currentUserID, { relations: ['followers', 'followedUsers'] });
-    // const followersThatCurrentUserDontFollow = await this.users
-    //   .createQueryBuilder('user')
-    //   .leftJoinAndSelect('user.followedUsers', 'followedUsers')
-    //   .where('followedUsers NOT IN (:currentUserFollowers)', { currentUserFollowers: currentUser.followers })
+    // const followersThatCurrentUserDontFollow = await this.userFollowings
+    //   .createQueryBuilder('following')
+    //   .where('following.target = :currentUserID', { currentUserID })
+    //   // TODO: need to get all users that current user not follow. use subquery?
+    //   .andWhere('following.user = :', { currentUserID })
     //   .take(1)
     //   .getMany();
-    // // suggestion: Follows you
+    // suggestion: Follows you
 
-    // const followedByYourFollowed = await this.users
-    //   .createQueryBuilder('user')
-    //   .leftJoinAndSelect('user.followedUsers', 'followedUsers')
-    //   .leftJoinAndSelect('user.followers', 'followers')
-    //   .where('followers IN (:currentUserFollowedUsers)', { currentUserFollowedUsers: currentUser.followedUsers })
-    //   .andWhere('followers IN (:currentUserFollowedUsers)', { currentUserFollowedUsers: currentUser.followedUsers })
+    // const followedByYourFollowed = await this.userFollowings
+    //   .createQueryBuilder('following')
+    //    // TODO
+    //   .where('following.target IN ' )
     //   .take(1)
     //   .getMany();
     // // suggestion: Followed by USERNAME
