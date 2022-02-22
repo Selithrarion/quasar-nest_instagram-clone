@@ -235,6 +235,7 @@ export class UserService {
     if (following) await this.userFollowings.delete(following.id);
   }
   async getUserFollowedEntity(targetID: number, userID: number): Promise<FollowingEntity> {
+    // TODO: it always find some following entity even if it doesn't exists before. maybe it creates it somehow? wtf
     return await this.userFollowings
       .createQueryBuilder('follow')
       .leftJoin('follow.user', 'user')
