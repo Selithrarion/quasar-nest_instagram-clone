@@ -54,7 +54,7 @@ export default defineComponent({
 
   emits: ['delete', 'edit', 'share', 'report'],
 
-  setup(props, { emit }) {
+  setup(props) {
     const store = useStore();
     const loading = useLoading({ customNames: ['follow', 'unfollow'] });
 
