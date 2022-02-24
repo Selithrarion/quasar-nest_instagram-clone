@@ -3,16 +3,10 @@ import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 
 export enum NotificationTypes {
-  NEWS = 'news',
-
-  ISSUE_ASSIGN = 'issueAssign',
-  ISSUE_WATCH_UPDATE = 'issueWatchUpdate',
-
-  PROJECT_ADD = 'projectAdd',
-  PROJECT_DELETE = 'projectDelete',
-
-  TEAM_ADD = 'teamAdd',
-  TEAM_DELETE = 'teamDelete',
+  LIKED_PHOTO = 'likedPhoto',
+  LIKED_VIDEO = 'likedVideo',
+  LIKED_COMMENT = 'likedComment',
+  FOLLOWED = 'followed',
 }
 
 @Entity()
@@ -25,6 +19,7 @@ export class NotificationEntity extends BaseEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.notifications, {
     cascade: true,
+    eager: true
   })
   user: UserEntity;
 }
