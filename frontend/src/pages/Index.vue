@@ -124,7 +124,6 @@ import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialo
 import FeedPostDialogReport from 'components/feed/post/dialog/FeedPostDialogReport.vue';
 
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
-import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedIndex',
