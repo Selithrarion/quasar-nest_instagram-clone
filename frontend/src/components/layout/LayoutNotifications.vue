@@ -31,6 +31,10 @@
                   {{ formatDate(notification.createdAt, DateTypes.DIFF) }}
                 </span>
               </template>
+
+              <template #append>
+                <BaseAvatar :src="notification.post?.fileURL" size="40px" square />
+              </template>
             </CommonUser>
           </div>
         </template>
@@ -49,7 +53,7 @@ import CommonListTitle from 'components/common/CommonListTitle.vue';
 import CommonUser from 'components/common/CommonUser.vue';
 
 import notificationRepository from 'src/repositories/notificationRepository';
-import { NotificationModel, NotificationTypes } from 'src/models/user/notification.model';
+import { NotificationModel } from 'src/models/user/notification.model';
 
 export default defineComponent({
   name: 'LayoutNotifications',
