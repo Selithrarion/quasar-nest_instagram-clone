@@ -23,6 +23,7 @@
               :key="notification.id"
               :user="notification.user"
               hide-name
+              @click="handleItemClick(notification)"
             >
               <template #username="{ username }">
                 <b>{{ username }}</b>
@@ -45,6 +46,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { DateTypes, useFormat } from 'src/composables/format/useFormat';
 import useLoading from 'src/composables/common/useLoading';
@@ -53,7 +55,7 @@ import CommonListTitle from 'components/common/CommonListTitle.vue';
 import CommonUser from 'components/common/CommonUser.vue';
 
 import notificationRepository from 'src/repositories/notificationRepository';
-import { NotificationModel } from 'src/models/user/notification.model';
+import { NotificationModel, NotificationTypes } from 'src/models/user/notification.model';
 
 export default defineComponent({
   name: 'LayoutNotifications',
@@ -64,6 +66,7 @@ export default defineComponent({
   },
 
   setup() {
+    const router = useRouter();
     const { t } = useI18n();
     const { formatDate } = useFormat();
     const loading = useLoading({ default: true });
@@ -104,7 +107,14 @@ export default defineComponent({
     }
 
     function handleItemClick(item: NotificationModel) {
-      console.log(item);
+      const isPostActivity =
+        item.type === NotificationTypes.LIKED_PHOTO ||
+        item.type === NotificationTypes.LIKED_VIDEO ||
+        NotificationTypes.LIKED_COMMENT;
+      const isUserActivity = item.type === NotificationTypes.FOLLOWED;
+
+      if (isPostActivity) void router.push(`/post/${item.post.id}`);
+      else if (isUserActivity) void router.push(`/profile/${item.user.username}`);
     }
 
     return {
