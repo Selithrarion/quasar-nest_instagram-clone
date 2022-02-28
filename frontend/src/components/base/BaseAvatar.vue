@@ -3,6 +3,7 @@
     class="base-avatar"
     :class="classes"
     :size="size"
+    :square="square"
     :style="styles"
     v-bind="$attrs"
     @click="uploadAvatar ? $refs.avatarInput.click() : null"
@@ -18,7 +19,13 @@
         center
       />
 
-      <q-img v-else-if="src" class="rounded-full" ratio="1" :src="src" :alt="`${itemName} Avatar`">
+      <q-img
+        v-else-if="src"
+        :class="{ 'rounded-full': !square }"
+        ratio="1"
+        :src="src"
+        :alt="itemName ? `${itemName} Avatar` : ''"
+      >
         <template #loading>
           <BaseLoader
             thickness="0.18"
@@ -114,6 +121,8 @@ export default defineComponent({
       required: false,
       default: null,
     },
+
+    square: Boolean,
   },
 
   emits: ['select-avatar'],
