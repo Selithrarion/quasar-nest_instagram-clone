@@ -198,6 +198,8 @@ export class UserService {
       .createQueryBuilder('user')
       .where('user.id = :id', { id })
       .leftJoinAndSelect('user.notifications', 'notifications')
+      .leftJoinAndSelect('notifications.user', 'notificationsUser')
+      .leftJoinAndSelect('notificationsUser.avatar', 'notificationsUserAvatar')
       .orderBy('notifications.createdAt', 'DESC')
       .getOneOrFail();
     return user.notifications;
