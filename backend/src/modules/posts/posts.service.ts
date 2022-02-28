@@ -13,6 +13,8 @@ import { FilesService } from '../files/files.service';
 import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/entity/user.entity';
 import { PostLikeEntity } from './entity/postLike.entity';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationTypes } from '../notifications/entity/notification.entity';
 
 @Injectable()
 export class PostsService {
@@ -32,7 +34,10 @@ export class PostsService {
     private readonly filesService: FilesService,
 
     @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService
+    private readonly userService: UserService,
+
+    @Inject(NotificationsService)
+    private readonly notificationsService: NotificationsService
   ) {}
 
   async getAll(
@@ -79,7 +84,8 @@ export class PostsService {
   }
 
   async getByID(id: number): Promise<PostEntity> {
-    return await this.posts.findOneOrFail(id, { relations: ['users', 'tags'] });
+    // return await this.posts.findOneOrFail(id, { relations: ['users', 'tags'] });
+    return await this.posts.findOneOrFail(id, { relations: ['author', 'tags'] });
   }
   async getComments(id: number, userID: number): Promise<CommentEntity[]> {
     const post = await this.posts.findOneOrFail(id);
@@ -274,8 +280,13 @@ export class PostsService {
       .where('user.id = :userID', { userID })
       .andWhere('post.id = :postID', { postID })
       .getOne();
-    if (like) await this.postLikes.delete(like.id);
-    else await this.postLikes.save({ post: { id: postID }, user: { id: userID } });
+    if (like) {
+      await this.postLikes.delete(like.id);
+      await this.notificationsService.deleteByPostID(postID);
+    } else {
+      await this.postLikes.save({ post: { id: postID }, user: { id: userID } });
+      await this.notificationsService.create(NotificationTypes.LIKED_PHOTO, userID, postID);
+    }
   }
 
   async createComment({ text, postID, replyCommentID }: CreateCommentDTO, userID: number): Promise<CommentEntity> {

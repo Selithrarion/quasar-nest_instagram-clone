@@ -12,11 +12,13 @@ import { PostLikeEntity } from './entity/postLike.entity';
 
 import { FilesModule } from '../files/files.module';
 import { UserModule } from '../user/user.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([PostEntity, CommentEntity, ReportEntity, TagEntity, PostLikeEntity]),
     FilesModule,
+    NotificationsModule,
     forwardRef(() => UserModule),
   ],
   exports: [PostsService],
