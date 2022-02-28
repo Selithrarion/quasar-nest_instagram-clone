@@ -78,7 +78,6 @@ export class UserService {
       user.posts.map(async (p) => {
         return {
           ...p,
-          fileURL: p.file?.url,
           likesNumber: await this.postsService.getPostLikesCount(user, p),
           isViewerLiked: await this.postsService.getIsUserLikedPost(user, p),
         };

@@ -65,6 +65,11 @@ export class PostEntity extends BaseEntity {
   file: PublicFileEntity;
   fileURL: string;
 
+  @AfterLoad()
+  getFileURL(): void {
+    this.fileURL = this.file?.url;
+  }
+
   isViewerLiked: boolean;
   isViewerSaved: boolean;
   isViewerInPhoto: boolean;

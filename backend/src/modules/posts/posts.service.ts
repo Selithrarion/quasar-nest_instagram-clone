@@ -73,7 +73,6 @@ export class PostsService {
         comments: tag
           ? []
           : await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
-        fileURL: p.file?.url,
         likesNumber: await this.getPostLikesCount(currentUser, p),
         isViewerLiked: await this.getIsUserLikedPost(currentUser, p),
         isViewerSaved: false,
