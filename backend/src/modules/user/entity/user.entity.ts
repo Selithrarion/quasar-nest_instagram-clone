@@ -161,11 +161,17 @@ export class UserEntity extends BaseEntity {
   @RelationId('likedComments')
   likedCommentsIDs: number[];
 
-  @OneToMany(() => FollowingEntity, (f) => f.user)
+  @OneToMany(() => FollowingEntity, (f) => f.user, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   followers: FollowingEntity[];
   followersNumber?: number;
 
-  @OneToMany(() => FollowingEntity, (f) => f.target)
+  @OneToMany(() => FollowingEntity, (f) => f.target, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   followedUsers: FollowingEntity[];
   followedNumber?: number;
 

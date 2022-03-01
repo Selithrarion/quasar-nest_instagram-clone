@@ -5,14 +5,12 @@ import { UserEntity } from './user.entity';
 @Entity()
 export class FollowingEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, (u) => u.followers, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: true,
   })
   user: UserEntity;
 
   @ManyToOne(() => UserEntity, (u) => u.followedUsers, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: true,
   })
   target: UserEntity;
 
