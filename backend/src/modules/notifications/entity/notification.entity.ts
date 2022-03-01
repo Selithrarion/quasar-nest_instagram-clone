@@ -24,5 +24,9 @@ export class NotificationEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, (user) => user.notifications, {
     cascade: true,
   })
-  user: UserEntity;
+  receiverUser: UserEntity;
+  @ManyToOne(() => UserEntity, {
+    cascade: true,
+  })
+  initiatorUser: UserEntity;
 }

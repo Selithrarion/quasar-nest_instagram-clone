@@ -9,12 +9,13 @@ import { UserEntity, UserSuggestion } from './entity/user.entity';
 import { FilesService } from '../files/files.service';
 import { PublicFileEntity } from '../files/entity/public-file.entity';
 import { CreateUserGithubDTO } from './dto';
-import { NotificationEntity } from '../notifications/entity/notification.entity';
+import { NotificationEntity, NotificationTypes } from '../notifications/entity/notification.entity';
 import { FollowingEntity } from './entity/following.entity';
 import { CommentEntity } from '../posts/entity/comment.entity';
 import { PostsService } from '../posts/posts.service';
 import { RecentSearchEntity } from './entity/recentSearch.entity';
 import { TagEntity } from '../posts/entity/tag.entity';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class UserService {
@@ -29,7 +30,9 @@ export class UserService {
     @Inject(FilesService)
     private readonly filesService: FilesService,
     @Inject(forwardRef(() => PostsService))
-    private readonly postsService: PostsService
+    private readonly postsService: PostsService,
+    @Inject(forwardRef(() => NotificationsService))
+    private readonly notificationsService: NotificationsService
   ) {}
 
   async getAll(search: string, currentUserID: number): Promise<UserEntity[]> {
@@ -193,17 +196,20 @@ export class UserService {
     return user.likedComments;
   }
   async getNotifications(id: number): Promise<NotificationEntity[]> {
-    const user = await this.users
+    const { notifications } = await this.users
       .createQueryBuilder('user')
       .where('user.id = :id', { id })
+
       .leftJoinAndSelect('user.notifications', 'notifications')
       .leftJoinAndSelect('notifications.post', 'post')
       .leftJoinAndSelect('post.file', 'file')
-      .leftJoinAndSelect('notifications.user', 'notificationsUser')
-      .leftJoinAndSelect('notificationsUser.avatar', 'notificationsUserAvatar')
+
+      .leftJoinAndSelect('notifications.initiatorUser', 'initiatorUser')
+      .leftJoinAndSelect('initiatorUser.avatar', 'initiatorUserAvatar')
+
       .orderBy('notifications.createdAt', 'DESC')
       .getOneOrFail();
-    return user.notifications;
+    return notifications;
   }
 
   async isUsernameTaken(username: string): Promise<boolean> {
@@ -225,17 +231,25 @@ export class UserService {
     return true;
   }
 
-  async follow(id: number, currentUserID: number): Promise<void> {
-    const target = await this.users.findOneOrFail(id);
+  async follow(targetID: number, currentUserID: number): Promise<void> {
+    const target = await this.users.findOneOrFail(targetID);
     const user = await this.users.findOneOrFail(currentUserID);
     await this.userFollowings.save({
       user,
       target,
     });
+    await this.notificationsService.create({
+      type: NotificationTypes.FOLLOWED,
+      receiverUserID: targetID,
+      initiatorUserID: currentUserID,
+    });
   }
   async unfollow(targetID: number, userID: number): Promise<void> {
     const following = await this.getUserFollowedEntity(targetID, userID);
-    if (following) await this.userFollowings.delete(following.id);
+    if (following) {
+      await this.userFollowings.delete(following.id);
+      await this.notificationsService.deleteLastByInitiatorID(userID, targetID);
+    }
   }
   async getUserFollowedEntity(targetID: number, userID: number): Promise<FollowingEntity> {
     // TODO: it always find some following entity even if it doesn't exists before. maybe it creates it somehow? wtf

@@ -200,10 +200,10 @@ export class UserEntity extends BaseEntity {
   })
   comments: CommentEntity[];
 
-  @OneToMany(() => ReportEntity, (report) => report.reporter)
+  @OneToMany(() => ReportEntity, (r) => r.reporter)
   postReports: ReportEntity[];
 
-  @OneToMany(() => NotificationEntity, (notification) => notification.user, {
+  @OneToMany(() => NotificationEntity, (n) => n.receiverUser, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

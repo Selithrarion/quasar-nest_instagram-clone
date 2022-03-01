@@ -279,12 +279,18 @@ export class PostsService {
       .where('user.id = :currentUserID', { currentUserID })
       .andWhere('post.id = :postID', { postID })
       .getOne();
+    const { author } = await this.posts.findOneOrFail(postID);
     if (like) {
       await this.postLikes.delete(like.id);
       await this.notificationsService.deleteByPostID(postID, currentUserID);
     } else {
-      await this.postLikes.save({ post: { id: postID }, user: { id: userID } });
-      await this.notificationsService.create(NotificationTypes.LIKED_PHOTO, userID, postID);
+      await this.postLikes.save({ post: { id: postID }, user: { id: currentUserID } });
+      await this.notificationsService.create({
+        type: NotificationTypes.LIKED_PHOTO,
+        receiverUserID: author.id,
+        initiatorUserID: currentUserID,
+        postID,
+      });
     }
   }
 
