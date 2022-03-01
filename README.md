@@ -33,7 +33,7 @@ Github actions CI pipeline
 ❌ === not implemented yet
 #### Global
 - English lanugage (wow!)
-- User notifications ❌
+- User notifications (Post like, Comment like, User followed)
 - User following system
 
 #### Auth
