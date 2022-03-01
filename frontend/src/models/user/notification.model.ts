@@ -11,7 +11,7 @@ export enum NotificationTypes {
 
 export interface NotificationModel extends BaseModel {
   type: NotificationTypes;
-  user: UserModel;
+  initiatorUser: UserModel;
   post: PostModel;
   read: boolean;
 }

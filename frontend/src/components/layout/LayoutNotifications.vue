@@ -21,7 +21,7 @@
             <CommonUser
               v-for="notification in filteredNotifications"
               :key="notification.id"
-              :user="notification.user"
+              :user="notification.initiatorUser"
               hide-name
               @click="handleItemClick(notification)"
             >
@@ -110,11 +110,11 @@ export default defineComponent({
       const isPostActivity =
         item.type === NotificationTypes.LIKED_PHOTO ||
         item.type === NotificationTypes.LIKED_VIDEO ||
-        NotificationTypes.LIKED_COMMENT;
+        item.type === NotificationTypes.LIKED_COMMENT;
       const isUserActivity = item.type === NotificationTypes.FOLLOWED;
 
       if (isPostActivity) void router.push(`/post/${item.post.id}`);
-      else if (isUserActivity) void router.push(`/profile/${item.user.username}`);
+      else if (isUserActivity) void router.push(`/profile/${item.initiatorUser.username}`);
     }
 
     return {
