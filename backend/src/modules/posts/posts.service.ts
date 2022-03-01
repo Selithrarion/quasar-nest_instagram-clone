@@ -271,17 +271,17 @@ export class PostsService {
     console.log('share', id, userID);
   }
 
-  async toggleLike(postID: number, userID: number): Promise<void> {
+  async toggleLike(postID: number, currentUserID: number): Promise<void> {
     const like = await this.postLikes
       .createQueryBuilder('likes')
       .leftJoin('likes.user', 'user')
       .leftJoin('likes.post', 'post')
-      .where('user.id = :userID', { userID })
+      .where('user.id = :currentUserID', { currentUserID })
       .andWhere('post.id = :postID', { postID })
       .getOne();
     if (like) {
       await this.postLikes.delete(like.id);
-      await this.notificationsService.deleteByPostID(postID);
+      await this.notificationsService.deleteByPostID(postID, currentUserID);
     } else {
       await this.postLikes.save({ post: { id: postID }, user: { id: userID } });
       await this.notificationsService.create(NotificationTypes.LIKED_PHOTO, userID, postID);

@@ -41,10 +41,11 @@ export class NotificationsService {
     await this.notifications.delete(id);
   }
 
-  async deleteByPostID(postID: number): Promise<void> {
+  async deleteByPostID(postID: number, currentUserID: number): Promise<void> {
     const notification = await this.notifications
       .createQueryBuilder('notification')
       .where('notification.post.id = :postID', { postID })
+      .andWhere('notification.initiatorUser.id = :currentUserID', { currentUserID })
       .getOne();
     if (notification) await this.notifications.delete(notification.id);
   }
