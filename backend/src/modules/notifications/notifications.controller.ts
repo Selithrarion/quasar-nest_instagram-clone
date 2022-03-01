@@ -20,11 +20,11 @@ export class NotificationsController {
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() payload: UpdateNotificationDTO): Promise<void> {
-    return await this.notificationsService.update(id, payload);
+    return await this.notificationsService.update(+id, payload);
   }
 
   @Delete(':id')
   async deleteByID(@Param('id') id: number): Promise<void> {
-    return await this.notificationsService.deleteByID(id);
+    return await this.notificationsService.deleteByID(+id);
   }
 }

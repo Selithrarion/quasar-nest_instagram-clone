@@ -43,16 +43,16 @@ export class PostsController {
 
   @Get(':id')
   async getByID(@Param('id') id: number): Promise<PostEntity> {
-    return await this.postsService.getByID(id);
+    return await this.postsService.getByID(+id);
   }
   @Get('comments/:id')
   async getComments(@Param('id') id: number, @Request() req): Promise<CommentEntity[]> {
-    return await this.postsService.getComments(id, req.user.id);
+    return await this.postsService.getComments(+id, req.user.id);
   }
   // TODO: need to add likes pagination. on frontend fetch next page when user scrolls to dialog bottom
   @Get('likes/:id')
   async getLikes(@Param('id') id: number, @Request() req): Promise<UserEntity[]> {
-    return await this.postsService.getLikes(id, req.user.id);
+    return await this.postsService.getLikes(+id, req.user.id);
   }
   @Get('tags/:name')
   async getTagByName(@Param('name') name: string): Promise<TagEntity> {
@@ -71,29 +71,29 @@ export class PostsController {
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() postData: UpdatePostDTO): Promise<PostEntity> {
-    return await this.postsService.update(Number(id), postData);
+    return await this.postsService.update(+id, postData);
   }
 
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
-    return await this.postsService.delete(id);
+    return await this.postsService.delete(+id);
   }
 
   @Post('report/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async report(@Param('id') id: number, @Body('reasonID') reasonID: number, @Request() req): Promise<void> {
-    return await this.postsService.report(id, reasonID, req.user.id);
+    return await this.postsService.report(+id, reasonID, req.user.id);
   }
   @Post('share/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async share(@Param('id') id: number, @Request() req): Promise<void> {
-    return await this.postsService.share(id, req.user.id);
+    return await this.postsService.share(+id, req.user.id);
   }
 
   @Post('like/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async toggleLike(@Param('id') id: number, @Request() req): Promise<void> {
-    return await this.postsService.toggleLike(Number(id), req.user.id);
+    return await this.postsService.toggleLike(+id, req.user.id);
   }
 
   @Post('comment')
@@ -102,15 +102,15 @@ export class PostsController {
   }
   @Patch('comment/:id')
   async updateComment(@Param('id') id: number, @Body('text') text: string): Promise<CommentEntity> {
-    return await this.postsService.updateComment(id, text);
+    return await this.postsService.updateComment(+id, text);
   }
   @Delete('comment/:id')
   async deleteComment(@Param('id') id: number): Promise<void> {
-    return await this.postsService.deleteComment(id);
+    return await this.postsService.deleteComment(+id);
   }
   @Post('comment/like/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async toggleCommentLike(@Param('id') id: number, @Request() req): Promise<void> {
-    return await this.postsService.toggleCommentLike(Number(id), req.user.id);
+    return await this.postsService.toggleCommentLike(+id, req.user.id);
   }
 }

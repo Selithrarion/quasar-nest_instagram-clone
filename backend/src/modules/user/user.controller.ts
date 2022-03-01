@@ -52,11 +52,11 @@ export class UserController {
   @Post('recent-search')
   @HttpCode(HttpStatus.NO_CONTENT)
   async addRecentSearch(@Body('id') id: number, @Body('type') type: 'user' | 'tag', @Request() req): Promise<void> {
-    return await this.userService.addRecentSearch(id, type, req.user.id);
+    return await this.userService.addRecentSearch(+id, type, req.user.id);
   }
   @Delete('recent-search/:id')
   async removeRecentSearch(@Param('id') id: number): Promise<void> {
-    return await this.userService.removeRecentSearch(id);
+    return await this.userService.removeRecentSearch(+id);
   }
 
   @Public()
@@ -83,7 +83,7 @@ export class UserController {
   }
   @Patch(':id')
   async update(@Param('id') id: number, @Body() payload: Partial<UserEntity>): Promise<UserEntity> {
-    return await this.userService.update(id, payload);
+    return await this.userService.update(+id, payload);
   }
 
   @Post('follow/:id')
