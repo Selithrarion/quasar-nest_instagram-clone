@@ -89,11 +89,11 @@ export class UserController {
   @Post('follow/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async follow(@Param('id') id: number, @Request() req): Promise<void> {
-    return await this.userService.follow(id, req.user.id);
+    return await this.userService.follow(+id, req.user.id);
   }
   @Post('unfollow/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async unfollow(@Param('id') id: number, @Request() req): Promise<void> {
-    return await this.userService.unfollow(id, req.user.id);
+    return await this.userService.unfollow(+id, req.user.id);
   }
 }
