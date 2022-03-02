@@ -21,7 +21,7 @@ for a quick understanding of project structure you can look at frontend models o
 
 1. Node.js (Nest.js)
 2. Typescript
-3. PostgreSQL + TypeORM (Database)
+3. PostgreSQL + TypeORM
 4. Socket.io
 5. AWS S3 (Amazon Simple Storage Service)
 
