@@ -45,7 +45,8 @@ Github actions CI pipeline
 - JWT access (1d exp) and refresh ❌ (30d exp) tokens, auto relogin if access token expired 
 
 #### Feed
-- View all recent posts from friends (push) ❌ and other posts based on their naive calculated score ❌
+- View all recent posts from friends (push / fan-out-on-write) ❌ and other posts based on their naive calculated score ❌
+- Use pull / fan-out-on-read feed for celebrities (100000+ subsribers?) ❌
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
 - Search users, search tags
 - User suggestions in sidebar who follows you / followed by who you follow or just new to instagram ❌
