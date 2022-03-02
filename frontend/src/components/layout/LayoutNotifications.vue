@@ -15,7 +15,7 @@
 
         <template v-else>
           <div class="layout-notifications__section-header flex-center-between q-py-sm q-pl-md q-px-lg">
-            <CommonListTitle class="text-weight-medium" :title="t('date.today')" />
+            <CommonListTitle class="text-weight-medium" title="Recent" />
           </div>
           <div class="layout-notifications__section-content">
             <CommonUser
