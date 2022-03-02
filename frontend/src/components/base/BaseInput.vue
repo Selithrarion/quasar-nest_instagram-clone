@@ -12,16 +12,18 @@
     <template #prepend>
       <div class="row wrap q-pt-xs">
         <q-chip
-          v-for="tag in allLocalTags"
+          v-for="(tag, index) in allLocalTags"
           :key="tag"
           class="flex-shrink-0"
           color="blue-grey-3"
           text-color="blue-grey-9"
           :label="`#${tag}`"
+          clickable
           removable
           square
           dense
-          @remove="removeHashtag"
+          @click="removeHashtag(index)"
+          @remove="removeHashtag(index)"
         />
       </div>
     </template>
@@ -101,6 +103,8 @@ export default defineComponent({
 
       const hashtagHotKeys = [',', 'Enter', ' '];
       if (props.useHashtags && hashtagHotKeys.includes(e.key)) {
+        const target = e.target as EventTarget & { value: string };
+        localModelValue.value = target?.value;
         addHashtag();
         e.preventDefault();
       }
@@ -110,8 +114,10 @@ export default defineComponent({
       if (allLocalTags.value.find((t) => t === localModelValue.value)) {
         localModelValue.value = '';
         emit('update:model-value', '');
+        return;
       }
 
+      // TODO: fix if q-input uses debounce like in post create tags
       allLocalTags.value.push(localModelValue.value);
       localModelValue.value = '';
       emit('update:model-value', '');
