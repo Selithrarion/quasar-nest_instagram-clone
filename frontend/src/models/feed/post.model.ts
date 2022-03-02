@@ -9,6 +9,7 @@ export interface PostModel extends BaseModel {
 
   author: UserModel;
   likes?: UserModel[];
+  likesNumber: number;
 
   comments: CommentModel[];
   commentIDs: number[];

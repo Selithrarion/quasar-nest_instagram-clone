@@ -22,7 +22,10 @@ const mutation: MutationTree<PostStateInterface> = {
   },
   TOGGLE_LIKE(state, { id }) {
     const post = state.posts?.find((p) => p.id === id);
-    if (post) post.isViewerLiked = !post.isViewerLiked;
+    if (post) {
+      post.isViewerLiked = !post.isViewerLiked;
+      post.isViewerLiked ? post.likesNumber++ : post.likesNumber--
+    }
   },
   TOGGLE_FOLLOW(state, authorID) {
     const post = state.posts?.find((p) => p.author.id === authorID);
