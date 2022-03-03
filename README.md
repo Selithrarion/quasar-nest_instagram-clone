@@ -21,7 +21,7 @@ for a quick understanding of project structure you can look at frontend models o
 
 1. Node.js (Nest.js)
 2. Typescript
-3. PostgreSQL + TypeORM (Database)
+3. PostgreSQL + TypeORM
 4. Socket.io
 5. AWS S3 (Amazon Simple Storage Service)
 
@@ -45,7 +45,8 @@ Github actions CI pipeline
 - JWT access (1d exp) and refresh ❌ (30d exp) tokens, auto relogin if access token expired 
 
 #### Feed
-- View all recent posts from friends (push) ❌ and other posts based on their naive calculated score ❌
+- View all recent posts from friends (push / fan-out-on-write) ❌ and other posts based on their naive calculated score ❌
+- Use pull / fan-out-on-read feed for celebrities (100000+ subsribers?) ❌
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
 - Search users, search tags
 - User suggestions in sidebar who follows you / followed by who you follow or just new to instagram ❌
