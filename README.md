@@ -30,8 +30,10 @@ for a quick understanding of project structure you can look at frontend models o
 Github actions CI pipeline
 
 ### App Features
-❌ === not implemented yet
+
+❌ === not implemented yet  
 ✨ === TODO idea. it seems that it won't be implemented but there are some plans
+
 #### Global
 - English lanugage (wow!)
 - User notifications (Post like, Comment like ❌, User followed)
