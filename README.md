@@ -31,9 +31,10 @@ Github actions CI pipeline
 
 ### App Features
 ❌ === not implemented yet
+✨ === TODO idea. it seems that it won't be implemented but there are some plans
 #### Global
 - English lanugage (wow!)
-- User notifications (Post like, Comment like, User followed)
+- User notifications (Post like, Comment like ❌, User followed)
 - User following system
 
 #### Auth
@@ -42,18 +43,19 @@ Github actions CI pipeline
 - Unique username / email
 - Send email verification mail
 - Automaticly redirect to requested page after login (/auth?redirect=/profile/1)
-- JWT access (1d exp) and refresh ❌ (30d exp) tokens, auto relogin if access token expired 
+- JWT access (1d exp) and refresh (30d exp) tokens, auto relogin (❌) if access token expired 
 
 #### Feed
-- View all recent posts from friends (push / fan-out-on-write) ❌ and other posts based on their naive calculated score ❌
-- Use pull / fan-out-on-read feed for celebrities (100000+ subsribers?) ❌
+- View all recent posts from friends (push / fan-out-on-write)
+- View all recent based on their naive calculated score (likes, comments, views number) after friends feed ❌
+- Use pull / fan-out-on-read feed for celebrities (100000+ subsribers?) ✨
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
 - Search users, search tags
-- User suggestions in sidebar who follows you / followed by who you follow or just new to instagram ❌
+- User suggestions in sidebar who follows you (❌) / followed by who you follow (❌) or just new to instagram
 ##### Post
 - Posts CRUD
 - Images support. Dragndrop or browse image to upload
-- Videos support. Dragndrop or browse video to upload ❌
+- Videos support. Dragndrop or browse video to upload ✨
 - Image crop with [vue-cropperjs](https://github.com/Agontuk/vue-cropperjs#readme)
 - Image aspect ratio (1:1, 4:5, 16:9, original)
 - Image filters
@@ -64,19 +66,19 @@ Github actions CI pipeline
 - Like comment
 - Report post
 - Comment system with infinity reply nesting ❌
-- Share to users in messanger (?) ❌
-- Bookmark (?) ❌
+- Share to users in messanger ✨
+- Bookmark ✨
 ##### Story
-- Story CR❌U❌D❌
+- Story CR✨U✨D✨
 - Drawing canvas with [vue-drawing-canvas](https://github.com/razztyfication/vue-drawing-canvas)
 
 #### Messenger (?)
 
 #### Profile page
 - View all own photos/videos
-- Edit info - change username / name / email (❌) / bio etc...
+- Edit info - change username / name / email (✨) / bio etc...
 - Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp))
-- Upload gif avatar (?) ❌
+- Upload gif avatar ✨
 
 ### Install  
 1. Clone project  
