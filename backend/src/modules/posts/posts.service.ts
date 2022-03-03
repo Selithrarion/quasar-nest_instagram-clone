@@ -73,7 +73,7 @@ export class PostsService {
         comments: tag
           ? []
           : await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
-        likesNumber: await this.getPostLikesCount(currentUser, p),
+        likesNumber: await this.getPostLikesCount(p),
         isViewerLiked: await this.getIsUserLikedPost(currentUser, p),
         isViewerSaved: false,
         isViewerInPhoto: false,
@@ -134,8 +134,8 @@ export class PostsService {
   async getIsUserLikedPost(user: UserEntity, post: PostEntity): Promise<boolean> {
     return Boolean(await this.postLikes.findOne({ where: { user, post }, relations: ['user', 'post'] }));
   }
-  async getPostLikesCount(user: UserEntity, post: PostEntity): Promise<number> {
-    return this.postLikes.count({ user, post });
+  async getPostLikesCount(post: PostEntity): Promise<number> {
+    return this.postLikes.count({ post });
   }
 
   async getTags(search: string): Promise<TagEntity[]> {
