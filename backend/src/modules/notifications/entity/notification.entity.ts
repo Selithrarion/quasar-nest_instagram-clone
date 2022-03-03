@@ -15,7 +15,11 @@ export class NotificationEntity extends BaseEntity {
   @Column({ type: 'enum', enum: NotificationTypes })
   type: NotificationTypes;
 
-  @ManyToOne(() => PostEntity, { nullable: true })
+  @ManyToOne(() => PostEntity, {
+    nullable: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   post: PostEntity;
 
   @Column({ default: false })
