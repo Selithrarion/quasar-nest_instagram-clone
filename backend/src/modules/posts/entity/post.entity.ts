@@ -17,6 +17,7 @@ import { PublicFileEntity } from '../../files/entity/public-file.entity';
 import { ReportEntity } from './report.entity';
 import { TagEntity } from './tag.entity';
 import { PostLikeEntity } from './postLike.entity';
+import { PostFeedEntity } from './postFeed.entity';
 
 @Entity()
 export class PostEntity extends BaseEntity {
@@ -64,11 +65,15 @@ export class PostEntity extends BaseEntity {
   @JoinColumn()
   file: PublicFileEntity;
   fileURL: string;
-
   @AfterLoad()
   getFileURL(): void {
     this.fileURL = this.file?.url;
   }
+
+  @OneToMany(() => PostFeedEntity, (pf) => pf.post, {
+    cascade: true,
+  })
+  feeds: PostFeedEntity[];
 
   isViewerLiked: boolean;
   isViewerSaved: boolean;

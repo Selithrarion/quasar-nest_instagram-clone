@@ -26,6 +26,7 @@ import { ReportEntity } from '../../posts/entity/report.entity';
 import { RecentSearchEntity } from './recentSearch.entity';
 import { PostLikeEntity } from '../../posts/entity/postLike.entity';
 import { FollowingEntity } from './following.entity';
+import { PostFeedEntity } from '../../posts/entity/postFeed.entity';
 
 export interface UserGoogleData {
   email: string;
@@ -80,6 +81,7 @@ export class UserEntity extends BaseEntity {
   @IsEmail()
   email: string;
 
+  //TODO: add select: false
   @Exclude()
   @Column({ nullable: true, length: 128 })
   password: string;
@@ -92,12 +94,14 @@ export class UserEntity extends BaseEntity {
     return bcrypt.compare(password, this.password);
   }
 
+  //TODO: add select: false
   @Exclude()
   @Column({ nullable: true })
   hashedRefreshToken: string;
 
   @Column({ default: false })
   isTwoFactorEnabled: boolean;
+  //TODO: add select: false
   @Exclude()
   @Column({ nullable: true })
   twoFactorSecret: string;
@@ -148,6 +152,12 @@ export class UserEntity extends BaseEntity {
   posts: PostEntity[];
   postsNumber?: number;
 
+  @OneToMany(() => PostFeedEntity, (pf) => pf.user, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  postFeed: PostFeedEntity[];
+
   @ManyToMany(() => PostLikeEntity, (pl) => pl.user, {
     cascade: true,
   })
@@ -158,6 +168,7 @@ export class UserEntity extends BaseEntity {
     onDelete: 'CASCADE',
   })
   likedComments: CommentEntity[];
+  // TODO: remove. refactor
   @RelationId('likedComments')
   likedCommentsIDs: number[];
 
@@ -243,8 +254,8 @@ export class UserEntity extends BaseEntity {
       .select('COUNT(*)', 'count')
       .getRawOne();
 
-    this.postsNumber = postsNumber;
-    this.followersNumber = followersNumber;
-    this.followedNumber = followingNumber;
+    this.postsNumber = Number(postsNumber);
+    this.followersNumber = Number(followersNumber);
+    this.followedNumber = Number(followingNumber);
   }
 }

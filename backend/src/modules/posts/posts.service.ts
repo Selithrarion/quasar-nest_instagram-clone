@@ -15,6 +15,7 @@ import { UserEntity } from '../user/entity/user.entity';
 import { PostLikeEntity } from './entity/postLike.entity';
 import { NotificationsService } from '../notifications/notifications.service';
 import { NotificationTypes } from '../notifications/entity/notification.entity';
+import { PostFeedEntity } from './entity/postFeed.entity';
 
 @Injectable()
 export class PostsService {
@@ -29,6 +30,8 @@ export class PostsService {
     private postTags: Repository<TagEntity>,
     @InjectRepository(PostLikeEntity)
     private postLikes: Repository<PostLikeEntity>,
+    @InjectRepository(PostFeedEntity)
+    private postFeed: Repository<PostFeedEntity>,
 
     @Inject(FilesService)
     private readonly filesService: FilesService,
@@ -47,39 +50,92 @@ export class PostsService {
   ): Promise<Pagination<PostEntity>> {
     const currentUser = await this.userService.getByID(userID);
 
-    const queryBuilder = this.posts.createQueryBuilder('post');
-    queryBuilder.orderBy('post.createdAt', 'DESC');
-    queryBuilder.leftJoinAndSelect('post.author', 'author');
-    queryBuilder.leftJoinAndSelect('author.avatar', 'avatar');
-    // TODO: temp
-    queryBuilder.leftJoinAndSelect('author.followers', 'followers');
-    // TODO: temp
-    queryBuilder.leftJoinAndSelect('author.followedUsers', 'followedUsers');
-    queryBuilder.leftJoinAndSelect('post.file', 'file');
-    queryBuilder.leftJoinAndSelect('post.tags', 'tags');
+    if (!tag) {
+      const userPostFeed = await this.postFeed
+        .createQueryBuilder('feed')
+        .leftJoinAndSelect('feed.post', 'post')
+        .leftJoinAndSelect('post.author', 'author')
+        .leftJoinAndSelect('author.avatar', 'avatar')
+        // TODO: temp
+        .leftJoinAndSelect('author.followers', 'followers')
+        // TODO: temp
+        .leftJoinAndSelect('author.followedUsers', 'followedUsers')
+        .leftJoinAndSelect('post.file', 'file')
+        .leftJoinAndSelect('post.tags', 'tags')
+
+        .where('feed.user.id = :userID', { userID })
+        .orderBy('feed.createdAt', 'DESC')
+
+        .take(Number(queryOptions.limit))
+        .skip((Number(queryOptions.page) - 1) * Number(queryOptions.limit))
+        .getMany();
+      const feedPosts = userPostFeed.map((f) => f.post);
+
+      const formattedFeedPosts = (await Promise.all(
+        feedPosts.map(async (p) => this.formatPost(p, currentUser, tag))
+      )) as PostEntity[];
+
+      if (formattedFeedPosts.length)
+        return {
+          items: formattedFeedPosts,
+          meta: {
+            currentPage: Number(queryOptions.page),
+            itemCount: formattedFeedPosts.length,
+            itemsPerPage: Number(queryOptions.limit),
+            // TODO: is it have any sense to make real pagination values?
+            totalItems: 50,
+            totalPages: 10,
+          },
+        };
+    }
+
+    const queryBuilder = this.posts
+      .createQueryBuilder('post')
+      .orderBy('post.createdAt', 'DESC')
+      .leftJoinAndSelect('post.author', 'author')
+      .leftJoinAndSelect('author.avatar', 'avatar')
+      // TODO: temp
+      .leftJoinAndSelect('author.followers', 'followers')
+      // TODO: temp
+      .leftJoinAndSelect('author.followedUsers', 'followedUsers')
+      .leftJoinAndSelect('post.file', 'file')
+      .leftJoinAndSelect('post.tags', 'tags');
     // TODO: it finds not only 'test' but 'test1' and etc
     if (tag) queryBuilder.where('tags.name = :tag', { tag });
+    else {
+      const postsFeed = await this.postFeed
+        .createQueryBuilder('feed')
+        .select('feed.id')
+        .where('feed.user.id = :userID', { userID })
+        .getMany();
+      const postsFeedIDs = postsFeed.map((pf) => pf.id);
+      // TODO: not working. there are still post duplicates
+      if (postsFeedIDs.length) queryBuilder.where('post.id NOT IN (:...postsFeedIDs)', { postsFeedIDs });
+    }
 
     const { items, meta } = await paginate<PostEntity>(queryBuilder, queryOptions);
 
     const formattedPosts = (await Promise.all(
-      items.map(async (p) => ({
-        ...p,
-        author: {
-          ...p.author,
-          isViewerFollowed:
-            p.author.id === userID ? false : await this.userService.getIsUserFollowed(p.author.id, userID),
-        },
-        comments: tag
-          ? []
-          : await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
-        likesNumber: await this.getPostLikesCount(p),
-        isViewerLiked: await this.getIsUserLikedPost(currentUser, p),
-        isViewerSaved: false,
-        isViewerInPhoto: false,
-      }))
-    )) as unknown as PostEntity[];
+      items.map(async (p) => this.formatPost(p, currentUser, tag))
+    )) as PostEntity[];
     return { items: formattedPosts, meta };
+  }
+  async formatPost(p: PostEntity, currentUser: UserEntity, tag: string): Promise<PostEntity> {
+    return {
+      ...p,
+      author: {
+        ...p.author,
+        isViewerFollowed:
+          p.author.id === currentUser.id
+            ? false
+            : await this.userService.getIsUserFollowed(p.author.id, currentUser.id),
+      },
+      comments: tag ? [] : await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
+      likesNumber: await this.getPostLikesCount(p),
+      isViewerLiked: await this.getIsUserLikedPost(currentUser, p),
+      isViewerSaved: false,
+      isViewerInPhoto: false,
+    } as PostEntity;
   }
 
   async getByID(id: number): Promise<PostEntity> {
@@ -206,10 +262,32 @@ export class PostsService {
         })
       );
 
-      await this.posts.save({
+      const savedPost = await this.posts.save({
         ...post,
         tags: formattedTags,
       });
+
+      const allUserFollowers = await this.userService.getUserFollowers(userID);
+      console.log('allUserFollowers', allUserFollowers);
+      // TODO: move to queue?
+      await Promise.all(
+        allUserFollowers.map(async (following) => {
+          await this.postFeed.save({
+            user: following.user,
+            post: savedPost,
+          });
+          const feedCount = await this.postFeed.count({ where: { user: following.user } });
+          console.log('feedCount', feedCount);
+          const maxUserFeedNumber = 20;
+          if (feedCount > maxUserFeedNumber) {
+            const oldestPost = await this.postFeed.findOne({
+              where: { user: following.user },
+              order: { createdAt: 'ASC' },
+            });
+            await this.postFeed.delete(oldestPost.id);
+          }
+        })
+      );
     } catch (e) {
       console.log(e);
     }

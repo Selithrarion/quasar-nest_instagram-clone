@@ -264,6 +264,13 @@ export class UserService {
   async getIsUserFollowed(targetID: number, userID: number): Promise<boolean> {
     return Boolean(this.getUserFollowedEntity(targetID, userID));
   }
+  async getUserFollowers(userID: number): Promise<FollowingEntity[]> {
+    return await this.userFollowings
+      .createQueryBuilder('follow')
+      .leftJoinAndSelect('follow.user', 'user')
+      .andWhere('follow.target.id = :userID', { userID })
+      .getMany();
+  }
 
   async getSuggestions(page: number, limit: number, currentUserID: number): Promise<UserSuggestion[]> {
     // TODO: figure out
