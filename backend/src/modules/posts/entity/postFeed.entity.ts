@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, OneToOne } from 'typeorm';
+import { Entity, Index, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { PostEntity } from './post.entity';

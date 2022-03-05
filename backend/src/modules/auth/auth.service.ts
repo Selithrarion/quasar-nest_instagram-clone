@@ -100,7 +100,8 @@ export class AuthService {
   }
 
   async registerWithGoogle(token: string, email: string): Promise<UserTokensInterface> {
-    const { picture } = await this.getGoogleUserData(token);
+    // TODO: i can't remember but there are some problems
+    // const { picture } = await this.getGoogleUserData(token);
     const user = await this.userService.createWithGoogle(email);
     return this.login(user);
   }

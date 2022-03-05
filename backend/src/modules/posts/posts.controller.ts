@@ -17,7 +17,7 @@ import {
 import { CreateCommentDTO, CreatePostDTO, UpdatePostDTO } from './dto';
 import { PostEntity } from './entity/post.entity';
 import { PostsService } from './posts.service';
-import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CommentEntity } from './entity/comment.entity';
 import { UserEntity } from '../user/entity/user.entity';

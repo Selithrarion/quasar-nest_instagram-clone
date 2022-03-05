@@ -324,9 +324,12 @@ export class PostsService {
         console.log(e);
       }
     } else {
-      const { tags, ...formattedPayload } = payload;
+      // TODO: check is it properly work
+      // const { tags, ...formattedPayload } = payload;
+      delete payload.tags;
+
       const toUpdate = await this.posts.findOneOrFail(id);
-      const updated = this.posts.create({ ...toUpdate, ...formattedPayload });
+      const updated = this.posts.create({ ...toUpdate, ...(payload as Omit<UpdatePostDTO, 'tags'>) });
       await this.posts.save(updated);
       return updated;
     }
