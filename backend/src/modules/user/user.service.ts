@@ -274,18 +274,33 @@ export class UserService {
 
   async getSuggestions(page: number, limit: number, currentUserID: number): Promise<UserSuggestion[]> {
     // TODO: figure out
-
     // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#using-subqueries
 
-    // const currentUser = await this.users.findOneOrFail(currentUserID, { relations: ['followers', 'followedUsers'] });
-    // const followersThatCurrentUserDontFollow = await this.userFollowings
-    //   .createQueryBuilder('following')
-    //   .where('following.target = :currentUserID', { currentUserID })
-    //   // TODO: need to get all users that current user not follow. use subquery?
-    //   .andWhere('following.user = :', { currentUserID })
-    //   .take(1)
-    //   .getMany();
-    // suggestion: Follows you
+    const currentUserFollowings = await this.userFollowings
+      .createQueryBuilder('following')
+      .where('following.user.id = :currentUserID', { currentUserID })
+      .getRawMany();
+    const currentUserFollowingIDs = currentUserFollowings.map((f) => f.following_targetId);
+    const followersThatCurrentUserDontFollowQB = this.userFollowings
+      .createQueryBuilder('following')
+      .leftJoinAndSelect('following.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .where('following.target.id = :currentUserID', { currentUserID })
+      .take(1);
+    if (currentUserFollowingIDs.length)
+      followersThatCurrentUserDontFollowQB.andWhere('following.user.id NOT IN  (:...currentUserFollowingIDs)', {
+        currentUserFollowingIDs,
+      });
+    const followersThatCurrentUserDontFollow = await followersThatCurrentUserDontFollowQB.getMany();
+    const usersThatCurrentUserDontFollow = followersThatCurrentUserDontFollow.map((f) => {
+      return {
+        id: f.user.id,
+        color: f.user.color,
+        avatar: f.user.avatar,
+        username: f.user.username,
+        suggestion: 'Follows you',
+      };
+    });
 
     // const followedByYourFollowed = await this.userFollowings
     //   .createQueryBuilder('following')
@@ -298,14 +313,20 @@ export class UserService {
     // SELECT * FROM Customers
     // WHERE Country IN (SELECT Country FROM Suppliers);
 
-    const lastNewUsers = await this.users.find({
-      where: {
-        id: Not(currentUserID),
-      },
-      take: limit,
-      skip: (page - 1) * limit,
-    });
-    return lastNewUsers.map((u) => {
+    const userIDsThatCurrentUserDontFollow = usersThatCurrentUserDontFollow.map((u) => u.id);
+    const lastNewUsersQB = this.users
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.avatar', 'avatar')
+      .where('user.id != :currentUserID', { currentUserID })
+      .take(limit)
+      .skip((page - 1) * limit);
+    if (userIDsThatCurrentUserDontFollow.length)
+      lastNewUsersQB.andWhere('user.id NOT IN  (:...userIDsThatCurrentUserDontFollow)', {
+        userIDsThatCurrentUserDontFollow,
+      });
+    const lastNewUsers = await lastNewUsersQB.getMany();
+
+    const formattedLastNewUsers = lastNewUsers.map((u) => {
       return {
         id: u.id,
         color: u.color,
@@ -314,6 +335,7 @@ export class UserService {
         suggestion: 'New to Instagram',
       };
     });
+    return [...formattedLastNewUsers, ...usersThatCurrentUserDontFollow];
   }
 
   async getRecentSearch(userID: number): Promise<(UserEntity | TagEntity)[]> {
