@@ -273,20 +273,18 @@ export class UserService {
   }
 
   async getSuggestions(page: number, limit: number, currentUserID: number): Promise<UserSuggestion[]> {
-    // TODO: figure out
-    // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#using-subqueries
-
     const currentUserFollowings = await this.userFollowings
       .createQueryBuilder('following')
       .where('following.user.id = :currentUserID', { currentUserID })
       .getRawMany();
     const currentUserFollowingIDs = currentUserFollowings.map((f) => f.following_targetId);
+
     const followersThatCurrentUserDontFollowQB = this.userFollowings
       .createQueryBuilder('following')
       .leftJoinAndSelect('following.user', 'user')
       .leftJoinAndSelect('user.avatar', 'avatar')
       .where('following.target.id = :currentUserID', { currentUserID })
-      .take(1);
+      .andWhere('following.user.id != :currentUserID', { currentUserID });
     if (currentUserFollowingIDs.length)
       followersThatCurrentUserDontFollowQB.andWhere('following.user.id NOT IN  (:...currentUserFollowingIDs)', {
         currentUserFollowingIDs,
@@ -302,16 +300,31 @@ export class UserService {
       };
     });
 
-    // const followedByYourFollowed = await this.userFollowings
-    //   .createQueryBuilder('following')
-    //    // TODO
-    //   .where('following.target IN ' )
-    //   .take(1)
-    //   .getMany();
-    // // suggestion: Followed by USERNAME
-
-    // SELECT * FROM Customers
-    // WHERE Country IN (SELECT Country FROM Suppliers);
+    const followedByYourFollowedQB = this.userFollowings
+      .createQueryBuilder('following')
+      .leftJoinAndSelect('following.user', 'user')
+      .leftJoinAndSelect('following.target', 'target')
+      .leftJoinAndSelect('target.avatar', 'avatar')
+      .where('following.user.id != :currentUserID', { currentUserID })
+      .andWhere('following.target.id != :currentUserID', { currentUserID });
+    if (currentUserFollowingIDs.length) {
+      followersThatCurrentUserDontFollowQB.andWhere('following.user.id IN (:...currentUserFollowingIDs)', {
+        currentUserFollowingIDs,
+      });
+      followersThatCurrentUserDontFollowQB.andWhere('following.target.id NOT IN  (:...currentUserFollowingIDs)', {
+        currentUserFollowingIDs,
+      });
+    }
+    const followedByYourFollowed = await followedByYourFollowedQB.getMany();
+    const followedUsersByYourFollowed = followedByYourFollowed.map((f) => {
+      return {
+        id: f.target.id,
+        color: f.target.color,
+        avatar: f.target.avatar,
+        username: f.target.username,
+        suggestion: `Followed by ${f.user.username}`,
+      };
+    });
 
     const userIDsThatCurrentUserDontFollow = usersThatCurrentUserDontFollow.map((u) => u.id);
     const lastNewUsersQB = this.users
@@ -335,7 +348,7 @@ export class UserService {
         suggestion: 'New to Instagram',
       };
     });
-    return [...formattedLastNewUsers, ...usersThatCurrentUserDontFollow];
+    return [...formattedLastNewUsers, ...usersThatCurrentUserDontFollow, ...followedUsersByYourFollowed];
   }
 
   async getRecentSearch(userID: number): Promise<(UserEntity | TagEntity)[]> {
