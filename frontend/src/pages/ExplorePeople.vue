@@ -45,7 +45,7 @@ export default defineComponent({
     const suggestions = ref<UserSuggestionModel[] | null>(null);
     const pagination = ref<PaginationApiPayload>({
       page: 1,
-      limit: 10,
+      limit: 30,
     });
     onBeforeMount(async () => {
       suggestions.value = await userRepository.getSuggestions(pagination.value);
