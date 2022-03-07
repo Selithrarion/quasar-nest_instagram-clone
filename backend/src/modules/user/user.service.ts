@@ -279,10 +279,15 @@ export class UserService {
       .getRawMany();
     const currentUserFollowingIDs = currentUserFollowings.map((f) => f.following_targetId);
 
+    // TODO: fix pagination
+
     const followersThatCurrentUserDontFollowQB = this.userFollowings
       .createQueryBuilder('following')
       .leftJoinAndSelect('following.user', 'user')
       .leftJoinAndSelect('user.avatar', 'avatar')
+      .orderBy('following.createdAt', 'DESC')
+      .take(Math.floor(limit / 3))
+      .skip((page - 1) * Math.floor(limit / 3))
       .where('following.target.id = :currentUserID', { currentUserID })
       .andWhere('following.user.id != :currentUserID', { currentUserID });
     if (currentUserFollowingIDs.length)
@@ -305,6 +310,9 @@ export class UserService {
       .leftJoinAndSelect('following.user', 'user')
       .leftJoinAndSelect('following.target', 'target')
       .leftJoinAndSelect('target.avatar', 'avatar')
+      .orderBy('following.createdAt', 'DESC')
+      .take(Math.floor(limit / 3))
+      .skip((page - 1) * Math.floor(limit / 3))
       .where('following.user.id != :currentUserID', { currentUserID })
       .andWhere('following.target.id != :currentUserID', { currentUserID });
     if (currentUserFollowingIDs.length) {
@@ -331,8 +339,8 @@ export class UserService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.avatar', 'avatar')
       .where('user.id != :currentUserID', { currentUserID })
-      .take(limit)
-      .skip((page - 1) * limit);
+      .take(Math.floor(limit / 3))
+      .skip((page - 1) * Math.floor(limit / 3));
     if (userIDsThatCurrentUserDontFollow.length)
       lastNewUsersQB.andWhere('user.id NOT IN  (:...userIDsThatCurrentUserDontFollow)', {
         userIDsThatCurrentUserDontFollow,
