@@ -5,9 +5,9 @@
         <FeedPostImage
           class="w-half"
           style="max-height: calc(100vh - 48px); max-width: calc(100vh - 48px)"
-          :post-id="formattedPost.id"
-          :src="formattedPost.fileURL"
-          :is-viewer-liked="formattedPost.isViewerLiked"
+          :post-id="post.id"
+          :src="post.fileURL"
+          :is-viewer-liked="post.isViewerLiked"
         />
 
         <div class="column flex-grow-1">
@@ -16,15 +16,15 @@
               class="full-width q-px-xs"
               size="32px"
               :tooltip="isProfileMode ? null : `Open author's profile`"
-              :user="formattedPost.author"
+              :user="post.author"
               :clickable="!isProfileMode"
               hide-name
               @click="openAuthorProfile"
             />
             <FeedPostMoreButton
-              :post-id="formattedPost.id"
-              :author-id="formattedPost.author.id"
-              :is-viewer-followed="formattedPost.author.isViewerFollowed"
+              :post-id="post.id"
+              :author-id="post.author.id"
+              :is-viewer-followed="post.author.isViewerFollowed"
               @edit="dialog.open('editPost')"
               @delete="dialog.open('deletePost')"
               @share="dialog.open('share')"
@@ -34,7 +34,8 @@
           </div>
 
           <FeedPostInfo
-            :post="formattedPost"
+            :post="post"
+            :comments="postComments"
             :comments-loading="loading.custom.comments"
             hide-view-all-comments
             use-scroll
@@ -46,15 +47,15 @@
 
           <FeedPostActions
             class="post-actions"
-            :post-id="formattedPost.id"
-            :is-viewer-liked="formattedPost.isViewerLiked"
-            :is-viewer-saved="formattedPost.isViewerSaved"
+            :post-id="post.id"
+            :is-viewer-liked="post.isViewerLiked"
+            :is-viewer-saved="post.isViewerSaved"
             @open-post="focusCommentInput"
           />
 
           <FeedPostCommentInput
             ref="commentInput"
-            :post-id="formattedPost.id"
+            :post-id="post.id"
             :reply-comment="currentReplyComment"
             @remove-reply="currentReplyComment = null"
           />
@@ -69,35 +70,27 @@
     :model-value="dialog.openedName.value === 'deletePost'"
     :confirm-loading="dialog.loading.value"
     @close="dialog.close"
-    @confirm="deletePost(formattedPost.id)"
+    @confirm="deletePost(post.id)"
   >
     Are you sure you want to delete this post?
   </BaseDialog>
   <FeedPostDialogEdit
     :model-value="dialog.openedName.value === 'editPost'"
-    :post="formattedPost"
+    :post="post"
     @edit="$emit('edit', $event)"
     @close="dialog.close"
   />
 
-  <FeedPostDialogLikes
-    :model-value="dialog.openedName.value === 'postLikes'"
-    :post="formattedPost"
-    @close="dialog.close"
-  />
+  <FeedPostDialogLikes :model-value="dialog.openedName.value === 'postLikes'" :post="post" @close="dialog.close" />
 
-  <FeedPostDialogShare :model-value="dialog.openedName.value === 'share'" :post="formattedPost" @close="dialog.close" />
+  <FeedPostDialogShare :model-value="dialog.openedName.value === 'share'" :post="post" @close="dialog.close" />
   <FeedPostDialogShareToUser
     :model-value="dialog.openedName.value === 'shareToUser'"
-    :post-id="formattedPost?.id"
+    :post-id="post?.id"
     @close="dialog.close"
   />
 
-  <FeedPostDialogReport
-    :model-value="dialog.openedName.value === 'report'"
-    :post="formattedPost"
-    @close="dialog.close"
-  />
+  <FeedPostDialogReport :model-value="dialog.openedName.value === 'report'" :post="post" @close="dialog.close" />
 </template>
 
 <script lang="ts">
@@ -177,12 +170,6 @@ export default defineComponent({
     );
 
     const postComments = ref<CommentModel[]>([]);
-    const formattedPost = computed<PostModel>(() => {
-      return {
-        ...props.post,
-        comments: postComments.value,
-      };
-    });
 
     const commentInput = ref<InstanceType<typeof FeedPostCommentInput>>();
     function focusCommentInput() {
@@ -223,7 +210,6 @@ export default defineComponent({
       loading,
 
       postComments,
-      formattedPost,
 
       commentInput,
       focusCommentInput,

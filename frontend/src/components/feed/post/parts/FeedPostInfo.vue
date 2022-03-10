@@ -39,9 +39,9 @@
         />
       </div>
 
-      <template v-if="post.comments.length">
+      <template v-if="post.comments?.length || comments.length">
         <BaseButton
-          v-if="!hideViewAllComments && post.comments.length !== post.commentIDs.length"
+          v-if="!hideViewAllComments && post.comments?.length !== post.commentsNumber"
           class="text-subtitle2 text-blue-grey-4 w-fit-content"
           style="margin-left: -4px"
           dense
@@ -53,7 +53,7 @@
 
         <div class="column gap-1">
           <FeedPostComment
-            v-for="comment in post.comments"
+            v-for="comment in post.comments || comments"
             :key="comment"
             :comment="comment"
             :minimized="minimizedComments"
@@ -83,6 +83,7 @@ import { useFormat, DateTypes } from 'src/composables/format/useFormat';
 import FeedPostComment from 'components/feed/post/comment/FeedPostComment.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
+import { CommentModel } from 'src/models/feed/comment.model';
 
 export default defineComponent({
   name: 'FeedPostInfo',
@@ -95,6 +96,11 @@ export default defineComponent({
     post: {
       type: Object as PropType<PostModel>,
       required: true,
+    },
+    comments: {
+      type: Array as PropType<CommentModel[]>,
+      required: false,
+      default: () => [],
     },
 
     useScroll: Boolean,
