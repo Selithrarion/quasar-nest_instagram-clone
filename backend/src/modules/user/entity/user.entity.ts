@@ -27,6 +27,7 @@ import { RecentSearchEntity } from './recentSearch.entity';
 import { PostLikeEntity } from '../../posts/entity/postLike.entity';
 import { FollowingEntity } from './following.entity';
 import { PostFeedEntity } from '../../posts/entity/postFeed.entity';
+import { CommentLikeEntity } from '../../posts/entity/commentLike.entity';
 
 export interface UserGoogleData {
   email: string;
@@ -163,14 +164,11 @@ export class UserEntity extends BaseEntity {
   })
   likedPosts: PostLikeEntity[];
 
-  @ManyToMany(() => CommentEntity, (comment) => comment.likes, {
+  @OneToMany(() => CommentLikeEntity, (cm) => cm.user, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  likedComments: CommentEntity[];
-  // TODO: remove. refactor
-  @RelationId('likedComments')
-  likedCommentsIDs: number[];
+  likedComments: CommentLikeEntity[];
 
   @OneToMany(() => FollowingEntity, (f) => f.user, {
     onUpdate: 'CASCADE',

@@ -7,7 +7,6 @@ export interface CommentModel extends BaseModel {
   author: UserModel;
 
   likes: UserModel[];
-  likesUserIDs: number;
 
   parentComment?: CommentModel;
   parentCommentID: number;

@@ -16,22 +16,28 @@ import { PostLikeEntity } from './entity/postLike.entity';
 import { NotificationsService } from '../notifications/notifications.service';
 import { NotificationTypes } from '../notifications/entity/notification.entity';
 import { PostFeedEntity } from './entity/postFeed.entity';
+import { CommentLikeEntity } from './entity/commentLike.entity';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
     private posts: Repository<PostEntity>,
-    @InjectRepository(ReportEntity)
-    private postReports: Repository<ReportEntity>,
-    @InjectRepository(CommentEntity)
-    private postComments: Repository<CommentEntity>,
-    @InjectRepository(TagEntity)
-    private postTags: Repository<TagEntity>,
     @InjectRepository(PostLikeEntity)
     private postLikes: Repository<PostLikeEntity>,
     @InjectRepository(PostFeedEntity)
     private postFeed: Repository<PostFeedEntity>,
+
+    @InjectRepository(ReportEntity)
+    private postReports: Repository<ReportEntity>,
+
+    @InjectRepository(CommentEntity)
+    private postComments: Repository<CommentEntity>,
+    @InjectRepository(CommentLikeEntity)
+    private postCommentLikes: Repository<CommentLikeEntity>,
+
+    @InjectRepository(TagEntity)
+    private postTags: Repository<TagEntity>,
 
     @Inject(FilesService)
     private readonly filesService: FilesService,
@@ -354,13 +360,12 @@ export class PostsService {
 
   async toggleLike(postID: number, currentUserID: number): Promise<void> {
     const like = await this.postLikes
-      .createQueryBuilder('likes')
-      .leftJoin('likes.user', 'user')
-      .leftJoin('likes.post', 'post')
-      .where('user.id = :currentUserID', { currentUserID })
-      .andWhere('post.id = :postID', { postID })
+      .createQueryBuilder('like')
+      .where('like.user.id = :currentUserID', { currentUserID })
+      .andWhere('like.post.id = :postID', { postID })
       .getOne();
     const { author } = await this.posts.findOneOrFail(postID);
+
     if (like) {
       await this.postLikes.delete(like.id);
       await this.notificationsService.deleteByPostID(postID, currentUserID);
@@ -399,17 +404,26 @@ export class PostsService {
   async deleteComment(id: number): Promise<void> {
     await this.postComments.delete(id);
   }
-  async toggleCommentLike(commentID: number, userID: number): Promise<void> {
-    const userLikedComments = await this.userService.getLikedComments(userID);
-    const commentIndex = userLikedComments.findIndex((c) => c.id === commentID);
+  async toggleCommentLike(commentID: number, currentUserID: number): Promise<void> {
+    const like = await this.postCommentLikes
+      .createQueryBuilder('like')
+      .where('like.user.id = :currentUserID', { currentUserID })
+      .andWhere('like.comment.id = :commentID', { commentID })
+      .getOne();
+    const { author, post } = await this.postComments.findOneOrFail(commentID, { relations: ['post'] });
 
-    if (commentIndex !== -1) {
-      userLikedComments.splice(commentIndex, 1);
+    if (like) {
+      await this.postCommentLikes.delete(like.id);
+      await this.notificationsService.deleteByPostID(post.id, currentUserID);
     } else {
-      const comment = await this.postComments.findOneOrFail(commentID);
-      userLikedComments.push(comment);
+      await this.postCommentLikes.save({ comment: { id: commentID }, user: { id: currentUserID } });
+      await this.notificationsService.create({
+        type: NotificationTypes.LIKED_COMMENT,
+        receiverUserID: author.id,
+        initiatorUserID: currentUserID,
+        postID: post.id,
+        commentID,
+      });
     }
-
-    await this.userService.update(userID, { likedComments: userLikedComments });
   }
 }

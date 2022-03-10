@@ -191,10 +191,6 @@ export class UserService {
     return true;
   }
 
-  async getLikedComments(id: number): Promise<CommentEntity[]> {
-    const user = await this.users.findOneOrFail(id, { relations: ['likedComments'] });
-    return user.likedComments;
-  }
   async getNotifications(id: number): Promise<NotificationEntity[]> {
     const { notifications } = await this.users
       .createQueryBuilder('user')

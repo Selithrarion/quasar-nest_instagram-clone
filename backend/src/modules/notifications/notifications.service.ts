@@ -22,14 +22,15 @@ export class NotificationsService {
   }
 
   async create(payload: CreateNotificationDTO): Promise<NotificationEntity> {
-    const isSameUserAndNotNeedNotification = payload.receiverUserID === payload.initiatorUserID
-    if (isSameUserAndNotNeedNotification) return
+    const isSameUserAndNotNeedNotification = payload.receiverUserID === payload.initiatorUserID;
+    if (isSameUserAndNotNeedNotification) return;
 
     const item = this.notifications.create({
       type: payload.type,
       receiverUser: { id: payload.receiverUserID },
       initiatorUser: { id: payload.initiatorUserID },
       post: payload.postID ? { id: payload.postID } : null,
+      comment: payload.commentID ? { id: payload.commentID } : null,
     });
     return await this.notifications.save(item);
   }

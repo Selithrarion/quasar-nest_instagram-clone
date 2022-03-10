@@ -1,7 +1,8 @@
-import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { PostEntity } from './post.entity';
+import { CommentLikeEntity } from './commentLike.entity';
 
 // TODO: make comment replies with path enumeration
 // @Tree('materialized-path')
@@ -33,15 +34,12 @@ export class CommentEntity extends BaseEntity {
   @JoinColumn({ name: 'authorID' })
   author: UserEntity;
 
-  @ManyToMany(() => UserEntity, (user) => user.likedComments, {
+  @OneToMany(() => CommentLikeEntity, (cm) => cm.comment, {
     cascade: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinTable()
-  likes: UserEntity[];
-  @RelationId('likes')
-  likesUserIDs: number[];
+  likes: CommentLikeEntity[];
 
   @ManyToOne(() => CommentEntity, (comment) => comment.replies, {
     cascade: true,

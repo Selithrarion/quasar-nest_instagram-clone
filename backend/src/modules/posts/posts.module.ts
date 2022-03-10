@@ -6,6 +6,7 @@ import { PostsService } from './posts.service';
 
 import { PostEntity } from './entity/post.entity';
 import { CommentEntity } from './entity/comment.entity';
+import { CommentLikeEntity } from './entity/commentLike.entity';
 import { ReportEntity } from './entity/report.entity';
 import { TagEntity } from './entity/tag.entity';
 import { PostLikeEntity } from './entity/postLike.entity';
@@ -17,7 +18,15 @@ import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PostEntity, CommentEntity, ReportEntity, TagEntity, PostLikeEntity, PostFeedEntity]),
+    TypeOrmModule.forFeature([
+      PostEntity,
+      CommentEntity,
+      CommentLikeEntity,
+      ReportEntity,
+      TagEntity,
+      PostLikeEntity,
+      PostFeedEntity,
+    ]),
     FilesModule,
     NotificationsModule,
     forwardRef(() => UserModule),
