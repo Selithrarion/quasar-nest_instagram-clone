@@ -2,13 +2,13 @@ import {
   AfterLoad,
   Column,
   Entity,
+  getConnection,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
-  RelationId,
 } from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
@@ -49,8 +49,7 @@ export class PostEntity extends BaseEntity {
     cascade: true,
   })
   comments: CommentEntity[];
-  @RelationId('comments')
-  commentIDs: number;
+  commentsNumber: number;
 
   @OneToMany(() => ReportEntity, (report) => report.reported)
   reports: ReportEntity[];
@@ -78,4 +77,18 @@ export class PostEntity extends BaseEntity {
   isViewerLiked: boolean;
   isViewerSaved: boolean;
   isViewerInPhoto: boolean;
+
+  @AfterLoad()
+  async count(): Promise<void> {
+    const connection = await getConnection();
+    const repository = connection.getRepository('CommentEntity');
+
+    const { count: commentsNumber } = await repository
+      .createQueryBuilder('comment')
+      .where('comment.post.id = :id', { id: this.id })
+      .select('COUNT(*)', 'count')
+      .getRawOne();
+
+    this.commentsNumber = Number(commentsNumber);
+  }
 }
