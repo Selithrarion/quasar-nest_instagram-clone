@@ -159,7 +159,7 @@ export class UserEntity extends BaseEntity {
   })
   postFeed: PostFeedEntity[];
 
-  @ManyToMany(() => PostLikeEntity, (pl) => pl.user, {
+  @OneToMany(() => PostLikeEntity, (pl) => pl.user, {
     cascade: true,
   })
   likedPosts: PostLikeEntity[];
