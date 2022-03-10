@@ -53,12 +53,13 @@
 
         <div class="column gap-1">
           <FeedPostComment
-            v-for="comment in comments || post.comments"
+            v-for="(comment, commentIndex) in comments || post.comments"
             :key="comment"
             :comment="comment"
             :minimized="minimizedComments"
             @reply="$emit('reply', comment)"
             @toggle-like="$emit('toggle-comment-like', $event)"
+            @delete="$emit('delete-comment', commentIndex)"
           />
         </div>
       </template>
@@ -110,7 +111,7 @@ export default defineComponent({
     minimizedComments: Boolean,
   },
 
-  emits: ['open-post', 'open-likes', 'reply', 'toggle-comment-like'],
+  emits: ['open-post', 'open-likes', 'reply', 'toggle-comment-like', 'delete-comment'],
 
   setup(props) {
     const store = useStore();

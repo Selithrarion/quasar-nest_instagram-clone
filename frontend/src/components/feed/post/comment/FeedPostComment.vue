@@ -103,7 +103,7 @@ export default defineComponent({
     minimized: Boolean,
   },
 
-  emits: ['reply', 'toggle-like'],
+  emits: ['reply', 'toggle-like', 'delete'],
 
   setup(props, { emit }) {
     const store = useStore();
@@ -143,6 +143,7 @@ export default defineComponent({
           postID: props.comment.postID,
         };
         await store.dispatch('post/deleteComment', payload);
+        emit('delete')
 
         closeDialog();
       } finally {

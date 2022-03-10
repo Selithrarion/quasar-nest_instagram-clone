@@ -43,6 +43,7 @@
             @open-likes="dialog.open('postLikes')"
             @reply="replyComment"
             @toggle-comment-like="toggleCommentLike"
+            @delete-comment="postComments.splice($event, 1)"
           />
 
           <FeedPostActions
@@ -57,7 +58,7 @@
             ref="commentInput"
             :post-id="post.id"
             :reply-comment="currentReplyComment"
-            @add-comment="postComments.unshift($event)"
+            @create="postComments.unshift($event)"
             @remove-reply="currentReplyComment = null"
           />
         </div>
