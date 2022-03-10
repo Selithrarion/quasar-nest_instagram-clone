@@ -39,7 +39,7 @@
         />
       </div>
 
-      <template v-if="post.comments?.length || comments.length">
+      <template v-if="comments ? comments.length : post.comments?.length">
         <BaseButton
           v-if="!hideViewAllComments && post.comments?.length !== post.commentsNumber"
           class="text-subtitle2 text-blue-grey-4 w-fit-content"
@@ -53,7 +53,7 @@
 
         <div class="column gap-1">
           <FeedPostComment
-            v-for="comment in post.comments || comments"
+            v-for="comment in comments || post.comments"
             :key="comment"
             :comment="comment"
             :minimized="minimizedComments"
@@ -100,7 +100,7 @@ export default defineComponent({
     comments: {
       type: Array as PropType<CommentModel[]>,
       required: false,
-      default: () => [],
+      default: null,
     },
 
     useScroll: Boolean,
