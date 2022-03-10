@@ -2,7 +2,7 @@ import { ActionTree } from 'vuex';
 import { StateInterface } from '../index';
 import { PostStateInterface } from './state';
 import { PostDTO } from 'src/models/feed/post.model';
-import { CommentDTO } from 'src/models/feed/comment.model';
+import { CommentDTO, CommentModel } from 'src/models/feed/comment.model';
 import { PaginationApiPayload } from 'src/models/common/pagination.model';
 
 import postRepository from 'src/repositories/postRepository';
@@ -31,9 +31,10 @@ const actions: ActionTree<PostStateInterface, StateInterface> = {
     await postRepository.toggleLike(id);
   },
 
-  async createComment({ commit }, payload: CommentDTO) {
+  async createComment({ commit }, payload: CommentDTO): Promise<CommentModel> {
     const comment = await postRepository.createComment(payload);
     commit('CREATE_COMMENT', comment);
+    return comment;
   },
   async updateComment({ commit }, { id, text }) {
     const comment = await postRepository.updateComment(id, text);

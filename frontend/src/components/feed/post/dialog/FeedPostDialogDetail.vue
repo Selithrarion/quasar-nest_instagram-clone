@@ -57,6 +57,7 @@
             ref="commentInput"
             :post-id="post.id"
             :reply-comment="currentReplyComment"
+            @add-comment="postComments.unshift($event)"
             @remove-reply="currentReplyComment = null"
           />
         </div>

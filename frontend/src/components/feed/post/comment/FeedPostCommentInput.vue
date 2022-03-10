@@ -56,7 +56,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['remove-reply'],
+  emits: ['add-comment', 'remove-reply'],
 
   setup(props, { emit }) {
     const store = useStore();
@@ -73,11 +73,12 @@ export default defineComponent({
 
       try {
         loading.start();
-        await store.dispatch('post/createComment', {
+        const comment = (await store.dispatch('post/createComment', {
           text: text.value,
           postID: props.postId,
           replyCommentID: props.replyComment?.id,
-        });
+        })) as CommentModel;
+        emit('add-comment', comment);
         emit('remove-reply');
         text.value = '';
       } finally {
