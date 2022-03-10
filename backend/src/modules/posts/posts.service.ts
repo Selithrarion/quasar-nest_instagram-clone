@@ -148,19 +148,26 @@ export class PostsService {
     // return await this.posts.findOneOrFail(id, { relations: ['users', 'tags'] });
     return await this.posts.findOneOrFail(id, { relations: ['author', 'tags'] });
   }
-  async getComments(id: number, userID: number): Promise<CommentEntity[]> {
-    const post = await this.posts.findOneOrFail(id);
-    const currentUser = await this.userService.getByID(userID);
-
-    const comments = await this.postComments.find({
-      where: { post },
-      relations: ['author'],
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+  async getComments(id: number, currentUserID: number): Promise<CommentEntity[]> {
+    const currentUserComments = await this.postComments
+      .createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.author', 'author')
+      .leftJoinAndSelect('author.avatar', 'avatar')
+      .where('comment.author.id = :currentUserID', { currentUserID })
+      .andWhere('comment.post.id = :postID', { postID: id })
+      .orderBy('comment.createdAt', 'DESC')
+      .getMany();
+    const restComments = await this.postComments
+      .createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.author', 'author')
+      .leftJoinAndSelect('author.avatar', 'avatar')
+      .where('comment.author.id != :currentUserID', { currentUserID })
+      .andWhere('comment.post.id = :postID', { postID: id })
+      .orderBy('comment.createdAt', 'DESC')
+      .getMany();
+    const allComments = [...currentUserComments, ...restComments];
     return await Promise.all(
-      comments.map((c) => {
+      allComments.map(async (c) => {
         return {
           ...c,
           isViewerLiked: Boolean(
