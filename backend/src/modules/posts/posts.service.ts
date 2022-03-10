@@ -163,8 +163,13 @@ export class PostsService {
       comments.map((c) => {
         return {
           ...c,
-          // TODO: should be replaced with query
-          isViewerLiked: currentUser.likedCommentsIDs.includes(c.id),
+          isViewerLiked: Boolean(
+            await this.postCommentLikes
+              .createQueryBuilder('commentLike')
+              .where('commentLike.user.id = :currentUserID', { currentUserID })
+              .andWhere('commentLike.comment.id = :commentID', { commentID: c.id })
+              .getRawOne()
+          ),
         };
       })
     );
