@@ -8,8 +8,7 @@
       </div>
       <div class="flex-center gap-2">
         <q-icon name="forum" size="22px" />
-        <!--        TODO: commentsNumber-->
-        {{ post.commentIDs?.length }}
+        {{ post.commentsNumber }}
       </div>
     </div>
   </div>

@@ -24,7 +24,7 @@ const mutation: MutationTree<PostStateInterface> = {
     const post = state.posts?.find((p) => p.id === id);
     if (post) {
       post.isViewerLiked = !post.isViewerLiked;
-      post.isViewerLiked ? post.likesNumber++ : post.likesNumber--
+      post.isViewerLiked ? post.likesNumber++ : post.likesNumber--;
     }
   },
   TOGGLE_FOLLOW(state, authorID) {
@@ -35,7 +35,10 @@ const mutation: MutationTree<PostStateInterface> = {
   CREATE_COMMENT(state, comment: CommentModel) {
     if (!state.posts) return;
     const post = state.posts.find((p) => p.id === comment.postID);
-    if (post) post.comments.unshift(comment);
+    if (post) {
+      post.comments.unshift(comment);
+      post.commentsNumber++;
+    }
   },
   UPDATE_COMMENT(state, comment: CommentModel) {
     if (!state.posts) return;
@@ -52,6 +55,7 @@ const mutation: MutationTree<PostStateInterface> = {
 
     const index = post.comments.findIndex((c) => c.id === commentID);
     post.comments.splice(index, 1);
+    post.commentsNumber--;
   },
   TOGGLE_COMMENT_LIKE(state, { commentID, postID }: { commentID: number; postID: number }) {
     const post = state.posts?.find((p) => p.id === postID);
