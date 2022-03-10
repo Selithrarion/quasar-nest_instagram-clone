@@ -13,10 +13,4 @@ export class FollowingEntity extends BaseEntity {
     cascade: true,
   })
   target: UserEntity;
-
-  // @Column()
-  // userID: number;
-  //
-  // @Column()
-  // targetID: number;
 }
