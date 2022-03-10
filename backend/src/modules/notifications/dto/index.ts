@@ -6,6 +6,7 @@ export class CreateNotificationDTO {
   receiverUserID: number;
   initiatorUserID: number;
   postID?: number;
+  commentID?: number;
 }
 export class UpdateNotificationDTO {
   @IsBoolean()
