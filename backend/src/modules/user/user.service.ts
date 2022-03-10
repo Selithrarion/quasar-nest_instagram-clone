@@ -273,6 +273,7 @@ export class UserService {
     const currentUserFollowingIDs = currentUserFollowings.map((f) => f.following_targetId);
 
     // TODO: fix pagination
+    // TODO: fix when 1 user in 2 arrays
 
     const followersThatCurrentUserDontFollowQB = this.userFollowings
       .createQueryBuilder('following')
@@ -282,12 +283,13 @@ export class UserService {
       .take(Math.floor(limit / 3))
       .skip((page - 1) * Math.floor(limit / 3))
       .where('following.target.id = :currentUserID', { currentUserID })
-      .andWhere('following.user.id != :currentUserID', { currentUserID });
-    if (currentUserFollowingIDs.length)
-      followersThatCurrentUserDontFollowQB.andWhere('following.user.id NOT IN  (:...currentUserFollowingIDs)', {
+      .andWhere('following.user.id != :currentUserID', { currentUserID })
+      .andWhere('following.user.id NOT IN  (:...currentUserFollowingIDs)', {
         currentUserFollowingIDs,
       });
-    const followersThatCurrentUserDontFollow = await followersThatCurrentUserDontFollowQB.getMany();
+    const followersThatCurrentUserDontFollow = currentUserFollowingIDs.length
+      ? await followersThatCurrentUserDontFollowQB.getMany()
+      : [];
     const usersThatCurrentUserDontFollow = followersThatCurrentUserDontFollow.map((f) => {
       return {
         id: f.user.id,
@@ -307,16 +309,14 @@ export class UserService {
       .take(Math.floor(limit / 3))
       .skip((page - 1) * Math.floor(limit / 3))
       .where('following.user.id != :currentUserID', { currentUserID })
-      .andWhere('following.target.id != :currentUserID', { currentUserID });
-    if (currentUserFollowingIDs.length) {
-      followersThatCurrentUserDontFollowQB.andWhere('following.user.id IN (:...currentUserFollowingIDs)', {
+      .andWhere('following.target.id != :currentUserID', { currentUserID })
+      .andWhere('following.user.id IN (:...currentUserFollowingIDs)', {
+        currentUserFollowingIDs,
+      })
+      .andWhere('following.target.id NOT IN  (:...currentUserFollowingIDs)', {
         currentUserFollowingIDs,
       });
-      followersThatCurrentUserDontFollowQB.andWhere('following.target.id NOT IN  (:...currentUserFollowingIDs)', {
-        currentUserFollowingIDs,
-      });
-    }
-    const followedByYourFollowed = await followedByYourFollowedQB.getMany();
+    const followedByYourFollowed = currentUserFollowingIDs.length ? await followedByYourFollowedQB.getMany() : [];
     const followedUsersByYourFollowed = followedByYourFollowed.map((f) => {
       return {
         id: f.target.id,
