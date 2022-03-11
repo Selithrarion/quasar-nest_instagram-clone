@@ -74,6 +74,7 @@ Github actions CI pipeline
 ##### Story
 - Story CR✨U✨D✨
 - Drawing canvas with [vue-drawing-canvas](https://github.com/razztyfication/vue-drawing-canvas)
+- Implement smart eraser (erase only user drawings) ✨
 
 #### Messenger (?)
 
