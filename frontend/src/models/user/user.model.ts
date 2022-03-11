@@ -69,10 +69,7 @@ export interface UserAuthResponse {
   accessToken: string;
   refreshToken: string;
 }
-export interface UserUpdateTokenResponse {
-  accessToken: string;
-  refreshToken: string;
-}
+export interface UserUpdateTokenResponse extends UserAuthResponse {}
 export interface UserUpdateTokenDTO {
   userID: number;
   refreshToken: string;
