@@ -9,13 +9,16 @@
       <template v-else>
         <BaseAvatar
           size="66px"
+          tooltip="Create story"
           :item-name="currentUserUsername || story.author.username"
           :item-color="currentUserColor || story.author.color"
           :src="currentUserUsername ? currentUserAvatarUrl : story.author?.avatar?.url"
+          clickable
         >
           <template v-if="usePlusBadge" #badge>
             <!--TODO: refactor badge styles-->
             <q-badge
+              class="z-10"
               style="margin-top: 52px; margin-right: 2px; padding: 2px; border: 1px solid white"
               color="primary"
               rounded

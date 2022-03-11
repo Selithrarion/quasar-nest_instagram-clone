@@ -9,7 +9,7 @@
         <CommonSearch
           v-model="searchValue"
           v-click-outside="closeSearchMenu"
-          class="mobile-hide"
+          class="mobile-hide z-top"
           prepend-icon
           @focus="isSearchMenu = true"
           @search="search"
