@@ -54,7 +54,7 @@ Github actions CI pipeline
 - Use pull / fan-out-on-read feed for celebrities (100000+ subscribers) ✨
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
 - Search users, search tags
-- User suggestions in sidebar who follows you (❌) / followed by who you follow (❌) or just new to instagram
+- User suggestions in sidebar who follows you / followed by who you follow or just new to instagram
 ##### Post
 - Posts CRUD
 - Images support. Dragndrop or browse image to upload
