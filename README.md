@@ -4,7 +4,7 @@
 TODO
 
 ### Project structure
-for a quick understanding of project structure you can look at frontend models or backend modules (frontend/src/models and backend/src/modules)
+for a quick understanding of project structure you can look at frontend models (frontend/src/models) or backend modules and it's entities (backend/src/modules)
 
 ### Stack
 #### Frontend
