@@ -46,18 +46,19 @@ export class AuthService {
     if (user.isTwoFactorEnabled && !is2FAEnabled) return null;
 
     const payload: UserJwtPayload = { id: user.id, email: user.email, is2FAEnabled };
-    console.log('AUTH SERVICE login', payload);
 
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     });
-    await this.userService.setRefreshToken(user.id, refreshToken);
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
+    await this.userService.setHashedRefreshToken(user.id, hashedRefreshToken);
 
     return {
       user,
       accessToken,
-      refreshToken,
+      refreshToken: hashedRefreshToken,
     };
   }
   async register(payload: CreateUserDTO): Promise<UserEntity> {
@@ -68,7 +69,7 @@ export class AuthService {
 
   async updateTokens({ userID, email, refreshToken }: UserUpdateTokensDTO): Promise<UserTokensInterface> {
     const user = await this.userService.getByID(userID);
-    if (user.hashedRefreshToken !== (await bcrypt.hash(refreshToken, 10))) {
+    if (user.hashedRefreshToken !== refreshToken) {
       throw new HttpException('USER_EXPIRED_REFRESH', HttpStatus.UNAUTHORIZED);
     }
 
@@ -79,15 +80,13 @@ export class AuthService {
         expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
       }
     );
-    await this.userService.setRefreshToken(userID, newRefreshToken);
-
-    console.log('UPDATE TOKENS', accessToken, refreshToken, newRefreshToken, userID);
-    console.log(this.jwtService.verify(accessToken));
+    const hashedNewRefreshToken = await bcrypt.hash(newRefreshToken, 10);
+    await this.userService.setHashedRefreshToken(userID, hashedNewRefreshToken);
 
     return {
       user,
       accessToken,
-      refreshToken,
+      refreshToken: hashedNewRefreshToken,
     };
   }
 

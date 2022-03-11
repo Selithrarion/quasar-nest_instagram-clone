@@ -171,8 +171,7 @@ export class UserService {
     }
   }
 
-  async setRefreshToken(id: number, refreshToken: string): Promise<void> {
-    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+  async setHashedRefreshToken(id: number, hashedRefreshToken: string): Promise<void> {
     await this.users.update(id, {
       hashedRefreshToken,
     });
