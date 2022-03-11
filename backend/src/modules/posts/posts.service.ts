@@ -62,10 +62,6 @@ export class PostsService {
         .leftJoinAndSelect('feed.post', 'post')
         .leftJoinAndSelect('post.author', 'author')
         .leftJoinAndSelect('author.avatar', 'avatar')
-        // TODO: temp
-        .leftJoinAndSelect('author.followers', 'followers')
-        // TODO: temp
-        .leftJoinAndSelect('author.followedUsers', 'followedUsers')
         .leftJoinAndSelect('post.file', 'file')
         .leftJoinAndSelect('post.tags', 'tags')
 
@@ -100,10 +96,6 @@ export class PostsService {
       .orderBy('post.createdAt', 'DESC')
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('author.avatar', 'avatar')
-      // TODO: temp
-      .leftJoinAndSelect('author.followers', 'followers')
-      // TODO: temp
-      .leftJoinAndSelect('author.followedUsers', 'followedUsers')
       .leftJoinAndSelect('post.file', 'file')
       .leftJoinAndSelect('post.tags', 'tags');
     // TODO: it finds not only 'test' but 'test1' and etc
@@ -180,7 +172,7 @@ export class PostsService {
         };
       })
     );
-    // TODO: comment reply find trees no 'where' option
+    // TODO: no 'where' option in find trees
     // const treeRepository = await getManager().getTreeRepository(CommentEntity);
     // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // // @ts-ignore
@@ -213,27 +205,19 @@ export class PostsService {
   }
 
   async getTags(search: string): Promise<TagEntity[]> {
-    // TODO: add order by count
     if (!search.length) return [];
-    return (
-      this.postTags
-        .createQueryBuilder('tags')
-        .where('name ILIKE :search', { search: `%${search}%` })
-        .leftJoin('tags.posts', 'posts')
-        // TODO: how to add where with array
-        // .addSelect((qb) => {
-        //   return qb.select('COUNT(posts)', 'count').from(PostEntity, 'post').where('');
-        // }, 'count')
-        .loadRelationCountAndMap('tags.count', 'tags.posts')
-        // .orderBy('count', 'DESC')
-        // TODO: loadRelationCountAndMap not work with orderBy
-        // .orderBy('tags.count', 'DESC')
-        .take(20)
-        .getMany()
-
-      // ?
-      // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#using-subqueries
-    );
+    return this.postTags
+      .createQueryBuilder()
+      .select('tag')
+      .from(TagEntity, 'tag')
+      .addSelect('COUNT(posts)', 'count')
+      .leftJoin('tag.posts', 'posts')
+      .where('tag.name ILIKE :search', { search: `%${search}%` })
+      .loadRelationCountAndMap('tag.count', 'tag.posts')
+      .orderBy('count', 'DESC')
+      .groupBy('tag.id')
+      .take(20)
+      .getMany();
   }
   async getTagByID(id: number): Promise<TagEntity> {
     return await this.postTags
