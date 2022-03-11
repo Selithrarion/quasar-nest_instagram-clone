@@ -37,7 +37,7 @@ Github actions CI pipeline
 
 #### Global
 - English lanugage (wow!)
-- User notifications (Post like, Comment like ❌, User followed)
+- User notifications (Post like, Comment like, User followed)
 - User following system
 
 #### Auth
@@ -46,7 +46,7 @@ Github actions CI pipeline
 - Unique username / email
 - Send email verification mail
 - Automaticly redirect to requested page after login (/auth?redirect=/profile/1)
-- JWT access (1d exp) and refresh (30d exp) tokens, auto relogin (❌) if access token expired 
+- JWT access (1d exp) and refresh (30d exp) tokens, auto relogin if access token expired 
 
 #### Feed
 - View all recent posts from friends (push / fan-out-on-write)
