@@ -21,11 +21,11 @@ const mutation: MutationTree<UserStateInterface> = {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     http.defaults.headers.common.Authorization = null;
   },
-  UPDATE_TOKENS(state: UserStateInterface, { accessToken, refreshToken }: UserUpdateTokenResponse) {
-    console.log('UPD TOK MUT', accessToken, refreshToken, state.currentUser);
+  UPDATE_TOKENS(state: UserStateInterface, { user, accessToken, refreshToken }: UserUpdateTokenResponse) {
+    state.currentUser = user;
     state.token = accessToken;
     state.refreshToken = refreshToken;
-    Cookies.set('user', JSON.stringify({ ...state.currentUser, accessToken, refreshToken }));
+    Cookies.set('user', JSON.stringify({ ...user, accessToken, refreshToken }));
   },
 
   UPDATE_USER(state: UserStateInterface, payload: UserDTO) {

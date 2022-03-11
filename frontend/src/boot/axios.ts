@@ -9,15 +9,13 @@ declare module '@vue/runtime-core' {
   }
 }
 
-interface AxiosRequestConfigWithRetryField extends AxiosRequestConfig {
-  _isRetry: boolean;
-}
-
 const http: AxiosInstance = axios.create({
   baseURL: 'http://localhost:8081/',
 });
 
 export default boot(async ({ store, urlPath, redirect, router }) => {
+  let isUpdateTokenRequested = false;
+
   try {
     const savedUserData: UserModel = Cookies.get('user');
     if (savedUserData && savedUserData.accessToken && savedUserData.refreshToken) {
@@ -56,26 +54,23 @@ export default boot(async ({ store, urlPath, redirect, router }) => {
     },
     async (error: AxiosError) => {
       console.error('RESPONSE error', error, error.response);
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      const errorMessage = (error.response?.data?.message as string) || (error.response?.data?.error as string);
-      // TODO: add vue-18n error translation
-      if (errorMessage)
-        Notify.create({
-          type: 'negative',
-          message: errorMessage,
-        });
-
-      const originalRequest = error.config as AxiosRequestConfigWithRetryField;
       const isAuthError = error.response?.status === 401;
-      console.log(isAuthError, error, error.response);
+
       if (error.config.url?.includes('update-tokens')) redirect('/auth?redirect');
-      else if (isAuthError) {
-        const { accessToken } = (await store.dispatch('user/updateTokens')) as UserUpdateTokenResponse;
-        console.log('NEW AT', accessToken);
+      else if (isAuthError && !isUpdateTokenRequested) {
+        isUpdateTokenRequested = true;
+        const data = (await store.dispatch('user/updateTokens')) as UserUpdateTokenResponse;
+        if (!data.accessToken) redirect('/auth?redirect');
+        location.reload();
+      } else if (!isAuthError) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        http.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-        return http(originalRequest);
+        const errorMessage = (error.response?.data?.message as string) || (error.response?.data?.error as string);
+        // TODO: add vue-18n error translation
+        if (errorMessage)
+          Notify.create({
+            type: 'negative',
+            message: errorMessage,
+          });
       }
 
       return Promise.reject(error);

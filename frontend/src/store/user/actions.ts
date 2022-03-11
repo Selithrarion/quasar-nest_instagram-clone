@@ -5,13 +5,14 @@ import {
   UserAuthResponse,
   UserDTO,
   UserLoginDTO,
+  UserModel,
   UserRegisterDTO,
   UserSuggestionModel,
   UserUpdateTokenResponse,
 } from 'src/models/user/user.model';
 import authRepository from 'src/repositories/authRepository';
 import userRepository from 'src/repositories/userRepository';
-import { Notify } from 'quasar';
+import { Cookies, Notify } from 'quasar';
 
 const actions: ActionTree<UserStateInterface, StateInterface> = {
   async login({ commit }, payload: UserLoginDTO): Promise<UserAuthResponse> {
@@ -61,13 +62,14 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
     const user = await authRepository.getSelf();
     if (user) commit('AUTH_USER', { user, accessToken, refreshToken });
   },
-  async updateTokens({ state, commit }) {
-    if (!state.refreshToken || !state.currentUser) return;
+  async updateTokens({ commit }) {
+    const { id, email, refreshToken }: UserModel = Cookies.get('user');
+    if (!id || !email || !refreshToken) return;
 
     const payload = {
-      userID: state.currentUser.id,
-      email: state.currentUser.email,
-      refreshToken: state.refreshToken,
+      userID: id,
+      email,
+      refreshToken,
     };
     const tokens = await authRepository.updateTokens(payload);
     commit('UPDATE_TOKENS', tokens);
