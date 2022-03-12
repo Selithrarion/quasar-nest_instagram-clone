@@ -54,17 +54,23 @@ export default boot(async ({ store, urlPath, redirect, router }) => {
     },
     async (error: AxiosError) => {
       console.error('RESPONSE error', error, error.response);
-      const isAuthError = error.response?.status === 401;
 
-      if (error.config.url?.includes('update-tokens')) redirect('/auth?redirect');
-      else if (isAuthError && !isUpdateTokenRequested) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const errorMessage = (error.response?.data?.message as string) || (error.response?.data?.error as string);
+
+      const isAuthError = error.response?.status === 401;
+      const isErrorWhenUpdateTokens = error.config.url === '/auth/update-tokens';
+
+      if (isErrorWhenUpdateTokens) {
+        await store.dispatch('user/logout');
+        redirect('/auth?redirect');
+        return;
+      } else if (isAuthError && !isUpdateTokenRequested) {
         isUpdateTokenRequested = true;
         const data = (await store.dispatch('user/updateTokens')) as UserUpdateTokenResponse;
         if (!data.accessToken) redirect('/auth?redirect');
         location.reload();
       } else if (!isAuthError) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const errorMessage = (error.response?.data?.message as string) || (error.response?.data?.error as string);
         // TODO: add vue-18n error translation
         if (errorMessage)
           Notify.create({
