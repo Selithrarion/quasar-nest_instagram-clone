@@ -1,6 +1,7 @@
 version: "3"
 
 services:
+#   TODO: fix hot reload and some other problems
 #  frontend:
 #    build:
 #      dockerfile: Dockerfile
@@ -22,6 +23,7 @@ services:
 #    networks:
 #      - web
 
+# TODO: fix hot reload and some other problems
 #  backend:
 #    build:
 #      dockerfile: Dockerfile
