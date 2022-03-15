@@ -32,7 +32,7 @@ Github actions CI pipeline
 ### App Features
 
 ❌ === not implemented yet  
-✨ === TODO idea. it seems that it won't be implemented but there are some plans
+✨ === TODO idea. it seems that it won't be implemented but there were some plans
 
 
 #### Global
