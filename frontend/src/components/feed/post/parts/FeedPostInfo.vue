@@ -57,7 +57,7 @@
             :key="comment"
             :comment="comment"
             :minimized="minimizedComments"
-            @reply="$emit('reply', comment)"
+            @reply="$emit('reply', $event)"
             @toggle-like="$emit('toggle-comment-like', $event)"
             @delete="$emit('delete-comment', commentIndex)"
           />

@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, PropType, ref, watch } from 'vue';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
 
@@ -63,6 +63,13 @@ export default defineComponent({
     const loading = useLoading();
 
     const input = ref<HTMLInputElement>();
+
+    watch(
+      () => props.replyComment?.id,
+      () => {
+        input.value?.focus();
+      }
+    );
 
     const text = ref('');
     async function createComment() {
