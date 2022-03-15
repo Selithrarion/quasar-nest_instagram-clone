@@ -57,6 +57,4 @@ export class CommentEntity extends BaseEntity {
     nullable: true,
   })
   replies: CommentEntity;
-  @RelationId('replies')
-  repliesIDs: number;
 }
