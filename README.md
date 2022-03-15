@@ -86,7 +86,7 @@ Github actions CI pipeline
 - Upload gif avatar ✨
 
 ### Known bugs
-1. Comment replies. Can't load author relation (posts.service.ts, line 172) and need to fix update/delete and correct create pushing in frontend
+1. Can't load author relation in comment replies (posts.service.ts, line 172) and need to fix update/delete and correct create reply saving in frontend
 2. Missing pagination in profile, post likes and somewhere else
 3. Story drawing canvas incorrect markup if 16:9 image
 
