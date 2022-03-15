@@ -1,6 +1,7 @@
 <template>
   <div class="feed-post-image relative-position" @dblclick="toggleLike">
-    <q-img :src="src" />
+    <q-img class="feed-post-image__original" :src="src" />
+    <div class="feed-post-image__blurred" :style="{ background: `url(${src})` }" />
     <div v-show="likeLocalAnimationKey > 0" :key="likeLocalAnimationKey" class="feed-post-image__like">
       <q-icon color="white" name="favorite" size="128px" />
     </div>
@@ -48,6 +49,27 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .feed-post-image {
+  display: flex;
+  align-items: center;
+  min-height: 90vh;
+  overflow: hidden;
+  background: black;
+
+  &__original {
+    z-index: 1;
+  }
+  &__blurred {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    filter: blur(5px);
+    box-shadow: inset 0 0 200px #000000;
+    margin: -8px -16px -16px -8px;
+  }
+
   &__like {
     position: absolute;
     bottom: 0;
