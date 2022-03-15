@@ -32,7 +32,7 @@ Github actions CI pipeline
 ### App Features
 
 ❌ === not implemented yet  
-✨ === TODO idea. it seems that it won't be implemented but there are some plans
+✨ === TODO idea. it seems that it won't be implemented but there were some plans
 
 
 #### Global
@@ -69,7 +69,7 @@ Github actions CI pipeline
 - Comments CRUD
 - Like comment
 - Report post
-- Comment system with infinity reply nesting ❌
+- Comment system with infinity reply nesting with path enumeration / materialized path | look bugs section (1)
 - Share to users in messanger ✨
 - Bookmark ✨
 ##### Story
@@ -86,6 +86,11 @@ Github actions CI pipeline
 - Edit info - change username / name / email (✨) / bio etc...
 - Upload user avatar (store in AWS S3, compression with [sharp](https://github.com/lovell/sharp))
 - Upload gif avatar ✨
+
+### Known bugs
+1. Comment replies. Can't load author relation (posts.service.ts, line 172) and need to fix update/delete and correct create pushing in frontend
+2. Missing pagination in profile, post likes and somewhere else
+3. Story drawing canvas incorrect markup if 16:9 image
 
 ### Install  
 1. Clone project  
