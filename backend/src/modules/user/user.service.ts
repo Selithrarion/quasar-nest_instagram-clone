@@ -36,8 +36,6 @@ export class UserService {
   ) {}
 
   async getAll(search: string, currentUserID: number): Promise<UserEntity[]> {
-    console.log('all following entit', await this.userFollowings.find({ where: { id: currentUserID } }));
-
     if (!search.length)
       return this.users.find({
         where: {
