@@ -50,7 +50,6 @@
           v-model:tags="form.tags"
           class="q-pt-sm"
           label="Tags"
-          debounce="400"
           use-hashtags
           @update:model-value="searchTags"
         />
@@ -77,6 +76,7 @@ import { computed, defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'src/store';
 import useLoading from 'src/composables/common/useLoading';
+import { debounce } from 'quasar';
 
 import CommonImageCropper from 'components/common/image/CommonImageCropper.vue';
 import CommonImageFilter from 'components/common/image/CommonImageFilter.vue';
@@ -196,9 +196,9 @@ export default defineComponent({
       tagSuggestion.value = [];
       form.value.tags.push(tag);
     }
-    async function searchTags() {
+    const searchTags = debounce(async () => {
       tagSuggestion.value = await postRepository.getTags(tagSearch.value);
-    }
+    }, 400);
 
     async function uploadPost() {
       try {

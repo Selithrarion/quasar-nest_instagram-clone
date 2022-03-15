@@ -117,7 +117,6 @@ export default defineComponent({
         return;
       }
 
-      // TODO: fix if q-input uses debounce like in post create tags
       allLocalTags.value.push(localModelValue.value);
       localModelValue.value = '';
       emit('update:model-value', '');
