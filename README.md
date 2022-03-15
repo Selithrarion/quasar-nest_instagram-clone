@@ -13,17 +13,15 @@ for a quick understanding of project structure you can look at frontend models (
 2. Vuex
 3. Typescript
 4. Quasar
-5. Socket.io
-6. Vue i18n
-7. other - date-fns, some lodash functions, eslint + tslint + prettier
+5. Vue i18n
+6. other - date-fns, some lodash functions, eslint + tslint + prettier
 
 #### Backend
 
 1. Node.js (Nest.js)
 2. Typescript
 3. PostgreSQL + TypeORM
-4. Socket.io
-5. AWS S3 (Amazon Simple Storage Service)
+4. AWS S3 (Amazon Simple Storage Service)
 
 #### Other
 
