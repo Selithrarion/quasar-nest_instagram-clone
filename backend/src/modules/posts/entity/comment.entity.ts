@@ -1,18 +1,21 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+  Tree,
+  TreeChildren,
+  TreeParent,
+} from 'typeorm';
 import { BaseEntity } from '../../../common/types/base.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { PostEntity } from './post.entity';
 import { CommentLikeEntity } from './commentLike.entity';
 
-// TODO: make comment replies with path enumeration
-// @Tree('materialized-path')
-//
-// @TreeParent()
-// parentComment: CommentEntity;
-// @TreeChildren()
-// replies: CommentEntity[];
-// problem - can't get comments tree only for needed post.
 @Entity()
+@Tree('materialized-path')
 export class CommentEntity extends BaseEntity {
   @Column()
   text: string;
@@ -28,8 +31,10 @@ export class CommentEntity extends BaseEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.comments, {
     eager: true,
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    // TODO: we don't need comment and it's replies delete when author delete. need to make it like Habr
+    // check that there is no constraints error
+    // onUpdate: 'CASCADE',
+    // onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'authorID' })
   author: UserEntity;
@@ -41,20 +46,8 @@ export class CommentEntity extends BaseEntity {
   })
   likes: CommentLikeEntity[];
 
-  @ManyToOne(() => CommentEntity, (comment) => comment.replies, {
-    cascade: true,
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-    nullable: true,
-  })
-  @JoinColumn({ name: 'parentCommentID' })
-  @Index()
+  @TreeParent()
   parentComment: CommentEntity;
-  @RelationId('parentComment')
-  parentCommentID: number;
-
-  @OneToMany(() => CommentEntity, (comment) => comment.parentComment, {
-    nullable: true,
-  })
-  replies: CommentEntity;
+  @TreeChildren()
+  replies: CommentEntity[];
 }

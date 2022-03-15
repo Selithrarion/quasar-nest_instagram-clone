@@ -6,10 +6,8 @@ import {
   getConnection,
   Index,
   JoinColumn,
-  ManyToMany,
   OneToMany,
   OneToOne,
-  RelationId,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { IsEmail } from 'class-validator';
