@@ -66,8 +66,7 @@ export interface UserSuggestion {
   username: string;
   suggestion: string;
 }
-// TODO: should remove relation ids and refactor.
-// cuz if user have lots of subscribers/subscriptions/likes etc it'll send to frontend
+
 @Entity()
 export class UserEntity extends BaseEntity {
   @Column({ length: 64 })
@@ -183,24 +182,6 @@ export class UserEntity extends BaseEntity {
   })
   followedUsers: FollowingEntity[];
   followedNumber?: number;
-
-  // @OneToMany(() => FollowingEntity, (following) => following.followedTo, {
-  //   cascade: true,
-  //   onUpdate: 'CASCADE',
-  //   onDelete: 'CASCADE',
-  // })
-  // followers: FollowingEntity[];
-  // // @RelationId('followers')
-  // // followersIDs: number[];
-  //
-  // @OneToMany(() => FollowingEntity, (following) => following.follower, {
-  //   cascade: true,
-  //   onUpdate: 'CASCADE',
-  //   onDelete: 'CASCADE',
-  // })
-  // followedUsers: FollowingEntity[];
-  // // @RelationId('followedUsers')
-  // // followedUsersIDs: number[];
 
   @OneToMany(() => CommentEntity, (comment) => comment.author, {
     cascade: true,
