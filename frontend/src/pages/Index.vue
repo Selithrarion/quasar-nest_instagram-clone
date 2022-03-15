@@ -12,13 +12,13 @@
         >
           <template #name> Your story </template>
         </FeedStory>
-        <!--        <FeedStory-->
-        <!--          v-for="story of isLoadingState ? 20 : 20"-->
-        <!--          :key="story"-->
-        <!--          :story="story"-->
-        <!--          :use-skeleton="isLoadingState"-->
-        <!--          @click="openStory(story)"-->
-        <!--        />-->
+        <FeedStory
+          v-for="story of isLoadingState ? 20 : 0"
+          :key="story"
+          :story="story"
+          :use-skeleton="isLoadingState"
+          @click="openStory(story)"
+        />
       </FeedStoryList>
 
       <FeedPostList>
