@@ -165,7 +165,12 @@ export class PostsService {
 
     return await Promise.all(
       allComments.map(async (c) => {
-        const { replies } = await treeRepository.findDescendantsTree(c);
+        // TODO: missing typeorm types?
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // TODO: missing author relation
+        const { replies } = await treeRepository.findDescendantsTree(c, { relations: ['author'] });
+
         return {
           ...c,
           replies,
@@ -179,15 +184,6 @@ export class PostsService {
         };
       })
     );
-    // TODO: no 'where' option in find trees
-    // const treeRepository = await getManager().getTreeRepository(CommentEntity);
-    // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // // @ts-ignore
-    // const trees = await treeRepository.findTrees({
-    //   where: { post },
-    //   relations: ['author'],
-    // });
-    // return trees;
   }
   async getLikes(id: number, currentUserID: number): Promise<UserEntity[]> {
     const post = await this.posts.findOneOrFail(id, { relations: ['likes'] });
