@@ -4,19 +4,9 @@
       <b> {{ comment.author?.username }} </b>
       {{ comment.text }}
     </div>
-
-    <!--    <BaseButton-->
-    <!--      class="self-center"-->
-    <!--      size="8px"-->
-    <!--      :text-color="comment.isViewerLiked ? 'red' : ''"-->
-    <!--      :icon="comment.isViewerLiked ? 'favorite' : 'favorite_border'"-->
-    <!--      :tooltip="comment.isViewerLiked ? 'Remove like' : 'Like'"-->
-    <!--      dense-->
-    <!--      @click="toggleLike"-->
-    <!--    />-->
   </div>
 
-  <div v-else>
+  <div v-else :style="{ 'margin-left': replyDepth > 10 ? '80px' : `${replyDepth * 8}px` }">
     <CommonUser class="q-px-none" size="32px" :user="comment.author" :clickable="false" align-avatar-to-top>
       <template #username>
         {{ comment.text }}
@@ -24,7 +14,7 @@
       <template #name>
         <div class="row items-center gap-2">
           <div class="text-caption text-blue-grey-4">{{ formatDate(comment.createdAt, DateTypes.DIFF) }}</div>
-          <BaseButton label="Reply" size="12px" dense flat @click="$emit('reply')" />
+          <BaseButton label="Reply" size="12px" dense flat @click="$emit('reply', comment)" />
           <BaseButtonMore size="12px" @click="dialog.open('commentActions')" />
         </div>
       </template>
@@ -41,6 +31,16 @@
       </template>
     </CommonUser>
 
+    <div v-if="comment.replies?.length">
+      <FeedPostComment
+        v-for="commentReply in comment.replies"
+        :key="commentReply.id"
+        :comment="commentReply"
+        :reply-depth="replyDepth + 1"
+        @reply="$emit('reply', commentReply)"
+      />
+    </div>
+
     <BaseDialog
       :model-value="dialog.openedName.value === 'commentActions'"
       small
@@ -49,7 +49,7 @@
     >
       <template #content>
         <!--        TODO: add report dialog and report ids-->
-        <BaseItem v-if="!isCurrentUserComment" label="Report" danger @click="reportComment" />
+        <BaseItem v-if="!isCurrentUserComment" label="Report" disabled danger @click="reportComment" />
         <BaseItem v-if="isCurrentUserComment" label="Delete" danger @click="dialog.open('deleteComment')" />
         <BaseItem v-if="isCurrentUserComment" label="Edit" @click="dialog.open('editComment')" />
         <BaseItem label="Cancel" @click="closeDialog" />
@@ -100,6 +100,10 @@ export default defineComponent({
       type: Object as PropType<CommentModel>,
       required: true,
     },
+    replyDepth: {
+      type: Number,
+      default: 0,
+    },
     minimized: Boolean,
   },
 
@@ -143,7 +147,7 @@ export default defineComponent({
           postID: props.comment.postID,
         };
         await store.dispatch('post/deleteComment', payload);
-        emit('delete')
+        emit('delete');
 
         closeDialog();
       } finally {
@@ -155,6 +159,9 @@ export default defineComponent({
       emit('toggle-like', props.comment.id);
       const payload = { commentID: props.comment.id, postID: props.comment.postID };
       void store.dispatch('post/toggleCommentLike', payload);
+    }
+    function reportComment() {
+      //
     }
 
     function closeDialog() {
@@ -174,6 +181,7 @@ export default defineComponent({
       deleteComment,
 
       toggleLike,
+      reportComment,
 
       closeDialog,
     };
