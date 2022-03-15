@@ -80,6 +80,7 @@ export default defineComponent({
     watch(
       () => route.params.profileUsername,
       async () => {
+        if (!route.params.profileUsername) return;
         loading.start();
         profile.value = await userRepository.getProfileByUsername(String(route.params.profileUsername));
         loading.stop();
