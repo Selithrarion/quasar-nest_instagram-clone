@@ -14,7 +14,7 @@
       <BaseItem v-if="isOwnPost" label="Edit" @click="$emit('edit')" />
 
       <BaseItem label="Share to..." @click="$emit('share')" />
-      <CommonClipboard copy-url>
+      <CommonClipboard :text="postLink">
         <BaseItem label="Copy link" />
       </CommonClipboard>
 
@@ -59,6 +59,7 @@ export default defineComponent({
     const loading = useLoading({ customNames: ['follow', 'unfollow'] });
 
     const isOwnPost = computed(() => props.authorId === store.state.user.currentUser?.id);
+    const postLink = computed(() => `${window.location.href.slice(0, -1)}/post/${props.postId}`);
 
     async function follow() {
       try {
@@ -81,6 +82,7 @@ export default defineComponent({
       loading,
 
       isOwnPost,
+      postLink,
 
       follow,
       unfollow,

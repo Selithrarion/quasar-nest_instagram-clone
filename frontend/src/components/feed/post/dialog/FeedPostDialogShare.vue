@@ -4,7 +4,7 @@
       <BaseItem label="Share to direct" disabled @click="$emit('close')" />
       <BaseItem label="Share to Facebook" disabled @click="$emit('close')" />
       <BaseItem label="Share to Twitter" disabled @click="$emit('close')" />
-      <CommonClipboard copy-url @click="$emit('close')">
+      <CommonClipboard :text="postLink" @click="$emit('close')">
         <BaseItem label="Copy link" />
       </CommonClipboard>
     </template>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import CommonClipboard from 'components/common/CommonClipboard.vue';
 import { PostModel } from 'src/models/feed/post.model';
 
@@ -31,5 +31,12 @@ export default defineComponent({
   },
 
   emits: ['close'],
+
+  setup(props) {
+    const postLink = computed(() => `${window.location.href.slice(0, -1)}/post/${props.post.id}`);
+    return {
+      postLink,
+    };
+  },
 });
 </script>
