@@ -24,7 +24,7 @@
         @close="dialog.close"
       />
 
-      <FeedPostDialogDetail
+      <FeedPostDetail
         :model-value="dialog.openedName.value === 'postDetail'"
         :post="openedPost"
         mode="profile"
@@ -47,7 +47,7 @@ import ExplorePostList from 'components/explore/ExplorePostList.vue';
 import ExplorePost from 'components/explore/ExplorePost.vue';
 import ExploreHeader from 'components/explore/ExploreHeader.vue';
 import ProfileDialogEdit from 'components/profile/dialog/ProfileDialogEdit.vue';
-import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
+import FeedPostDetail from 'components/feed/post/detail/FeedPostDetail.vue';
 
 import userRepository from 'src/repositories/userRepository';
 import { UserModel } from 'src/models/user/user.model';
@@ -61,7 +61,7 @@ export default defineComponent({
     ExplorePost,
     ExploreHeader,
     ProfileDialogEdit,
-    FeedPostDialogDetail,
+    FeedPostDetail,
   },
 
   setup() {

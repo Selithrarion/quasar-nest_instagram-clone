@@ -54,7 +54,7 @@
       :image-data="dialog.openedItem.value"
       @close="dialog.close"
     />
-    <FeedPostDialogDetail
+    <FeedPostDetail
       :model-value="dialog.openedName.value === 'postDetail'"
       :post="dialog.openedItem.value"
       @close="dialog.close"
@@ -116,7 +116,7 @@ import FeedStoryDialogCreate from 'components/feed/story/FeedStoryDialogCreate.v
 
 import FeedPostList from 'components/feed/post/FeedPostList.vue';
 import FeedPost from 'components/feed/post/FeedPost.vue';
-import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
+import FeedPostDetail from 'components/feed/post/detail/FeedPostDetail.vue';
 import FeedPostDialogLikes from 'components/feed/post/dialog/FeedPostDialogLikes.vue';
 import FeedPostDialogEdit from 'components/feed/post/dialog/FeedPostDialogEdit.vue';
 import FeedPostDialogShare from 'components/feed/post/dialog/FeedPostDialogShare.vue';
@@ -135,7 +135,7 @@ export default defineComponent({
 
     FeedPostList,
     FeedPost,
-    FeedPostDialogDetail,
+    FeedPostDetail,
     FeedPostDialogLikes,
     FeedPostDialogEdit,
     FeedPostDialogShare,

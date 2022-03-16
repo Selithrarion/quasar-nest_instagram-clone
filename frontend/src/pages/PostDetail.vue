@@ -2,7 +2,7 @@
   <q-page class="column gap-16 q-pa-xl">
     <BaseLoader v-if="loading.active.value" page-margin />
     <template v-else>
-      <FeedPostDialogDetail :model-value="true" mode="page" :post="post" />
+      <FeedPostDetail :model-value="true" mode="page" :post="post" />
     </template>
   </q-page>
 </template>
@@ -12,7 +12,7 @@ import { defineComponent, onBeforeMount, ref, watch } from 'vue';
 import useLoading from 'src/composables/common/useLoading';
 import { useRoute } from 'vue-router';
 
-import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
+import FeedPostDetail from 'components/feed/post/detail/FeedPostDetail.vue';
 
 import postRepository from 'src/repositories/postRepository';
 import { PostModel } from 'src/models/feed/post.model';
@@ -20,7 +20,7 @@ import { PostModel } from 'src/models/feed/post.model';
 export default defineComponent({
   name: 'PostDetail',
 
-  components: { FeedPostDialogDetail },
+  components: { FeedPostDetail },
 
   setup() {
     const route = useRoute();

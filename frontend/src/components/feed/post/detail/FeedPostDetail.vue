@@ -1,5 +1,5 @@
 <template>
-  <!--  TODO: refactor-->
+  <!--  TODO: refactor with FeedPostDetailContent-->
   <q-card v-if="mode === 'page'" class="row no-wrap" bordered>
     <FeedPostImage
       class="w-half"
@@ -185,7 +185,7 @@ import postRepository from 'src/repositories/postRepository';
 import BaseDialog from 'components/base/dialog/BaseDialog.vue';
 
 export default defineComponent({
-  name: 'FeedPostDialogDetail',
+  name: 'FeedPostDetail',
 
   components: {
     BaseDialog,

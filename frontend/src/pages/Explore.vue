@@ -17,7 +17,7 @@
       </ExplorePostList>
       <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
 
-      <FeedPostDialogDetail
+      <FeedPostDetail
         :model-value="dialog.openedName.value === 'postDetail'"
         :post="dialog.openedItem.value"
         @edit="updatePost"
@@ -37,7 +37,7 @@ import useLoading from 'src/composables/common/useLoading';
 import ExplorePostList from 'components/explore/ExplorePostList.vue';
 import ExplorePost from 'components/explore/ExplorePost.vue';
 import ExploreHeader from 'components/explore/ExploreHeader.vue';
-import FeedPostDialogDetail from 'components/feed/post/dialog/FeedPostDialogDetail.vue';
+import FeedPostDetail from 'components/feed/post/detail/FeedPostDetail.vue';
 
 import { PostModel } from 'src/models/feed/post.model';
 import postRepository from 'src/repositories/postRepository';
@@ -51,7 +51,7 @@ export default defineComponent({
     ExplorePostList,
     ExplorePost,
     ExploreHeader,
-    FeedPostDialogDetail,
+    FeedPostDetail,
   },
 
   setup() {
