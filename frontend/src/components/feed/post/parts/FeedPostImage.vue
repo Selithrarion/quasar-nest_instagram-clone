@@ -1,12 +1,12 @@
 <template>
   <div
     class="feed-post-image relative-position"
-    :class="{ 'feed-post-image--detail': mode === 'detail' }"
+    :class="[{ 'feed-post-image--detail': mode === 'detail' }, { 'feed-post-image--page': mode === 'page' }]"
     @dblclick="toggleLike"
   >
     <q-img class="feed-post-image__original" :src="src" @load="isShowBlurredBackground = true" />
     <div
-      v-if="isShowBlurredBackground && mode === 'detail'"
+      v-if="isShowBlurredBackground && mode !== 'feed'"
       class="feed-post-image__blurred"
       :style="{ background: `url(${src})` }"
     />
@@ -41,7 +41,7 @@ export default defineComponent({
       type: String,
       default: 'feed',
       validator: (v: string): boolean => {
-        return ['feed', 'detail'].includes(v);
+        return ['feed', 'detail', 'page'].includes(v);
       },
     },
   },
@@ -76,6 +76,10 @@ export default defineComponent({
     max-height: calc(100vh - 48px);
     max-width: calc(100vh - 48px);
     min-height: calc(100vh - 48px);
+    background: black;
+  }
+  &--page {
+    min-height: 70vh;
     background: black;
   }
 

@@ -1,17 +1,81 @@
 <template>
-  <BaseDialog :model-value="modelValue" x-large @close="$emit('close')">
+  <!--  TODO: refactor-->
+  <q-card v-if="mode === 'page'" class="row no-wrap" bordered>
+    <FeedPostImage
+      class="w-half"
+      :mode="mode === 'page' ? 'page' : 'detail'"
+      :class="{ 'flex-grow-1': mode === 'page' }"
+      :post-id="post.id"
+      :src="post.fileURL"
+      :is-viewer-liked="post.isViewerLiked"
+    />
+
+    <div class="column flex-grow-1">
+      <div class="flex-center-between gap-2 q-py-md q-px-sm">
+        <CommonUser
+          class="full-width q-px-xs"
+          size="32px"
+          :tooltip="isProfileMode ? null : `Open author's profile`"
+          :user="post.author"
+          :clickable="!isProfileMode"
+          hide-name
+          @click="openAuthorProfile"
+        />
+        <FeedPostMoreButton
+          :post-id="post.id"
+          :author-id="post.author.id"
+          :is-viewer-followed="post.author.isViewerFollowed"
+          @edit="dialog.open('editPost')"
+          @delete="dialog.open('deletePost')"
+          @share="dialog.open('share')"
+          @report="dialog.open('report')"
+          @toggle-follow="$emit('toggle-follow')"
+        />
+      </div>
+
+      <FeedPostInfo
+        :post="post"
+        :comments="postComments"
+        :comments-loading="loading.custom.comments"
+        hide-view-all-comments
+        use-scroll
+        @open-post="focusCommentInput"
+        @open-likes="dialog.open('postLikes')"
+        @reply="replyComment"
+        @toggle-comment-like="toggleCommentLike"
+        @delete-comment="postComments.splice($event, 1)"
+      />
+
+      <FeedPostActions
+        class="post-actions"
+        :post-id="post.id"
+        :is-viewer-liked="post.isViewerLiked"
+        :is-viewer-saved="post.isViewerSaved"
+        @open-post="focusCommentInput"
+      />
+
+      <FeedPostCommentInput
+        ref="commentInput"
+        :post-id="post.id"
+        :reply-comment="currentReplyComment"
+        @create="postComments.unshift($event)"
+        @remove-reply="currentReplyComment = null"
+      />
+    </div>
+  </q-card>
+  <BaseDialog v-else :model-value="modelValue" x-large @close="$emit('close')">
     <template #content>
       <div class="row no-wrap">
         <FeedPostImage
           class="w-half"
-          mode="detail"
+          :mode="mode === 'page' ? 'page' : 'detail'"
           :post-id="post.id"
           :src="post.fileURL"
           :is-viewer-liked="post.isViewerLiked"
         />
 
         <div class="column flex-grow-1">
-          <div class="flex-center-between q-py-md q-px-sm">
+          <div class="flex-center-between gap-2 q-py-md q-px-sm">
             <CommonUser
               class="full-width q-px-xs"
               size="32px"
@@ -118,11 +182,13 @@ import { PostModel } from 'src/models/feed/post.model';
 import { CommentModel } from 'src/models/feed/comment.model';
 
 import postRepository from 'src/repositories/postRepository';
+import BaseDialog from 'components/base/dialog/BaseDialog.vue';
 
 export default defineComponent({
   name: 'FeedPostDialogDetail',
 
   components: {
+    BaseDialog,
     CommonUser,
     FeedPostImage,
     FeedPostActions,
@@ -146,7 +212,7 @@ export default defineComponent({
       type: String,
       default: 'feed',
       validator: (v: string): boolean => {
-        return ['feed', 'profile'].includes(v);
+        return ['feed', 'profile', 'page'].includes(v);
       },
     },
   },
