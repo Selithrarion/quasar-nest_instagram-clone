@@ -13,17 +13,15 @@ for a quick understanding of project structure you can look at frontend models (
 2. Vuex
 3. Typescript
 4. Quasar
-5. Socket.io
-6. Vue i18n
-7. other - date-fns, some lodash functions, eslint + tslint + prettier
+5. Vue i18n
+6. other - date-fns, some lodash functions, eslint + tslint + prettier
 
 #### Backend
 
 1. Node.js (Nest.js)
 2. Typescript
 3. PostgreSQL + TypeORM
-4. Socket.io
-5. AWS S3 (Amazon Simple Storage Service)
+4. AWS S3 (Amazon Simple Storage Service)
 
 #### Other
 
@@ -51,6 +49,8 @@ Github actions CI pipeline
 
 #### Feed
 - View all recent posts from friends (push / fan-out-on-write)
+- View own new posts (<24h) on top before friends feed ❌
+- Remove friend post from feed if user saw it ✨
 - View all recent based on their naive calculated score (likes, comments, views number) after friends feed ❌
 - Use pull / fan-out-on-read feed for celebrities (100000+ subscribers) ✨
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
@@ -88,7 +88,7 @@ Github actions CI pipeline
 - Upload gif avatar ✨
 
 ### Known bugs
-1. Comment replies. Can't load author relation (posts.service.ts, line 172) and need to fix update/delete and correct create pushing in frontend
+1. Can't load author relation in comment replies (posts.service.ts, line 172) and need to fix update/delete and correct create reply saving in frontend
 2. Missing pagination in profile, post likes and somewhere else
 3. Story drawing canvas incorrect markup if 16:9 image
 
