@@ -4,7 +4,7 @@
       <div class="row no-wrap">
         <FeedPostImage
           class="w-half"
-          style="max-height: calc(100vh - 48px); max-width: calc(100vh - 48px)"
+          mode="detail"
           :post-id="post.id"
           :src="post.fileURL"
           :is-viewer-liked="post.isViewerLiked"

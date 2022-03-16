@@ -1,7 +1,15 @@
 <template>
-  <div class="feed-post-image relative-position" @dblclick="toggleLike">
-    <q-img class="feed-post-image__original" :src="src" />
-    <div class="feed-post-image__blurred" :style="{ background: `url(${src})` }" />
+  <div
+    class="feed-post-image relative-position"
+    :class="{ 'feed-post-image--detail': mode === 'detail' }"
+    @dblclick="toggleLike"
+  >
+    <q-img class="feed-post-image__original" :src="src" @load="isShowBlurredBackground = true" />
+    <div
+      v-if="isShowBlurredBackground && mode === 'detail'"
+      class="feed-post-image__blurred"
+      :style="{ background: `url(${src})` }"
+    />
     <div v-show="likeLocalAnimationKey > 0" :key="likeLocalAnimationKey" class="feed-post-image__like">
       <q-icon color="white" name="favorite" size="128px" />
     </div>
@@ -28,10 +36,20 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+
+    mode: {
+      type: String,
+      default: 'feed',
+      validator: (v: string): boolean => {
+        return ['feed', 'detail'].includes(v);
+      },
+    },
   },
 
   setup(props) {
     const store = useStore();
+
+    const isShowBlurredBackground = ref(false);
 
     const likeLocalAnimationKey = ref(0);
     function toggleLike() {
@@ -40,6 +58,8 @@ export default defineComponent({
     }
 
     return {
+      isShowBlurredBackground,
+
       likeLocalAnimationKey,
       toggleLike,
     };
@@ -51,9 +71,13 @@ export default defineComponent({
 .feed-post-image {
   display: flex;
   align-items: center;
-  min-height: 90vh;
   overflow: hidden;
-  background: black;
+  &--detail {
+    max-height: calc(100vh - 48px);
+    max-width: calc(100vh - 48px);
+    min-height: calc(100vh - 48px);
+    background: black;
+  }
 
   &__original {
     z-index: 1;
