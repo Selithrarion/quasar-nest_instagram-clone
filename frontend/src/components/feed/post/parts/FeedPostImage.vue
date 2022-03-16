@@ -72,6 +72,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   overflow: hidden;
+  border-radius: 0;
   &--detail {
     max-height: calc(100vh - 48px);
     max-width: calc(100vh - 48px);
