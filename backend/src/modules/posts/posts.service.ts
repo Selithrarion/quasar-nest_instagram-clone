@@ -73,8 +73,26 @@ export class PostsService {
         .getMany();
       const feedPosts = userPostFeed.map((f) => f.post);
 
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const recentOwnPosts =
+        Number(queryOptions.page) === 1
+          ? await this.posts
+              .createQueryBuilder('post')
+              .leftJoinAndSelect('post.author', 'author')
+              .leftJoinAndSelect('author.avatar', 'avatar')
+              .leftJoinAndSelect('post.file', 'file')
+              .leftJoinAndSelect('post.tags', 'tags')
+              .where('author.id = :userID', { userID })
+              .andWhere('post.createdAt > :yesterday', { yesterday })
+              .orderBy('post.createdAt', 'DESC')
+              .take(5)
+              .getMany()
+          : [];
+      const allPosts = [...recentOwnPosts, ...feedPosts];
+
       const formattedFeedPosts = (await Promise.all(
-        feedPosts.map(async (p) => this.formatPost(p, currentUser, tag))
+        allPosts.map(async (p) => this.formatPost(p, currentUser, tag))
       )) as PostEntity[];
 
       if (formattedFeedPosts.length)
