@@ -49,9 +49,9 @@ Github actions CI pipeline
 
 #### Feed
 - View all recent posts from friends (push / fan-out-on-write)
-- View own new posts (<24h) on top before friends feed ❌
-- Remove friend post from feed if user saw it ✨
-- View all recent based on their naive calculated score (likes, comments, views number) after friends feed ❌
+- Remove friend's post from feed after user has seen it ✨
+- View own new posts (<24h) on top before friends feed
+- View all recent posts based on their naive calculated score (likes, comments, views number) after friends feed ❌
 - Use pull / fan-out-on-read feed for celebrities (100000+ subscribers) ✨
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
 - Search users, search tags
@@ -94,10 +94,10 @@ Github actions CI pipeline
 
 ### Install  
 1. Clone project  
-2. Terminal #1 "docker compose up"  
-3. Terminal #2 "yarn global add @quasar/cli" and "cd .\frontend\" and "quasar dev"  
-4. Terminal #3 "cd .\backend\" and "yarn start:dev" 
+2. Terminal 1 - "docker compose up"  
+3. Terminal 2 - "yarn global add @quasar/cli" and "cd .\frontend\" and "quasar dev"  
+4. Terminal 3 - "cd .\backend\" and "yarn start:dev" 
 5. Don't forget to create new server (Object => Create => Server) and then database (instagram) in pgadmin (localhost:8082). small tip: in server connection field enter: host.docker.internal
-6. do you like stars? 🤩😊 anyway, glad to any PRs  
+6. do you like starsssss? 🤩😊 anyway, glad to any PRs  
 
 
