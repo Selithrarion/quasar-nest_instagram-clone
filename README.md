@@ -98,6 +98,6 @@ Github actions CI pipeline
 3. Terminal 2 - "yarn global add @quasar/cli" and "cd .\frontend\" and "quasar dev"  
 4. Terminal 3 - "cd .\backend\" and "yarn start:dev" 
 5. Don't forget to create new server (Object => Create => Server) and then database (instagram) in pgadmin (localhost:8082). small tip: in server connection field enter: host.docker.internal
-6. do you like starsssss? 🤩😊 anyway, glad to any PRs  
+6. star? 🤩😊 anyway, glad to any PRs  
 
 
