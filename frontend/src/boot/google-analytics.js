@@ -1,4 +1,5 @@
 /* eslint-disable */
+// analytics for cordova app https://quasar.dev/quasar-cli-webpack/developing-cordova-apps/managing-google-analytics
 import ga from '../config/analytics';
 import { boot } from 'quasar/wrappers';
 
