@@ -32,6 +32,7 @@ module.exports = configure(function (ctx) {
       'vue-observe-visibility',
       'v-click-outside',
       'sentry',
+      ctx.mode.cordova ? 'google-analytics' : '',
     ],
 
     css: ['app.sass'],
