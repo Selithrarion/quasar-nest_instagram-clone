@@ -1,4 +1,4 @@
-import { ClassSerializerInterceptor, Global, Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Global, HttpException, Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,6 +16,7 @@ import { EmailVerificationModule } from './modules/email-verification/email-veri
 import { EmailModule } from './services/email/email.module';
 import { TwoFactorAuthModule } from './modules/two-factor-auth/two-factor-auth.module';
 import { PostsModule } from './modules/posts/posts.module';
+import { RavenInterceptor, RavenModule } from 'nest-raven';
 
 @Global()
 @Module({
@@ -33,6 +34,7 @@ import { PostsModule } from './modules/posts/posts.module';
       entities: ['dist/**/entity/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    RavenModule,
 
     PostsModule,
 
@@ -56,6 +58,12 @@ import { PostsModule } from './modules/posts/posts.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useValue: new RavenInterceptor({
+        filters: [{ type: HttpException, filter: (e: HttpException) => 500 > e.getStatus() }],
+      }),
     },
   ],
 })
