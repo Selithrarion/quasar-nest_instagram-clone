@@ -1,5 +1,12 @@
 # Instagram clone with Vue 3 and Nest
 
+### Content
+- [Video ](#video)
+- [Project structure](#project-structure)
+- [Stack](#stack)
+- [App Features](#app-features)
+- [Installation](#installation)
+
 ### Video  
 TODO
 
@@ -94,7 +101,7 @@ Github actions CI pipeline
 2. Missing pagination in profile, post likes and somewhere else
 3. Story drawing canvas incorrect markup if 16:9 image
 
-### Install  
+### Installation  
 1. Clone project  
 2. Terminal 1 - "docker compose up"  
 3. Terminal 2 - "yarn global add @quasar/cli" and "cd .\frontend\" and "quasar dev"  
