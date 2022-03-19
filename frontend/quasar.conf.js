@@ -31,6 +31,7 @@ module.exports = configure(function (ctx) {
       'vue-socket-io',
       'vue-observe-visibility',
       'v-click-outside',
+      'sentry',
     ],
 
     css: ['app.sass'],
