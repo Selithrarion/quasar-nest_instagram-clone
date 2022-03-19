@@ -1,5 +1,12 @@
 # Instagram clone with Vue 3 and Nest
 
+### Content
+- [Video ](#video)
+- [Project structure](#project-structure)
+- [Stack](#stack)
+- [App Features](#app-features)
+- [Installation](#installation)
+
 ### Video  
 TODO
 
@@ -38,6 +45,8 @@ Github actions CI pipeline
 - User notifications (Post like, Comment like, User followed)
 - Remove notificiation if user unliked/unfollowed
 - User following system
+- Google analytics ❌
+- Sentry - error monitoring and logging for both frontend and backend
 
 #### Auth
 - Login / Register / Forgot password
@@ -92,12 +101,12 @@ Github actions CI pipeline
 2. Missing pagination in profile, post likes and somewhere else
 3. Story drawing canvas incorrect markup if 16:9 image
 
-### Install  
+### Installation  
 1. Clone project  
 2. Terminal 1 - "docker compose up"  
 3. Terminal 2 - "yarn global add @quasar/cli" and "cd .\frontend\" and "quasar dev"  
 4. Terminal 3 - "cd .\backend\" and "yarn start:dev" 
 5. Don't forget to create new server (Object => Create => Server) and then database (instagram) in pgadmin (localhost:8082). small tip: in server connection field enter: host.docker.internal
-6. do you like starsssss? 🤩😊 anyway, glad to any PRs  
+6. star? 🤩😊 anyway, glad to any PRs  
 
 
