@@ -45,7 +45,7 @@ Github actions CI pipeline
 - User notifications (Post like, Comment like, User followed)
 - Remove notificiation if user unliked/unfollowed
 - User following system
-- Google analytics ❌
+- Google analytics
 - Sentry - error monitoring and logging for both frontend and backend
 
 #### Auth
