@@ -86,7 +86,7 @@ Github actions CI pipeline
 - Drawing canvas with [vue-drawing-canvas](https://github.com/razztyfication/vue-drawing-canvas)
 - Implement smart eraser (erase only user drawings) ✨
 
-#### Messenger (?)
+#### Messenger ✨
 
 #### Profile page
 - View all own photos/videos
