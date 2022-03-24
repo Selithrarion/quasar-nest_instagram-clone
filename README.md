@@ -60,7 +60,7 @@ Github actions CI pipeline
 - View all recent posts from friends (push / fan-out-on-write)
 - Remove friend's post from feed after user has seen it ✨
 - View own new posts (<24h) on top before friends feed
-- View all recent posts based on their naive calculated score (likes, comments, views number) after friends feed ❌
+- View all recent posts based on their naive calculated score (likesNumber + commentsNumber*5 / (now - createdAt)) after friends feed
 - Use pull / fan-out-on-read feed for celebrities (100000+ subscribers) ✨
 - Feed infinite scroll with [vue-observe-visibility](https://github.com/Akryum/vue-observe-visibility)
 - Search users, search tags
