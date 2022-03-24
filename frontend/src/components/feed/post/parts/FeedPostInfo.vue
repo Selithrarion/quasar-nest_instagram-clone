@@ -111,9 +111,9 @@ export default defineComponent({
     minimizedComments: Boolean,
   },
 
-  emits: ['open-post', 'open-likes', 'reply', 'toggle-comment-like', 'delete-comment'],
+  emits: ['open-post', 'open-likes', 'reply', 'toggle-comment-like', 'toggle-like', 'delete-comment'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
     const dialog = useDialog();
     const { formatDate } = useFormat();
@@ -127,6 +127,7 @@ export default defineComponent({
     });
 
     function toggleLike() {
+      emit('toggle-like');
       void store.dispatch('post/toggleLike', props.post.id);
     }
 

@@ -54,11 +54,12 @@ export default defineComponent({
     isViewerSaved: Boolean,
   },
 
-  emits: ['open-post', 'share-to-user'],
+  emits: ['open-post', 'share-to-user', 'toggle-like'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
     function toggleLike() {
+      emit('toggle-like');
       void store.dispatch('post/toggleLike', props.postId);
     }
 

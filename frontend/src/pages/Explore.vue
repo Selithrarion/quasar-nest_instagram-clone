@@ -23,6 +23,7 @@
         @edit="updatePost"
         @close="dialog.close"
         @toggle-follow="toggleFollow"
+        @toggle-like="toggleLike"
       />
     </template>
   </q-page>
@@ -97,6 +98,17 @@ export default defineComponent({
       const postIndex = posts.value.findIndex((p) => p.id === openedPost?.id);
       posts.value[postIndex].author.isViewerFollowed = !posts.value[postIndex].author.isViewerFollowed;
     }
+    function toggleLike() {
+      console.log('toggle');
+      if (!posts.value) return;
+
+      const openedPost = dialog.openedItem.value as PostModel;
+      const postIndex = posts.value.findIndex((p) => p.id === openedPost?.id);
+      posts.value[postIndex].isViewerLiked = !posts.value[postIndex].isViewerLiked;
+      posts.value[postIndex].isViewerLiked
+        ? posts.value[postIndex].likesNumber++
+        : posts.value[postIndex].likesNumber--;
+    }
 
     return {
       dialog,
@@ -106,6 +118,7 @@ export default defineComponent({
       posts,
       updatePost,
       toggleFollow,
+      toggleLike,
     };
   },
 });

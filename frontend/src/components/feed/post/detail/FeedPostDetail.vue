@@ -43,6 +43,7 @@
         @open-likes="dialog.open('postLikes')"
         @reply="replyComment"
         @toggle-comment-like="toggleCommentLike"
+        @toggle-like="$emit('toggle-like')"
         @delete-comment="postComments.splice($event, 1)"
       />
 
@@ -52,6 +53,7 @@
         :is-viewer-liked="post.isViewerLiked"
         :is-viewer-saved="post.isViewerSaved"
         @open-post="focusCommentInput"
+        @toggle-like="$emit('toggle-like')"
       />
 
       <FeedPostCommentInput
@@ -107,6 +109,7 @@
             @open-likes="dialog.open('postLikes')"
             @reply="replyComment"
             @toggle-comment-like="toggleCommentLike"
+            @toggle-like="$emit('toggle-like')"
             @delete-comment="postComments.splice($event, 1)"
           />
 
@@ -116,6 +119,7 @@
             :is-viewer-liked="post.isViewerLiked"
             :is-viewer-saved="post.isViewerSaved"
             @open-post="focusCommentInput"
+            @toggle-like="$emit('toggle-like')"
           />
 
           <FeedPostCommentInput
@@ -217,7 +221,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'edit', 'toggle-follow'],
+  emits: ['close', 'edit', 'toggle-follow', 'toggle-like'],
 
   setup(props, { emit }) {
     const store = useStore();
