@@ -102,7 +102,7 @@ export class PostsService {
             currentPage: Number(queryOptions.page),
             itemCount: formattedFeedPosts.length,
             itemsPerPage: Number(queryOptions.limit),
-            // TODO: is it have any sense to make real pagination values?
+            // TODO: is it has any sense to make real pagination values?
             totalItems: 50,
             totalPages: 10,
           },
@@ -110,14 +110,29 @@ export class PostsService {
     }
 
     const queryBuilder = this.posts
-      .createQueryBuilder('post')
-      .orderBy('post.createdAt', 'DESC')
+      .createQueryBuilder()
+      .select('post')
+      .from(PostEntity, 'post')
+      .leftJoin('post.likes', 'likes')
+      .leftJoin('post.comments', 'comments')
+      .addSelect(
+        'COUNT(likes) + COUNT(comments) * 5 / (EXTRACT(EPOCH FROM NOW()) - EXTRACT(EPOCH FROM post.createdAt))',
+        'score'
+      )
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('author.avatar', 'avatar')
       .leftJoinAndSelect('post.file', 'file')
-      .leftJoinAndSelect('post.tags', 'tags');
-    // TODO: it finds not only 'test' but 'test1' and etc
-    if (tag) queryBuilder.where('tags.name = :tag', { tag });
+      .leftJoinAndSelect('post.tags', 'tags')
+      .orderBy('score', 'DESC')
+      .groupBy('post.id')
+      .addGroupBy('author.id')
+      .addGroupBy('avatar.id')
+      .addGroupBy('file.id')
+      .addGroupBy('tags.id');
+
+    // TODO: not working
+    if (tag) queryBuilder.where('tags.name IN :tag', { tag });
+    // if (tag) queryBuilder.where(':tag IN post.tags', { tag });
     else {
       const postsFeed = await this.postFeed
         .createQueryBuilder('feed')
@@ -147,7 +162,6 @@ export class PostsService {
             : await this.userService.getIsUserFollowed(p.author.id, currentUser.id),
       },
       comments: tag ? [] : await this.postComments.find({ where: { post: p }, order: { createdAt: 'DESC' }, take: 2 }),
-      likesNumber: await this.getPostLikesCount(p),
       isViewerLiked: await this.getIsUserLikedPost(currentUser, p),
       isViewerSaved: false,
       isViewerInPhoto: false,
@@ -221,9 +235,6 @@ export class PostsService {
   async getIsUserLikedPost(user: UserEntity, post: PostEntity): Promise<boolean> {
     return Boolean(await this.postLikes.findOne({ where: { user, post }, relations: ['user', 'post'] }));
   }
-  async getPostLikesCount(post: PostEntity): Promise<number> {
-    return this.postLikes.count({ post });
-  }
 
   async getTags(search: string): Promise<TagEntity[]> {
     if (!search.length) return [];
@@ -231,8 +242,8 @@ export class PostsService {
       .createQueryBuilder()
       .select('tag')
       .from(TagEntity, 'tag')
-      .addSelect('COUNT(posts)', 'count')
       .leftJoin('tag.posts', 'posts')
+      .addSelect('COUNT(posts)', 'count')
       .where('tag.name ILIKE :search', { search: `%${search}%` })
       .loadRelationCountAndMap('tag.count', 'tag.posts')
       .orderBy('count', 'DESC')

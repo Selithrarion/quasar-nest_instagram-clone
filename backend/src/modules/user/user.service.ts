@@ -79,7 +79,6 @@ export class UserService {
       user.posts.map(async (p) => {
         return {
           ...p,
-          likesNumber: await this.postsService.getPostLikesCount(p),
           isViewerLiked: await this.postsService.getIsUserLikedPost(user, p),
         };
       })

@@ -81,14 +81,32 @@ export class PostEntity extends BaseEntity {
   @AfterLoad()
   async count(): Promise<void> {
     const connection = await getConnection();
-    const repository = connection.getRepository('CommentEntity');
+    const postRepository = connection.getRepository('PostEntity');
 
-    const { count: commentsNumber } = await repository
-      .createQueryBuilder('comment')
-      .where('comment.post.id = :id', { id: this.id })
-      .select('COUNT(*)', 'count')
+    const { commentsNumber } = await postRepository
+      .createQueryBuilder('post')
+      .leftJoin('post.comments', 'comments')
+      .where('post.id = :id', { id: this.id })
+      .select('COUNT(comments)', 'commentsNumber')
+      .getRawOne();
+    const { likesNumber } = await postRepository
+      .createQueryBuilder('post')
+      .leftJoin('post.likes', 'likes')
+      .where('post.id = :id', { id: this.id })
+      .select('COUNT(likes)', 'likesNumber')
       .getRawOne();
 
+    // TODO: incorrect behavior sometimes when there are some comments and likes
+    // const { likesNumber, commentsNumber } = await postRepository
+    //   .createQueryBuilder('post')
+    //   .where('post.id = :id', { id: this.id })
+    //   .leftJoin('post.likes', 'likes')
+    //   .leftJoin('post.comments', 'comments')
+    //   .select('COUNT(likes)', 'likesNumber')
+    //   .addSelect('COUNT(comments)', 'commentsNumber')
+    //   .getRawOne();
+
     this.commentsNumber = Number(commentsNumber);
+    this.likesNumber = Number(likesNumber);
   }
 }
