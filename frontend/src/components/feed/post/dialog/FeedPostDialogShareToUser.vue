@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog title="Share" @close="close">
+  <BaseDialog :model-value="modelValue" title="Share" @close="close">
     <template #secondHeaderRow>
       <div class="row items-center gap-6 q-pb-lg q-pt-none q-px-lg full-width">
         <div class="text-subtitle1 text-weight-medium">To:</div>
@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, reactive, ref } from 'vue';
+import { computed, defineComponent, onBeforeMount, reactive, ref, watch } from 'vue';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonUser from 'components/common/CommonUser.vue';
@@ -86,6 +86,7 @@ export default defineComponent({
   },
 
   props: {
+    modelValue: Boolean,
     postId: {
       type: Number,
       default: null,
@@ -96,9 +97,12 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const loading = useLoading({ customNames: ['send'] });
-    onBeforeMount(() => {
-      void searchUsers();
-    });
+    watch(
+      () => props.modelValue,
+      (v) => {
+        if (v) void searchUsers();
+      }
+    );
 
     const suggestedUsers = ref<UserModel[]>([]);
     const search = ref('');
