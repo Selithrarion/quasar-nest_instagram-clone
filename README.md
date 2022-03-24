@@ -86,7 +86,7 @@ Github actions CI pipeline
 - Drawing canvas with [vue-drawing-canvas](https://github.com/razztyfication/vue-drawing-canvas)
 - Implement smart eraser (erase only user drawings) ✨
 
-#### Messenger (?)
+#### Messenger ✨
 
 #### Profile page
 - View all own photos/videos
@@ -100,6 +100,7 @@ Github actions CI pipeline
 1. Can't load author relation in comment replies (posts.service.ts, line 172) and need to fix update/delete and correct create reply saving in frontend
 2. Missing pagination in profile, post likes and somewhere else
 3. Story drawing canvas incorrect markup if 16:9 image
+4. Search posts by tag not working
 
 ### Installation  
 1. Clone project  
