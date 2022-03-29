@@ -28,7 +28,7 @@ export class TwoFactorAuthService {
   }
 
   async isValid(code: string, userID: number): Promise<boolean> {
-    const { twoFactorSecret } = await this.userService.getByID(userID);
+    const { twoFactorSecret } = await this.userService.getByID(userID, { select: ['twoFactorSecret'] });
     return authenticator.verify({
       token: code,
       secret: twoFactorSecret,

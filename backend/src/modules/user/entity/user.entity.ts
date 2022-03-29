@@ -1,14 +1,14 @@
 import {
   AfterLoad,
-  BeforeInsert, BeforeUpdate,
+  BeforeInsert,
   Column,
   Entity,
   getConnection,
   Index,
   JoinColumn,
   OneToMany,
-  OneToOne
-} from "typeorm";
+  OneToOne,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { IsEmail } from 'class-validator';
 import { Exclude } from 'class-transformer';
@@ -79,13 +79,11 @@ export class UserEntity extends BaseEntity {
   @IsEmail()
   email: string;
 
-  //TODO: add select: false
   @Exclude()
   @Column({ nullable: true, length: 128 })
   password: string;
 
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword(): Promise<void> {
     if (this.password) this.password = await bcrypt.hash(this.password, 10);
   }
@@ -94,16 +92,14 @@ export class UserEntity extends BaseEntity {
     return bcrypt.compare(password, this.password);
   }
 
-  //TODO: add select: false
   @Exclude()
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   hashedRefreshToken: string;
 
   @Column({ default: false })
   isTwoFactorEnabled: boolean;
-  //TODO: add select: false
   @Exclude()
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   twoFactorSecret: string;
 
   @Column({ nullable: true })

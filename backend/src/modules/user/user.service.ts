@@ -1,7 +1,6 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { FindOneOptions, Not, Repository } from 'typeorm';
 
 import { CreateUserDTO } from './dto';
 import { UserEntity, UserSuggestion } from './entity/user.entity';
@@ -60,8 +59,8 @@ export class UserService {
   async getByEmail(email: string): Promise<UserEntity> {
     return await this.users.findOne({ where: { email } });
   }
-  async getByID(id: number): Promise<UserEntity> {
-    return await this.users.findOne(id);
+  async getByID(id: number, options: FindOneOptions<UserEntity> = {}): Promise<UserEntity> {
+    return await this.users.findOne(id, options);
   }
   async getProfileByUsername(username: string, currentUserID: number): Promise<UserEntity> {
     const user = await this.users
