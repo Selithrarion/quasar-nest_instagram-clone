@@ -81,7 +81,9 @@ export default defineComponent({
     });
     watch(
       () => route.params.tag,
-      () => loadPageData()
+      async (v) => {
+        if (v) await loadPageData();
+      }
     );
 
     function updatePost(updatedPost: PostModel) {
