@@ -110,4 +110,6 @@ Github actions CI pipeline
 5. Don't forget to create new server (Object => Create => Server) and then database (instagram) in pgadmin (localhost:8082). small tip: in server connection field enter: host.docker.internal
 6. star? 🤩😊 anyway, glad to any PRs  
 
+Invalid login: 535-5.7.8 Username and Password not accepted - https://myaccount.google.com/lesssecureapps
+
 
