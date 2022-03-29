@@ -121,6 +121,8 @@ export default defineComponent({
       if (searchValue.value.trim()[0] === '#') {
         isTagsSearch.value = true;
         if (searchValue.value.length === 1) return;
+      } else {
+        isTagsSearch.value = false;
       }
 
       try {
