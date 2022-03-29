@@ -58,6 +58,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const store = useStore();
+
     function toggleLike() {
       emit('toggle-like');
       void store.dispatch('post/toggleLike', props.postId);

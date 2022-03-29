@@ -16,16 +16,16 @@
         />
       </ExplorePostList>
       <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
-
-      <FeedPostDetail
-        :model-value="dialog.openedName.value === 'postDetail'"
-        :post="dialog.openedItem.value"
-        @edit="updatePost"
-        @close="dialog.close"
-        @toggle-follow="toggleFollow"
-        @toggle-like="toggleLike"
-      />
     </template>
+
+    <FeedPostDetail
+      :model-value="dialog.openedName.value === 'postDetail'"
+      :post="dialog.openedItem.value"
+      @edit="updatePost"
+      @close="dialog.close"
+      @toggle-follow="toggleFollow"
+      @toggle-like="toggleLike"
+    />
   </q-page>
 </template>
 

@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <BaseSelect v-model="form.gender" label="Gender" filled />
+    <BaseSelect v-model="form.gender" label="Gender" option-value="key" :options="genders" filled />
   </BaseDialog>
 </template>
 
@@ -55,6 +55,20 @@ export default defineComponent({
     const rules = useFormValidation(store.state.user.currentUser);
     const loading = useLoading();
 
+    const genders = [
+      {
+        key: 'male',
+        name: 'Male',
+      },
+      {
+        key: 'female',
+        name: 'Female',
+      },
+      {
+        key: 'other',
+        name: 'Other',
+      },
+    ];
     const form = ref({
       name: props.profile.name || '',
       username: props.profile.username || '',
@@ -88,6 +102,7 @@ export default defineComponent({
       rules,
       loading,
 
+      genders,
       form,
       confirm,
       close,
