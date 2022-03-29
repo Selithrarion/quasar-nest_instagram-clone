@@ -52,7 +52,8 @@ Github actions CI pipeline
 #### Auth
 - Login / Register / Forgot password
 - OAuth with Google / Github
-- Unique username / email
+- 2FA with QR code
+- Unique username / email check
 - Send email verification mail
 - Automaticly redirect to requested page after login (/auth?redirect=/profile/1)
 - JWT access (1d exp) and refresh (30d exp) tokens, auto relogin if access token expired 
