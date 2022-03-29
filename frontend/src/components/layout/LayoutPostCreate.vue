@@ -188,9 +188,10 @@ export default defineComponent({
     const tagSearch = ref('');
     const tagSuggestion = ref<TagModel[]>([]);
     function addSuggestedTag(tag: string) {
-      if (form.value.tags.find((t) => t === tagSearch.value)) {
+      if (form.value.tags.find((t) => t === tag)) {
         tagSearch.value = '';
         tagSuggestion.value = [];
+        return;
       }
       tagSearch.value = '';
       tagSuggestion.value = [];
