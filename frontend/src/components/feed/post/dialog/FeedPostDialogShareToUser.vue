@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import useLoading from 'src/composables/common/useLoading';
 
 import CommonUser from 'components/common/CommonUser.vue';
