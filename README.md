@@ -5,6 +5,7 @@
 - [Project structure](#project-structure)
 - [Stack](#stack)
 - [App Features](#app-features)
+- [Known bugs](#known-bugs)
 - [Installation](#installation)
 
 ### Video  
@@ -99,7 +100,7 @@ Github actions CI pipeline
 ### Known bugs
 1. Can't load author relation in comment replies (posts.service.ts, line 172) and need to fix update/delete and correct create reply saving in frontend
 2. Missing pagination in profile, post likes and somewhere else
-3. Story drawing canvas incorrect markup if 16:9 image
+3. Story drawing canvas incorrect markup if 16:9 image, problems with image size
 4. Search posts by tag not working
 
 ### Installation  
