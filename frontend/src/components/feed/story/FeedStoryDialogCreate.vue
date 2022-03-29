@@ -1,7 +1,7 @@
 <template>
   <BaseDialog title="Create new story" :confirm-loading="loading.active.value" @confirm="createStory" @close="close">
     <template #default>
-      <div class="flex-center relative-position" @keydown.ctrl.>
+      <div class="flex-center relative-position" style="min-height: 330px">
         <div class="absolute-top-left row gap-1">
           <BaseButton tooltip="Undo (Ctrl + Z)" icon="undo" @click="undo" />
           <BaseButton tooltip="Redo (Ctrl + Y)" icon="redo" @click="redo" />
