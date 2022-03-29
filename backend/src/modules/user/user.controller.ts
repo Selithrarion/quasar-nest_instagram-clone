@@ -50,8 +50,7 @@ export class UserController {
     return await this.userService.getRecentSearch(req.user.id);
   }
   @Post('recent-search')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async addRecentSearch(@Body('id') id: number, @Body('type') type: 'user' | 'tag', @Request() req): Promise<void> {
+  async addRecentSearch(@Body('id') id: number, @Body('type') type: 'user' | 'tag', @Request() req): Promise<number> {
     return await this.userService.addRecentSearch(+id, type, req.user.id);
   }
   @Delete('recent-search/:id')

@@ -70,12 +70,18 @@ export default {
     return data;
   },
 
-  async getRecentSearch(): Promise<(UserModel | TagModel)[]> {
-    const { data }: ApiResponseModel<(UserModel | TagModel)[]> = await http.get('/user/recent-search');
+  async getRecentSearch(): Promise<
+    ((UserModel & { recentSearchID: number }) | (TagModel & { recentSearchID: number }))[]
+  > {
+    const {
+      data,
+    }: ApiResponseModel<((UserModel & { recentSearchID: number }) | (TagModel & { recentSearchID: number }))[]> =
+      await http.get('/user/recent-search');
     return data;
   },
-  async addRecentSearch(id: number, type: 'user' | 'tag'): Promise<void> {
-    await http.post('/user/recent-search', { id, type });
+  async addRecentSearch(id: number, type: 'user' | 'tag'): Promise<number> {
+    const { data }: ApiResponseModel<number> = await http.post('/user/recent-search', { id, type });
+    return data;
   },
   async removeRecentSearch(id: number): Promise<void> {
     await http.delete(`/user/recent-search/${id}`);

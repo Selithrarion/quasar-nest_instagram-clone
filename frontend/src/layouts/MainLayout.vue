@@ -61,7 +61,7 @@
                 <q-item-section v-if="isRecentSearchMode" side>
                   <BaseButtonCloseIcon
                     tooltip="Remove recent search"
-                    @click.stop="removeRecentSearchItem(item.id, index)"
+                    @click.stop="removeRecentSearchItem(item.recentSearchID, index)"
                   />
                 </q-item-section>
               </BaseItem>
@@ -136,7 +136,9 @@ export default defineComponent({
       if (!searchValue.value) return true;
       return isTagsSearch.value && searchValue.value.length === 1;
     });
-    const recentSearch = ref<(UserModel | TagModel)[]>([]);
+    const recentSearch = ref<((UserModel & { recentSearchID: number }) | (TagModel & { recentSearchID: number }))[]>(
+      []
+    );
     async function getRecentSearch() {
       if (recentSearch.value.length) return;
 
@@ -147,15 +149,16 @@ export default defineComponent({
         loading.stop();
       }
     }
-    async function removeRecentSearchItem(id: number, index: number) {
-      recentSearch.value.splice(index);
-      await userRepository.removeRecentSearch(id);
+    async function removeRecentSearchItem(recentSearchID: number, index: number) {
+      recentSearch.value.splice(index, 1);
+      await userRepository.removeRecentSearch(recentSearchID);
     }
 
     async function openProfile(user: UserModel) {
       if (!isRecentSearchMode.value) {
-        if (!recentSearch.value.find((rc) => rc.id === user.id)) recentSearch.value.unshift(user);
-        await userRepository.addRecentSearch(user.id, 'user');
+        const recentSearchID = await userRepository.addRecentSearch(user.id, 'user');
+        if (!recentSearch.value.find((rc) => rc.id === user.id))
+          recentSearch.value.unshift({ ...user, recentSearchID });
       }
       isSearchMenu.value = false;
       searchValue.value = '';
@@ -164,8 +167,8 @@ export default defineComponent({
     }
     async function openTag(tag: TagModel) {
       if (!isRecentSearchMode.value) {
-        if (!recentSearch.value.find((rc) => rc.id === tag.id)) recentSearch.value.unshift(tag);
-        await userRepository.addRecentSearch(tag.id, 'tag');
+        const recentSearchID = await userRepository.addRecentSearch(tag.id, 'tag');
+        if (!recentSearch.value.find((rc) => rc.id === tag.id)) recentSearch.value.unshift({ ...tag, recentSearchID });
       }
       isSearchMenu.value = false;
       searchValue.value = '';

@@ -358,20 +358,21 @@ export class UserService {
     return await Promise.all(
       user.recentSearch.map(async (item) => {
         return item.type === 'user'
-          ? await this.users.findOne(item.itemID)
-          : await this.postsService.getTagByID(item.itemID);
+          ? { ...(await this.users.findOne(item.itemID)), recentSearchID: item.id }
+          : { ...(await this.postsService.getTagByID(item.itemID)), recentSearchID: item.id };
       })
     );
   }
-  async addRecentSearch(id: number, type: 'user' | 'tag', userID: number): Promise<void> {
+  async addRecentSearch(id: number, type: 'user' | 'tag', userID: number): Promise<number> {
     const user = await this.users.findOneOrFail(userID, { relations: ['recentSearch'] });
     const repeatIndex = user.recentSearch.findIndex((rc) => rc.itemID === id && rc.type === type);
     if (repeatIndex !== -1) await this.recentSearch.delete(user.recentSearch[repeatIndex].id);
-    await this.recentSearch.save({
+    const rc = await this.recentSearch.save({
       itemID: id,
       type,
       user,
     });
+    return rc.id;
   }
   async removeRecentSearch(id: number): Promise<void> {
     await this.recentSearch.delete(id);
