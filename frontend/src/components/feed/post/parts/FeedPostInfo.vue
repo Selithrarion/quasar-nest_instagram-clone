@@ -59,6 +59,7 @@
             :minimized="minimizedComments"
             @reply="$emit('reply', $event)"
             @toggle-like="$emit('toggle-comment-like', $event)"
+            @update="$emit('update-comment', $event, commentIndex)"
             @delete="$emit('delete-comment', commentIndex)"
           />
         </div>
@@ -111,7 +112,7 @@ export default defineComponent({
     minimizedComments: Boolean,
   },
 
-  emits: ['open-post', 'open-likes', 'reply', 'toggle-comment-like', 'toggle-like', 'delete-comment'],
+  emits: ['open-post', 'open-likes', 'reply', 'toggle-comment-like', 'toggle-like', 'update-comment', 'delete-comment'],
 
   setup(props, { emit }) {
     const store = useStore();

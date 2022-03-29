@@ -39,6 +39,7 @@ const actions: ActionTree<PostStateInterface, StateInterface> = {
   async updateComment({ commit }, { id, text }) {
     const comment = await postRepository.updateComment(id, text);
     commit('UPDATE_COMMENT', comment);
+    return comment
   },
   async deleteComment({ commit }, { commentID, postID }: { commentID: number; postID: number }) {
     commit('DELETE_COMMENT', { commentID, postID });

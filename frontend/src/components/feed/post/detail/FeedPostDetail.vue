@@ -44,6 +44,7 @@
         @reply="replyComment"
         @toggle-comment-like="toggleCommentLike"
         @toggle-like="$emit('toggle-like')"
+        @update-comment="updateComment"
         @delete-comment="postComments.splice($event, 1)"
       />
 
@@ -110,6 +111,7 @@
             @reply="replyComment"
             @toggle-comment-like="toggleCommentLike"
             @toggle-like="$emit('toggle-like')"
+            @update-comment="updateComment"
             @delete-comment="postComments.splice($event, 1)"
           />
 
@@ -259,6 +261,9 @@ export default defineComponent({
       await router.push(`/profile/${props.post.author.username}`);
     }
 
+    function updateComment(comment: CommentModel, index: number) {
+      postComments.value[index] = comment;
+    }
     function toggleCommentLike(commentID: number) {
       const comment = postComments.value.find((c) => c.id === commentID);
       if (comment) comment.isViewerLiked = !comment.isViewerLiked;
@@ -291,6 +296,7 @@ export default defineComponent({
 
       openAuthorProfile,
 
+      updateComment,
       toggleCommentLike,
 
       isProfileMode,

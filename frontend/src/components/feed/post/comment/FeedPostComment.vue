@@ -107,7 +107,7 @@ export default defineComponent({
     minimized: Boolean,
   },
 
-  emits: ['reply', 'toggle-like', 'delete'],
+  emits: ['reply', 'toggle-like', 'update', 'delete'],
 
   setup(props, { emit }) {
     const store = useStore();
@@ -130,8 +130,9 @@ export default defineComponent({
           id: props.comment.id,
           text: localCommentText.value,
         };
-        await store.dispatch('post/updateComment', payload);
+        const comment = (await store.dispatch('post/updateComment', payload)) as CommentModel;
 
+        emit('update', comment);
         closeDialog();
       } finally {
         dialog.stopLoading();
