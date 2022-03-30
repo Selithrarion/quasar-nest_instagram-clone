@@ -43,7 +43,7 @@
         @open-likes="dialog.open('postLikes')"
         @reply="replyComment"
         @toggle-comment-like="toggleCommentLike"
-        @toggle-like="$emit('toggle-like')"
+        @toggle-like="toggleLike"
         @update-comment="updateComment"
         @delete-comment="postComments.splice($event, 1)"
       />
@@ -54,7 +54,7 @@
         :is-viewer-liked="post.isViewerLiked"
         :is-viewer-saved="post.isViewerSaved"
         @open-post="focusCommentInput"
-        @toggle-like="$emit('toggle-like')"
+        @toggle-like="toggleLike"
       />
 
       <FeedPostCommentInput
@@ -110,7 +110,7 @@
             @open-likes="dialog.open('postLikes')"
             @reply="replyComment"
             @toggle-comment-like="toggleCommentLike"
-            @toggle-like="$emit('toggle-like')"
+            @toggle-like="toggleLike"
             @update-comment="updateComment"
             @delete-comment="postComments.splice($event, 1)"
           />
@@ -121,7 +121,7 @@
             :is-viewer-liked="post.isViewerLiked"
             :is-viewer-saved="post.isViewerSaved"
             @open-post="focusCommentInput"
-            @toggle-like="$emit('toggle-like')"
+            @toggle-like="toggleLike"
           />
 
           <FeedPostCommentInput
@@ -166,7 +166,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import { useStore } from 'src/store';
 import { useRouter } from 'vue-router';
 import useDialog from 'src/composables/common/useDialog';
@@ -184,7 +184,6 @@ import FeedPostDialogShare from 'components/feed/post/dialog/FeedPostDialogShare
 import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialogShareToUser.vue';
 import FeedPostDialogReport from 'components/feed/post/dialog/FeedPostDialogReport.vue';
 
-import { PostModel } from 'src/models/feed/post.model';
 import { CommentModel } from 'src/models/feed/comment.model';
 
 import postRepository from 'src/repositories/postRepository';
@@ -210,10 +209,6 @@ export default defineComponent({
 
   props: {
     modelValue: Boolean,
-    post: {
-      type: Object as PropType<PostModel>,
-      default: null,
-    },
     mode: {
       type: String,
       default: 'feed',
@@ -236,13 +231,14 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       async () => {
-        if (!props.modelValue) return;
+        if (!props.modelValue || !post.value) return;
         loading.start('comments');
-        postComments.value = await postRepository.getComments(props.post.id);
+        postComments.value = await postRepository.getComments(post.value.id);
         loading.stop('comments');
       }
     );
 
+    const post = computed(() => store.state.post.postDetail);
     const postComments = ref<CommentModel[]>([]);
 
     const commentInput = ref<InstanceType<typeof FeedPostCommentInput>>();
@@ -258,11 +254,15 @@ export default defineComponent({
     }
 
     async function openAuthorProfile() {
-      await router.push(`/profile/${props.post.author.username}`);
+      if (!post.value?.author?.username) return;
+      await router.push(`/profile/${post.value.author.username}`);
     }
 
     function updateComment(comment: CommentModel, index: number) {
       postComments.value[index] = comment;
+    }
+    function toggleLike() {
+      emit('toggle-like')
     }
     function toggleCommentLike(commentID: number) {
       const comment = postComments.value.find((c) => c.id === commentID);
@@ -286,6 +286,7 @@ export default defineComponent({
       dialog,
       loading,
 
+      post,
       postComments,
 
       commentInput,
@@ -297,6 +298,7 @@ export default defineComponent({
       openAuthorProfile,
 
       updateComment,
+      toggleLike,
       toggleCommentLike,
 
       isProfileMode,

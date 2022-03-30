@@ -8,19 +8,13 @@
       />
 
       <ExplorePostList v-if="posts.length">
-        <ExplorePost
-          v-for="post in posts"
-          :key="post.id"
-          :post="post"
-          @click="dialog.open('postDetail', { item: post })"
-        />
+        <ExplorePost v-for="post in posts" :key="post.id" :post="post" @click="openPostDetail(post)" />
       </ExplorePostList>
       <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
     </template>
 
     <FeedPostDetail
       :model-value="dialog.openedName.value === 'postDetail'"
-      :post="dialog.openedItem.value"
       @edit="updatePost"
       @close="dialog.close"
       @toggle-follow="toggleFollow"
@@ -34,6 +28,7 @@ import { defineComponent, onBeforeMount, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import useDialog from 'src/composables/common/useDialog';
 import useLoading from 'src/composables/common/useLoading';
+import { useStore } from 'src/store';
 
 import ExplorePostList from 'components/explore/ExplorePostList.vue';
 import ExplorePost from 'components/explore/ExplorePost.vue';
@@ -56,6 +51,7 @@ export default defineComponent({
   },
 
   setup() {
+    const store = useStore();
     const dialog = useDialog();
     const route = useRoute();
     const loading = useLoading();
@@ -86,6 +82,10 @@ export default defineComponent({
       }
     );
 
+    function openPostDetail(post: PostModel) {
+      store.commit('post/SET_POST_DETAIL', post);
+      dialog.open('postDetail');
+    }
     function updatePost(updatedPost: PostModel) {
       if (!posts.value) return;
 
@@ -101,7 +101,6 @@ export default defineComponent({
       posts.value[postIndex].author.isViewerFollowed = !posts.value[postIndex].author.isViewerFollowed;
     }
     function toggleLike() {
-      console.log('toggle');
       if (!posts.value) return;
 
       const openedPost = dialog.openedItem.value as PostModel;
@@ -118,6 +117,8 @@ export default defineComponent({
 
       tag,
       posts,
+
+      openPostDetail,
       updatePost,
       toggleFollow,
       toggleLike,

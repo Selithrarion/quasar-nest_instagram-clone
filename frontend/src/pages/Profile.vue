@@ -11,8 +11,8 @@
         @toggle-follow="profile.isViewerFollowed = !profile.isViewerFollowed"
       />
 
-      <ExplorePostList v-if="profile.posts.length">
-        <ExplorePost v-for="post in profile.posts" :key="post.id" :post="post" @click="openPost(post)" />
+      <ExplorePostList v-if="posts.length">
+        <ExplorePost v-for="post in posts" :key="post.id" :post="post" @click="openPostDetail(post)" />
       </ExplorePostList>
       <div v-else class="text-subtitle1 text-blue-grey-4 text-center">There's no posts</div>
 
@@ -26,9 +26,7 @@
 
       <FeedPostDetail
         :model-value="dialog.openedName.value === 'postDetail'"
-        :post="openedPost"
         mode="profile"
-        @edit="updatePost"
         @close="dialog.close"
         @toggle-follow="profile.isViewerFollowed = !profile.isViewerFollowed"
       />
@@ -72,9 +70,12 @@ export default defineComponent({
 
     const isOwnProfile = computed(() => profile.value?.id === store.state.user.currentUser?.id);
     const profile = ref<UserModel | null>(null);
+    const posts = computed(() => store.state.post.posts);
+
     onBeforeMount(async () => {
       const { profileUsername } = route.params;
       profile.value = await userRepository.getProfileByUsername(String(profileUsername));
+      store.commit('post/SET_POSTS', { items: profile.value.posts, meta: { currentPage: 1 } });
       loading.stop();
     });
     watch(
@@ -83,25 +84,33 @@ export default defineComponent({
         if (!route.params.profileUsername) return;
         loading.start();
         profile.value = await userRepository.getProfileByUsername(String(route.params.profileUsername));
+        store.commit('post/SET_POSTS', { items: profile.value.posts, meta: { currentPage: 1 } });
         loading.stop();
       }
     );
 
-    const openedPost = ref<PostModel | null>(null);
-    function openPost(post: PostModel) {
+    function openPostDetail(post: PostModel) {
       if (!profile.value) return;
-      openedPost.value = { ...post, author: profile.value };
-      dialog.open('postDetail', { item: post });
+      store.commit('post/SET_POST_DETAIL', { ...post, author: profile.value });
+      dialog.open('postDetail');
     }
     function updateProfile(user: UserModel) {
       profile.value = { ...profile.value, ...user };
     }
     function updatePost(updatedPost: PostModel) {
-      if (!profile.value || !profile.value.posts || !openedPost.value) return;
+      if (!profile.value || !profile.value.posts) return;
 
-      const postIndex = profile.value.posts.findIndex((p) => p.id === openedPost.value?.id);
+      const postIndex = profile.value.posts.findIndex((p) => p.id === updatedPost?.id);
       profile.value.posts[postIndex] = { ...profile.value.posts[postIndex], ...updatedPost };
-      openedPost.value = { ...openedPost.value, ...updatedPost };
+    }
+    function toggleLike() {
+      const posts = profile.value?.posts;
+      if (!posts) return;
+
+      const openedPost = dialog.openedItem.value as PostModel;
+      const postIndex = posts.findIndex((p) => p.id === openedPost?.id);
+      posts[postIndex].isViewerLiked = !posts[postIndex].isViewerLiked;
+      posts[postIndex].isViewerLiked ? posts[postIndex].likesNumber++ : posts[postIndex].likesNumber--;
     }
 
     return {
@@ -110,11 +119,12 @@ export default defineComponent({
 
       isOwnProfile,
       profile,
+      posts,
 
-      openedPost,
-      openPost,
+      openPostDetail,
       updateProfile,
       updatePost,
+      toggleLike,
     };
   },
 });

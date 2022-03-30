@@ -32,7 +32,7 @@
           @share="dialog.open('share', { item: post })"
           @share-to-user="dialog.open('shareToUser', { item: post })"
           @report="dialog.open('report', { item: post })"
-          @open-post="dialog.open('postDetail', { item: post })"
+          @open-post="openPostDetail(post)"
           @open-likes="dialog.open('postLikes', { item: post })"
         />
         <BaseLoader
@@ -124,6 +124,7 @@ import FeedPostDialogShareToUser from 'components/feed/post/dialog/FeedPostDialo
 import FeedPostDialogReport from 'components/feed/post/dialog/FeedPostDialogReport.vue';
 
 import FeedSidebar from 'components/feed/sidebar/FeedSidebar.vue';
+import { PostModel } from 'src/models/feed/post.model';
 
 export default defineComponent({
   name: 'FeedIndex',
@@ -164,6 +165,10 @@ export default defineComponent({
       }
     });
 
+    function openPostDetail(post: PostModel) {
+      store.commit('post/SET_POST_DETAIL', post);
+      dialog.open('postDetail');
+    }
     function openStory(storyID: number) {
       if (isLoadingState.value) return;
       void router.push(`/story/${storyID}`);
@@ -214,6 +219,7 @@ export default defineComponent({
 
       currentUser,
 
+      openPostDetail,
       openStory,
 
       deletePost,
