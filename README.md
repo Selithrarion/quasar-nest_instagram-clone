@@ -7,6 +7,7 @@
 - [App Features](#app-features)
 - [Known bugs](#known-bugs)
 - [Installation](#installation)
+- [Notes](#notes)
 
 ### Video
 https://user-images.githubusercontent.com/59411497/160753517-13fc2142-4c9c-48d3-8bbf-26f228c4c462.mp4
@@ -115,4 +116,6 @@ Github actions CI pipeline
 
 Invalid login: 535-5.7.8 Username and Password not accepted - https://myaccount.google.com/lesssecureapps
 
-
+### Notes
+it was planned as 3-month pet project but it lasted for 4 and even with +1 month deadline i couldn't do lots of things that i wanted. although of course i spent only a couple of hours a day on it, i think it's ok haha
+also i wanted to add some caching and queues but at this rate it'll drag on for another couple of weeks
