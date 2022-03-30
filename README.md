@@ -8,8 +8,8 @@
 - [Known bugs](#known-bugs)
 - [Installation](#installation)
 
-### Video  
-TODO
+### Video
+https://user-images.githubusercontent.com/59411497/160753517-13fc2142-4c9c-48d3-8bbf-26f228c4c462.mp4
 
 ### Project structure
 for a quick understanding of project structure you can look at frontend models (frontend/src/models) or backend modules and their entities (backend/src/modules)
@@ -103,6 +103,7 @@ Github actions CI pipeline
 2. Missing pagination in profile, post likes and somewhere else
 3. Story drawing canvas incorrect markup if 16:9 image, problems with image size
 4. Search posts by tag not working
+
 
 ### Installation  
 1. Clone project  
