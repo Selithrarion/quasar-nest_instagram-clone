@@ -7,9 +7,10 @@
 - [App Features](#app-features)
 - [Known bugs](#known-bugs)
 - [Installation](#installation)
+- [Notes](#notes)
 
-### Video  
-TODO
+### Video
+https://user-images.githubusercontent.com/59411497/160753517-13fc2142-4c9c-48d3-8bbf-26f228c4c462.mp4
 
 ### Project structure
 for a quick understanding of project structure you can look at frontend models (frontend/src/models) or backend modules and their entities (backend/src/modules)
@@ -99,10 +100,11 @@ Github actions CI pipeline
 - Upload gif avatar ✨
 
 ### Known bugs
-1. Can't load author relation in comment replies (posts.service.ts, line 172) and need to fix update/delete and correct create reply saving in frontend
-2. Missing pagination in profile, post likes and somewhere else
-3. Story drawing canvas incorrect markup if 16:9 image, problems with image size
-4. Search posts by tag not working
+1. Can't load author relation in comment replies (posts.service.ts, line 172) and need to fix update/delete and correct create reply saving in frontend (FE + BE)
+2. Missing pagination in profile, post likes and somewhere else (FE + BE)
+3. Story drawing canvas incorrect markup if 16:9 image, problems with image size (FE)
+4. Search posts by tag not working (BE)
+
 
 ### Installation  
 1. Clone project  
@@ -114,4 +116,7 @@ Github actions CI pipeline
 
 Invalid login: 535-5.7.8 Username and Password not accepted - https://myaccount.google.com/lesssecureapps
 
-
+### Notes
+- it was planned as 3-month pet project but it lasted for 4 and even with +1 month deadline i couldn't do lots of things that i wanted. although of course i spent only a couple of hours a day on it, i think it's ok haha
+- also i wanted to add some caching and queues but at this rate it'll drag on for another couple of weeks
+- in the video logo on the top left disappeared from 0:36. it's cuz i took image source directly from instagram but it was blocked in russia lolll. before that i reseted browser cache behind the frame
