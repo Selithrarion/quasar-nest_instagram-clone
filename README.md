@@ -1,7 +1,7 @@
 # Instagram clone with Vue 3 and Nest
 
-next project - [audio-cutter](https://github.com/Selithrarion/quasar-nest_audio-cutter)  
-prev project - [jira-clone](https://github.com/Selithrarion/quasar-nest_jira-clone)
+next project - [audio cutter](https://github.com/Selithrarion/quasar-nest_audio-cutter)  
+prev project - [jira clone](https://github.com/Selithrarion/quasar-nest_jira-clone)
 
 ### Content
 - [Video ](#video)
