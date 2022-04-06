@@ -102,6 +102,11 @@ export default defineComponent({
       margin-right: 0;
     }
   }
+  &.q-btn:active {
+    transition: transform 300ms ease-out;
+    transform: scale(0.95);
+  }
+
   &--secondary {
     background-color: $blue-grey-1 !important;
     color: $blue-grey-8 !important;
