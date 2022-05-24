@@ -27,7 +27,7 @@
       </BaseMenu>
     </BaseButton>
 
-    <LayoutPostCreate :model-value="dialog.isOpened('createPost')" @close="dialog.close" />
+    <LayoutPostCreate :model-value="dialog.getIsOpened('createPost')" />
   </div>
 </template>
 

@@ -25,28 +25,23 @@ export default defineComponent({
 
     size: {
       type: String,
-      required: false,
       default: 'md',
     },
     flat: {
       type: Boolean,
-      required: false,
       default: true,
     },
     round: {
       type: Boolean,
-      required: false,
       default: true,
     },
 
     tooltipRemove: {
       type: String,
-      required: false,
       default: 'Uncheck',
     },
     tooltipAdd: {
       type: String,
-      required: false,
       default: 'Flag',
     },
   },

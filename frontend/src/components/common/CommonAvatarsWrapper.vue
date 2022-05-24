@@ -13,7 +13,6 @@ export default defineComponent({
   props: {
     margin: {
       type: String,
-      required: false,
       default: 'medium',
       validator: (value: string): boolean => {
         return ['small', 'medium', 'large'].indexOf(value) !== -1;

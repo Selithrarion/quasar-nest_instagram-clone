@@ -5,7 +5,6 @@
     :confirm-loading="loading.isActive()"
     :actions="step === ReportSteps.DONE"
     hide-confirm-button
-    @close="$emit('close')"
   >
     <div v-show="step === ReportSteps.REASON" class="column gap-2">
       <div class="text-body1 text-weight-bold">Why are you reporting this post?</div>
@@ -59,8 +58,6 @@ export default defineComponent({
       default: null,
     },
   },
-
-  emits: ['close'],
 
   setup(props) {
     const loading = useLoading();

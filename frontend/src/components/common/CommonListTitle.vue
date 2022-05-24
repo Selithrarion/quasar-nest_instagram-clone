@@ -15,7 +15,6 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      required: false,
       default: null,
     },
     padding: Boolean,

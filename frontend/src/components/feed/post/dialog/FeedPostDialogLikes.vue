@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog title="Likes" :model-value="modelValue" :actions="false" @close="$emit('close')">
+  <BaseDialog title="Likes" :model-value="modelValue" :actions="false">
     <CommonUser
       v-for="(user, userIndex) in availableUsers"
       :key="user.id"
@@ -53,8 +53,6 @@ export default defineComponent({
       default: null,
     },
   },
-
-  emits: ['close'],
 
   setup(props) {
     const store = useStore();

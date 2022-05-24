@@ -70,34 +70,28 @@ export default defineComponent({
   props: {
     src: {
       type: String,
-      required: false,
       default: null,
     },
 
     itemName: {
       type: String,
-      required: false,
       default: null,
     },
     itemColor: {
       type: String,
-      required: false,
       default: null,
     },
 
     iconSize: {
       type: String,
-      required: false,
       default: '16px',
     },
     iconColor: {
       type: String,
-      required: false,
       default: 'white',
     },
     icon: {
       type: String,
-      required: false,
       default: 'person',
     },
     showIcon: Boolean,
@@ -112,13 +106,11 @@ export default defineComponent({
 
     size: {
       type: String,
-      required: false,
       default: '24px',
     },
 
     tooltip: {
       type: String,
-      required: false,
       default: null,
     },
 

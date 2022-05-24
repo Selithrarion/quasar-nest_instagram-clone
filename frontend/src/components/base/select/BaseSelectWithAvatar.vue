@@ -34,7 +34,6 @@ export default defineComponent({
   props: {
     modelValue: {
       type: [Number, String, Object],
-      required: false,
       default: null,
     },
   },

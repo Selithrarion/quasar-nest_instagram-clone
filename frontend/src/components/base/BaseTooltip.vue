@@ -15,12 +15,10 @@ export default defineComponent({
   props: {
     label: {
       type: String,
-      required: false,
       default: null,
     },
     delay: {
       type: [Number, String],
-      required: false,
       default: 300,
     },
   },

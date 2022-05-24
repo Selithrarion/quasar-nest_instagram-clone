@@ -14,9 +14,8 @@
     </template>
 
     <FeedPostDetail
-      :model-value="dialog.isOpened('postDetail')"
+      :model-value="dialog.getIsOpened('postDetail')"
       @edit="updatePost"
-      @close="dialog.close"
       @toggle-follow="toggleFollow"
       @toggle-like="toggleLike"
     />

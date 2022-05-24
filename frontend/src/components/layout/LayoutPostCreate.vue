@@ -111,9 +111,7 @@ export default defineComponent({
     CommonUser,
   },
 
-  emits: ['close'],
-
-  setup(props, { emit }) {
+  setup() {
     const store = useStore();
     const { t } = useI18n();
     const loading = useLoading();
@@ -142,7 +140,6 @@ export default defineComponent({
       }
     }
     function close() {
-      emit('close');
       step.value = CreatePostEnum.SELECT;
       tagSearch.value = '';
       tagSuggestion.value = [];
@@ -212,7 +209,7 @@ export default defineComponent({
         await postRepository.create(formData);
 
         close();
-        await store.dispatch('post/getAll');
+        void store.dispatch('post/getAll');
       } finally {
         loading.stop();
       }

@@ -4,7 +4,6 @@
     :model-value="modelValue"
     :confirm-loading="loading.isActive()"
     large
-    @close="close"
     @confirm="confirm"
   >
     <q-input v-model="form.name" label="Name" filled />
@@ -48,7 +47,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['updated', 'close'],
+  emits: ['updated'],
 
   setup(props, { emit }) {
     const store = useStore();
@@ -88,14 +87,9 @@ export default defineComponent({
         };
         await store.dispatch('user/update', payload);
         emit('updated', form.value);
-
-        close();
       } finally {
         loading.stop();
       }
-    }
-    function close() {
-      emit('close');
     }
 
     return {
@@ -105,7 +99,6 @@ export default defineComponent({
       genders,
       form,
       confirm,
-      close,
     };
   },
 });

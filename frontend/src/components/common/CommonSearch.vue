@@ -31,7 +31,6 @@ export default defineComponent({
   props: {
     modelValue: {
       type: String,
-      required: false,
       default: null,
     },
 
@@ -39,12 +38,10 @@ export default defineComponent({
 
     placeholder: {
       type: String,
-      required: false,
       default: null,
     },
     outlined: {
       type: Boolean,
-      required: false,
       default: true,
     },
     prependIcon: Boolean,

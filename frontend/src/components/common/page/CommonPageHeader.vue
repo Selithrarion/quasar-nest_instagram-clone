@@ -102,7 +102,6 @@ export default defineComponent({
     },
     filters: {
       type: Array,
-      required: false,
       default: (): string[] => ['type', 'leader', 'project', 'group'],
     },
   },

@@ -54,7 +54,7 @@
         <div class="column gap-1">
           <FeedPostComment
             v-for="(comment, commentIndex) in comments || post.comments"
-            :key="comment"
+            :key="comment.id"
             :comment="comment"
             :minimized="minimizedComments"
             @reply="$emit('reply', $event)"
@@ -101,7 +101,6 @@ export default defineComponent({
     },
     comments: {
       type: Array as PropType<CommentModel[]>,
-      required: false,
       default: null,
     },
 

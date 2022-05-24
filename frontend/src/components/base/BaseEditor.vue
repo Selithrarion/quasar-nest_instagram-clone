@@ -24,23 +24,19 @@ export default defineComponent({
   props: {
     modelValue: {
       type: [Number, String],
-      required: false,
       default: '',
     },
     minHeight: {
       type: String,
-      required: false,
       default: '5rem',
     },
     autofocus: {
       type: Boolean,
-      required: false,
       default: true,
     },
 
     actionButtons: {
       type: Boolean,
-      required: false,
       default: true,
     },
     saveLoading: Boolean,

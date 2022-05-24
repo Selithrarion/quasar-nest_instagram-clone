@@ -35,7 +35,6 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Array as PropType<UserModel[]>,
-      required: false,
       default: () => [],
     },
   },

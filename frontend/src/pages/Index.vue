@@ -50,54 +50,46 @@
     <FeedSidebar :use-skeleton="isLoadingState" />
 
     <FeedStoryDialogCreate
-      :model-value="dialog.isOpened('createStory')"
+      :model-value="dialog.getIsOpened('createStory')"
       :image-data="dialog.openedItem.value"
-      @close="dialog.close"
     />
     <FeedPostDetail
-      :model-value="dialog.isOpened('postDetail')"
+      :model-value="dialog.getIsOpened('postDetail')"
       :post="dialog.openedItem.value"
-      @close="dialog.close"
       @toggle-follow="toggleFollow(dialog.openedItem.value.id)"
     />
 
     <BaseDialog
       type="delete"
       title="Delete post"
-      :model-value="dialog.isOpened('deletePost')"
+      :model-value="dialog.getIsOpened('deletePost')"
       :confirm-loading="dialog.loading.value"
-      @close="dialog.close"
       @confirm="deletePost(dialog.openedItem.value.id)"
     >
       Are you sure you want to delete this post?
     </BaseDialog>
     <FeedPostDialogEdit
-      :model-value="dialog.isOpened('editPost')"
+      :model-value="dialog.getIsOpened('editPost')"
       :post="dialog.openedItem.value"
-      @close="dialog.close"
     />
 
     <FeedPostDialogLikes
-      :model-value="dialog.isOpened('postLikes')"
+      :model-value="dialog.getIsOpened('postLikes')"
       :post="dialog.openedItem.value"
-      @close="dialog.close"
     />
 
     <FeedPostDialogShare
-      :model-value="dialog.isOpened('share')"
+      :model-value="dialog.getIsOpened('share')"
       :post="dialog.openedItem.value"
-      @close="dialog.close"
     />
     <FeedPostDialogShareToUser
-      :model-value="dialog.isOpened('shareToUser')"
+      :model-value="dialog.getIsOpened('shareToUser')"
       :post-id="dialog.openedItem.value?.id"
-      @close="dialog.close"
     />
 
     <FeedPostDialogReport
-      :model-value="dialog.isOpened('report')"
+      :model-value="dialog.getIsOpened('report')"
       :post="dialog.openedItem.value"
-      @close="dialog.close"
     />
   </q-page>
 </template>
@@ -178,7 +170,6 @@ export default defineComponent({
       try {
         dialog.startLoading();
         await store.dispatch('post/delete', postID);
-        dialog.close();
       } finally {
         dialog.stopLoading();
       }

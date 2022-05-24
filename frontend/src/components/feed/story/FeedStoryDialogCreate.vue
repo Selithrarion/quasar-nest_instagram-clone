@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog title="Create new story" :confirm-loading="loading.isActive()" @confirm="createStory" @close="close">
+  <BaseDialog title="Create new story" :confirm-loading="loading.isActive()" @confirm="createStory">
     <template #default>
       <div class="flex-center relative-position" style="min-height: 330px">
         <div class="absolute-top-left row gap-1">
@@ -87,9 +87,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close'],
-
-  setup(props, { emit }) {
+  setup(props) {
     const store = useStore();
     const loading = useLoading();
 
@@ -160,15 +158,10 @@ export default defineComponent({
         const formData = new FormData();
         formData.append('image', state.localImage);
         await storyRepository.create(formData);
-
-        close();
-        await store.dispatch('post/getAll');
+        void store.dispatch('post/getAll');
       } finally {
         loading.stop();
       }
-    }
-    function close() {
-      emit('close');
     }
 
     return {
@@ -183,7 +176,6 @@ export default defineComponent({
       redo,
 
       createStory,
-      close,
     };
   },
 });

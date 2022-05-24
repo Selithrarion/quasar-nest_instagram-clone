@@ -57,17 +57,14 @@ export default defineComponent({
 
     currentUserAvatarUrl: {
       type: String,
-      required: false,
       default: null,
     },
     currentUserUsername: {
       type: String,
-      required: false,
       default: null,
     },
     currentUserColor: {
       type: String,
-      required: false,
       default: null,
     },
     usePlusBadge: Boolean,

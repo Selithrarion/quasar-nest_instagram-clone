@@ -93,9 +93,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close'],
-
-  setup(props, { emit }) {
+  setup(props) {
     const loading = useLoading({ customNames: ['send'] });
     watch(
       () => props.modelValue,
@@ -144,7 +142,6 @@ export default defineComponent({
       Object.assign(selectedUsers, {});
       Object.assign(suggestedUsers, {});
       search.value = '';
-      emit('close');
     }
 
     return {

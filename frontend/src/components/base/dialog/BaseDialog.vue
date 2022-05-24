@@ -80,6 +80,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import useDialog from 'src/composables/common/useDialog';
 
 export default defineComponent({
   name: 'BaseDialog',
@@ -89,81 +90,62 @@ export default defineComponent({
 
     type: {
       type: String,
-      required: false,
       default: 'confirm',
       validator(this: void, value: string): boolean {
         return ['confirm', 'delete'].indexOf(value) !== -1;
       },
     },
-    contentLoading: {
+    contentLoading: Boolean,
+    confirmLoading: Boolean,
+    closeOnLoadingStop: {
       type: Boolean,
-      required: false,
-      default: false,
-    },
-    confirmLoading: {
-      type: Boolean,
-      required: false,
-      default: false,
+      default: true,
     },
 
     actions: {
       type: Boolean,
-      required: false,
       default: true,
     },
-    maximized: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+    maximized: Boolean,
 
     title: {
       type: String,
-      required: false,
       default: null,
     },
 
     confirmText: {
       type: String,
-      required: false,
       default: null,
     },
     confirmColor: {
       type: String,
-      required: false,
       default: null,
     },
     confirmIcon: {
       type: String,
-      required: false,
       default: undefined,
     },
     confirmClasses: {
       type: String,
-      required: false,
       default: null,
     },
     confirmDisabled: Boolean,
 
     backText: {
       type: String,
-      required: false,
       default: null,
     },
     closeText: {
       type: String,
-      required: false,
       default: null,
     },
 
     fixedHeader: {
       type: Boolean,
-      required: false,
       default: true,
     },
     fixedFooter: {
       type: Boolean,
-      required: false,
       default: true,
     },
 
@@ -177,7 +159,6 @@ export default defineComponent({
     small: Boolean,
     medium: {
       type: Boolean,
-      required: false,
       default: true,
     },
     large: Boolean,
@@ -188,12 +169,22 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const { t } = useI18n();
+    const dialog = useDialog();
 
     const show = ref(false);
     watch(
       () => props.modelValue,
       (v) => {
         show.value = v;
+      }
+    );
+    watch(
+      () => props.confirmLoading,
+      (v, oldV) => {
+        if (!props.closeOnLoadingStop) return;
+        if (oldV && !v && !dialog.isAnyLocal.value) {
+          close();
+        }
       }
     );
 
@@ -205,6 +196,7 @@ export default defineComponent({
     }
     function close() {
       emit('close');
+      if (!dialog.isAnyLocal.value) dialog.close();
     }
     function back() {
       emit('back');

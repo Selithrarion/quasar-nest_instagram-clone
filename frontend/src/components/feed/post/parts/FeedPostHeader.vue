@@ -44,7 +44,6 @@ export default defineComponent({
     },
     avatar: {
       type: String,
-      required: false,
       default: null,
     },
     username: {

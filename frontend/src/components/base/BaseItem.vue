@@ -30,7 +30,6 @@ export default defineComponent({
   props: {
     label: {
       type: [Number, String],
-      required: false,
       default: null,
     },
     appendIcon: {
@@ -44,7 +43,6 @@ export default defineComponent({
 
     clickable: {
       type: Boolean,
-      required: false,
       default: true,
     },
     danger: Boolean,

@@ -59,63 +59,52 @@ export default defineComponent({
   props: {
     modelValue: {
       type: [Number, String, Array, Object],
-      required: false,
       default: null,
     },
 
     truncate: {
       type: Boolean,
-      required: false,
       default: true,
     },
     buttonStyle: Boolean,
 
     tooltip: {
       type: String,
-      required: false,
       default: null,
     },
 
     maxWidth: {
       type: String,
-      required: false,
       default: 'auto',
     },
     width: {
       type: String,
-      required: false,
       default: 'auto',
     },
 
     optionLabel: {
       type: String,
-      required: false,
       default: 'name',
     },
     optionValue: {
       type: String,
-      required: false,
       default: 'id',
     },
 
     hideBottomSpace: {
       type: Boolean,
-      required: false,
       default: true,
     },
     emitValue: {
       type: Boolean,
-      required: false,
       default: true,
     },
     mapOptions: {
       type: Boolean,
-      required: false,
       default: true,
     },
     filled: {
       type: Boolean,
-      required: false,
       default: true,
     },
     useChips: Boolean,

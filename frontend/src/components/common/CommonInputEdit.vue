@@ -43,7 +43,6 @@ export default defineComponent({
   props: {
     modelValue: {
       type: [Number, String],
-      required: false,
       default: null,
     },
     disabled: Boolean,
@@ -51,7 +50,6 @@ export default defineComponent({
 
     inputClasses: {
       type: String,
-      required: false,
       default: null,
     },
     noButtonPadding: Boolean,

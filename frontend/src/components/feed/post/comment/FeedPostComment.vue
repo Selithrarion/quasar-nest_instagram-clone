@@ -15,7 +15,7 @@
         <div class="row items-center gap-2">
           <div class="text-caption text-blue-grey-4">{{ formatDate(comment.createdAt, DateTypes.DIFF) }}</div>
           <BaseButton label="Reply" size="12px" dense flat @click="$emit('reply', comment)" />
-          <BaseButtonMore size="12px" @click="dialog.open('commentActions')" />
+          <BaseButtonMore size="12px" @click="dialog.open('commentActions', { isLocal: true })" />
         </div>
       </template>
       <template #append>
@@ -42,25 +42,31 @@
     </div>
 
     <BaseDialog
-      :model-value="dialog.isOpened('commentActions')"
+      :model-value="dialog.getIsOpened('commentActions')"
       small
-      @close="closeDialog"
-      @click="closeDialog"
+      @close="dialog.resetLocal"
+      @click="dialog.resetLocal"
     >
       <template #content>
         <!--        TODO: add report dialog and report ids-->
         <BaseItem v-if="!isCurrentUserComment" label="Report" disabled danger @click="reportComment" />
-        <BaseItem v-if="isCurrentUserComment" label="Delete" danger @click="dialog.open('deleteComment')" />
-        <BaseItem v-if="isCurrentUserComment" label="Edit" @click="dialog.open('editComment')" />
-        <BaseItem label="Cancel" @click="closeDialog" />
+        <BaseItem
+          v-if="isCurrentUserComment"
+          label="Delete"
+          danger
+          @click="dialog.open('deleteComment', { isLocal: true })"
+        />
+        <BaseItem v-if="isCurrentUserComment" label="Edit" @click="dialog.open('editComment', { isLocal: true })" />
+        <BaseItem label="Cancel" @click="dialog.resetLocal" />
       </template>
     </BaseDialog>
 
     <BaseDialog
       title="Edit comment"
-      :model-value="dialog.isOpened('editComment')"
+      :model-value="dialog.getIsOpened('editComment')"
       :confirm-loading="dialog.loading.value"
-      @close="closeDialog"
+      :close-on-loading-stop="false"
+      @close="dialog.resetLocal"
       @confirm="updateComment"
     >
       <q-input v-model="localCommentText" filled autogrow />
@@ -68,9 +74,10 @@
     <BaseDialog
       type="delete"
       title="Delete comment"
-      :model-value="dialog.isOpened('deleteComment')"
+      :model-value="dialog.getIsOpened('deleteComment')"
       :confirm-loading="dialog.loading.value"
-      @close="closeDialog"
+      :close-on-loading-stop="false"
+      @close="dialog.resetLocal"
       @confirm="deleteComment"
     >
       Are you sure you want to delete your comment?
@@ -119,7 +126,8 @@ export default defineComponent({
     const localCommentText = ref(props.comment.text);
     async function updateComment() {
       if (props.comment.text.trim() === localCommentText.value.trim()) {
-        closeDialog();
+        dialog.resetLocal();
+        localCommentText.value = props.comment.text;
         return;
       }
 
@@ -131,9 +139,10 @@ export default defineComponent({
           text: localCommentText.value,
         };
         const comment = (await store.dispatch('post/updateComment', payload)) as CommentModel;
+        localCommentText.value = comment.text;
 
         emit('update', comment);
-        closeDialog();
+        dialog.resetLocal();
       } finally {
         dialog.stopLoading();
       }
@@ -150,7 +159,9 @@ export default defineComponent({
         await store.dispatch('post/deleteComment', payload);
         emit('delete');
 
-        closeDialog();
+        dialog.resetLocal();
+      } catch (e) {
+        console.log(e);
       } finally {
         dialog.stopLoading();
       }
@@ -163,11 +174,6 @@ export default defineComponent({
     }
     function reportComment() {
       //
-    }
-
-    function closeDialog() {
-      localCommentText.value = props.comment.text;
-      dialog.close();
     }
 
     return {
@@ -183,8 +189,6 @@ export default defineComponent({
 
       toggleLike,
       reportComment,
-
-      closeDialog,
     };
   },
 });

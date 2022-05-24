@@ -29,12 +29,10 @@ export default defineComponent({
 
     color: {
       type: String,
-      required: false,
       default: null,
     },
     thickness: {
       type: [Number, String],
-      required: false,
       default: 0.11,
     },
 
@@ -42,7 +40,6 @@ export default defineComponent({
     medium: Boolean,
     large: {
       type: Boolean,
-      required: false,
       default: true,
     },
   },

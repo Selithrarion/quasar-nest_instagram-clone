@@ -11,22 +11,18 @@ export default defineComponent({
   props: {
     round: {
       type: Boolean,
-      required: false,
       default: true,
     },
     flat: {
       type: Boolean,
-      required: false,
       default: true,
     },
     dense: {
       type: Boolean,
-      required: false,
       default: true,
     },
     tooltip: {
       type: String,
-      required: false,
       default: 'Close',
     },
   },

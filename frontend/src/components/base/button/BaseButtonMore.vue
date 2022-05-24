@@ -13,12 +13,10 @@ export default defineComponent({
   props: {
     round: {
       type: Boolean,
-      required: false,
       default: true,
     },
     flat: {
       type: Boolean,
-      required: false,
       default: true,
     },
   },

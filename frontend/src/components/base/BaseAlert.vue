@@ -22,17 +22,14 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      required: false,
       default: 'Title',
     },
     text: {
       type: String,
-      required: false,
       default: 'Text',
     },
     color: {
       type: String,
-      required: false,
       default: 'red',
     },
     icon: {
@@ -42,12 +39,10 @@ export default defineComponent({
     },
     actionText: {
       type: String,
-      required: false,
       default: null,
     },
     padding: {
       type: String,
-      required: false,
       default: '16px',
     },
   },

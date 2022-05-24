@@ -66,7 +66,7 @@
       />
     </div>
   </q-card>
-  <BaseDialog v-else :model-value="modelValue" x-large @close="$emit('close')">
+  <BaseDialog v-else :model-value="modelValue" x-large>
     <template #content>
       <div class="row no-wrap">
         <FeedPostImage
@@ -139,30 +139,27 @@
   <BaseDialog
     type="delete"
     title="Delete post"
-    :model-value="dialog.isOpened('deletePost')"
+    :model-value="dialog.getIsOpened('deletePost')"
     :confirm-loading="dialog.loading.value"
-    @close="dialog.close"
     @confirm="deletePost(post.id)"
   >
     Are you sure you want to delete this post?
   </BaseDialog>
   <FeedPostDialogEdit
-    :model-value="dialog.isOpened('editPost')"
+    :model-value="dialog.getIsOpened('editPost')"
     :post="post"
     @edit="$emit('edit', $event)"
-    @close="dialog.close"
   />
 
-  <FeedPostDialogLikes :model-value="dialog.isOpened('postLikes')" :post="post" @close="dialog.close" />
+  <FeedPostDialogLikes :model-value="dialog.getIsOpened('postLikes')" :post="post" />
 
-  <FeedPostDialogShare :model-value="dialog.isOpened('share')" :post="post" @close="dialog.close" />
+  <FeedPostDialogShare :model-value="dialog.getIsOpened('share')" :post="post" />
   <FeedPostDialogShareToUser
-    :model-value="dialog.isOpened('shareToUser')"
+    :model-value="dialog.getIsOpened('shareToUser')"
     :post-id="post?.id"
-    @close="dialog.close"
   />
 
-  <FeedPostDialogReport :model-value="dialog.isOpened('report')" :post="post" @close="dialog.close" />
+  <FeedPostDialogReport :model-value="dialog.getIsOpened('report')" :post="post" />
 </template>
 
 <script lang="ts">
@@ -218,7 +215,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'edit', 'toggle-follow', 'toggle-like'],
+  emits: ['edit', 'toggle-follow', 'toggle-like'],
 
   setup(props, { emit }) {
     const store = useStore();
@@ -275,8 +272,6 @@ export default defineComponent({
       try {
         dialog.startLoading();
         await store.dispatch('post/delete', postID);
-        dialog.close();
-        emit('close');
       } finally {
         dialog.stopLoading();
       }

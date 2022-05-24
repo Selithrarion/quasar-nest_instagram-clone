@@ -54,18 +54,15 @@ export default defineComponent({
 
     tooltip: {
       type: String,
-      required: false,
       default: null,
     },
 
     size: {
       type: [Number, String],
-      required: false,
       default: '56px',
     },
     clickable: {
       type: Boolean,
-      required: false,
       default: true,
     },
   },

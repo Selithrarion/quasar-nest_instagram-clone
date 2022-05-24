@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog small @close="$emit('close')" @click="$emit('close')">
+  <BaseDialog small @click="dialog.close()">
     <template #content>
       <BaseItem label="Share to direct" disabled @click="$emit('close')" />
       <BaseItem label="Share to Facebook" disabled @click="$emit('close')" />
@@ -15,6 +15,7 @@
 import { computed, defineComponent, PropType } from 'vue';
 import CommonClipboard from 'components/common/CommonClipboard.vue';
 import { PostModel } from 'src/models/feed/post.model';
+import useDialog from 'src/composables/common/useDialog';
 
 export default defineComponent({
   name: 'FeedPostDialogShare',
@@ -33,8 +34,10 @@ export default defineComponent({
   emits: ['close'],
 
   setup(props) {
+    const dialog = useDialog();
     const postLink = computed(() => `${window.location.href.slice(0, -1)}/post/${props.post.id}`);
     return {
+      dialog,
       postLink,
     };
   },

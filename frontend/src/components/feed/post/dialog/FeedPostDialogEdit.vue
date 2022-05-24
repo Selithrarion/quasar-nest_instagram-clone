@@ -1,11 +1,5 @@
 <template>
-  <BaseDialog
-    title="Edit post"
-    :model-value="modelValue"
-    :confirm-loading="loading.active.value"
-    @close="$emit('close')"
-    @confirm="updatePost"
-  >
+  <BaseDialog title="Edit post" :model-value="modelValue" :confirm-loading="loading.active.value" @confirm="updatePost">
     <q-input v-model="localDescription" label="Description" autogrow filled counter />
   </BaseDialog>
 </template>
@@ -28,7 +22,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['close', 'edit'],
+  emits: ['edit'],
 
   setup(props, { emit }) {
     const store = useStore();
@@ -52,7 +46,6 @@ export default defineComponent({
         await store.dispatch('post/update', { id: props.post.id, payload });
 
         emit('edit', payload);
-        emit('close');
       } finally {
         loading.stop();
       }
