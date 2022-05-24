@@ -4,6 +4,8 @@ import { ref, reactive, Ref } from 'vue';
 interface LoadingInterface {
   active: Ref<boolean>;
   custom: Record<string, boolean>;
+
+  isActive: (name?: string) => boolean
   start: (name?: string) => void;
   stop: (name?: string) => void;
 }
@@ -22,6 +24,10 @@ export default function useLoading(options: LoadingOptionsInterface = {}): Loadi
     });
   }
 
+  function isActive(name?: string): boolean {
+    if (name) return custom[name]
+    return active.value
+  }
   const start = (name?: string) => {
     if (name) custom[name] = true;
     else active.value = true;
@@ -34,6 +40,8 @@ export default function useLoading(options: LoadingOptionsInterface = {}): Loadi
   return {
     active,
     custom,
+
+    isActive,
     start,
     stop,
   };

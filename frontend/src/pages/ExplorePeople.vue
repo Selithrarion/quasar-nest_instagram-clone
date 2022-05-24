@@ -16,7 +16,7 @@
       </CommonUser>
     </template>
 
-    <BaseLoader v-if="loading.active.value || !suggestions" :page-margin="!suggestions" />
+    <BaseLoader v-if="loading.isActive() || !suggestions" :page-margin="!suggestions" />
   </q-page>
 </template>
 

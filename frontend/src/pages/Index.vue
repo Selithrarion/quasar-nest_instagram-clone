@@ -198,7 +198,7 @@ export default defineComponent({
     const isLastPostsPage = computed(() => postsMeta.value && postsPagination.value.page >= postsMeta.value.totalPages);
     async function loadNextPostsPage(isVisible: boolean) {
       if (!isVisible) return;
-      if (loading.active.value) return;
+      if (loading.isActive()) return;
 
       loading.start();
 

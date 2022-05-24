@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog title="Create new story" :confirm-loading="loading.active.value" @confirm="createStory" @close="close">
+  <BaseDialog title="Create new story" :confirm-loading="loading.isActive()" @confirm="createStory" @close="close">
     <template #default>
       <div class="flex-center relative-position" style="min-height: 330px">
         <div class="absolute-top-left row gap-1">

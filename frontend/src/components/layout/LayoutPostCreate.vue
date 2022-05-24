@@ -5,7 +5,7 @@
     :hide-close-button="step !== CreatePostEnum.SELECT"
     :hide-confirm-button="!form.imageRaw"
     :title="title"
-    :confirm-loading="loading.active.value"
+    :confirm-loading="loading.isActive()"
     large
     v-bind="$attrs"
     @close="close"

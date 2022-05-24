@@ -14,7 +14,7 @@
         <div>
           {{ t('email.confirmError') }}
         </div>
-        <BaseButton :label="t('email.resend')" :loading="loading.active.value" @click="resend" />
+        <BaseButton :label="t('email.resend')" :loading="loading.isActive()" @click="resend" />
       </template>
     </div>
   </BaseDialog>

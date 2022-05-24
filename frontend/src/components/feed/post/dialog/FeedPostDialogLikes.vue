@@ -5,7 +5,7 @@
       :key="user.id"
       size="44px"
       :user="user"
-      :use-skeleton="loading.active.value"
+      :use-skeleton="loading.isActive()"
       use-skeleton-append
       use-skeleton-username
       @click="openUser(user.username)"
@@ -15,7 +15,7 @@
           v-if="isNotOwnLike(user.id)"
           color="primary"
           :loading="
-            currentUserIdLoading === user.id && user.isViewerFollowed ? loading.custom.follow : loading.custom.unfollow
+            currentUserIdLoading === user.id && user.isViewerFollowed ? loading.isActive('follow') : loading.isActive('unfollow')
           "
           :label="user.isViewerFollowed ? 'Unfollow' : 'Follow'"
           :flat="user.isViewerFollowed"

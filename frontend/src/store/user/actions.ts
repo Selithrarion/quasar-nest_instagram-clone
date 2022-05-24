@@ -84,6 +84,7 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
       message: 'Successfully followed',
     });
     commit('post/TOGGLE_FOLLOW', id, { root: true });
+    return;
   },
   async unfollow({ commit }, id: number) {
     await userRepository.unfollow(id);
@@ -92,6 +93,7 @@ const actions: ActionTree<UserStateInterface, StateInterface> = {
       message: 'Successfully unfollowed',
     });
     commit('post/TOGGLE_FOLLOW', id, { root: true });
+    return;
   },
 
   async getSuggestions({ commit }) {

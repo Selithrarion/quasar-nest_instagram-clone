@@ -20,6 +20,7 @@
               color="primary"
               :label="profile.isViewerFollowed ? 'Unfollow' : 'Follow'"
               :flat="profile.isViewerFollowed"
+              :loading="profile.isViewerFollowed ? loading.isActive('unfollow') : loading.isActive('follow')"
               @click="profile.isViewerFollowed ? unfollow() : follow()"
             />
           </template>
@@ -135,6 +136,7 @@ export default defineComponent({
 
     return {
       t,
+      loading,
       openExternalPage,
 
       isExploreMode,

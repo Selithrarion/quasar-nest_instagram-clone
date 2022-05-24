@@ -2,7 +2,7 @@
   <BaseDialog
     title="Report post"
     :model-value="modelValue"
-    :confirm-loading="loading.active.value"
+    :confirm-loading="loading.isActive()"
     :actions="step === ReportSteps.DONE"
     hide-confirm-button
     @close="$emit('close')"
@@ -14,7 +14,7 @@
           v-for="report in availableReports"
           :key="report.value"
           :label="report.label"
-          :loading="loading.active.value && selectedReportID === report.value"
+          :loading="loading.isActive() && selectedReportID === report.value"
           @click="selectReason(report.value)"
         />
       </q-list>

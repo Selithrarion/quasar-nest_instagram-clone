@@ -36,7 +36,7 @@
       <FeedPostInfo
         :post="post"
         :comments="postComments"
-        :comments-loading="loading.custom.comments"
+        :comments-loading="loading.isActive('comments')"
         hide-view-all-comments
         use-scroll
         @open-post="focusCommentInput"
@@ -103,7 +103,7 @@
           <FeedPostInfo
             :post="post"
             :comments="postComments"
-            :comments-loading="loading.custom.comments"
+            :comments-loading="loading.isActive('comments')"
             hide-view-all-comments
             use-scroll
             @open-post="focusCommentInput"

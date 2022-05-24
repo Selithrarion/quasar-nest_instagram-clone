@@ -1,6 +1,6 @@
 <template>
   <q-page class="explore q-pa-xl">
-    <BaseLoader v-if="loading.active.value" page-margin />
+    <BaseLoader v-if="loading.isActive()" page-margin />
 
     <template v-else>
       <ExploreHeader
