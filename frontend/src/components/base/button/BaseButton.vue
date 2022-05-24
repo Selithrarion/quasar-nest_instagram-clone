@@ -76,6 +76,7 @@ export default defineComponent({
   setup(props) {
     const classes = computed(() => {
       return {
+        'base-button--icon': props.icon,
         'base-button--secondary': props.secondaryColor,
         'base-button--plain-style': props.plainStyle,
       };
@@ -102,7 +103,7 @@ export default defineComponent({
       margin-right: 0;
     }
   }
-  &.q-btn:active {
+  :not(&.base-button--icon).q-btn:active {
     transition: transform 300ms ease-out;
     transform: scale(0.95);
   }
