@@ -50,12 +50,12 @@
     <FeedSidebar :use-skeleton="isLoadingState" />
 
     <FeedStoryDialogCreate
-      :model-value="dialog.openedName.value === 'createStory'"
+      :model-value="dialog.isOpened('createStory')"
       :image-data="dialog.openedItem.value"
       @close="dialog.close"
     />
     <FeedPostDetail
-      :model-value="dialog.openedName.value === 'postDetail'"
+      :model-value="dialog.isOpened('postDetail')"
       :post="dialog.openedItem.value"
       @close="dialog.close"
       @toggle-follow="toggleFollow(dialog.openedItem.value.id)"
@@ -64,7 +64,7 @@
     <BaseDialog
       type="delete"
       title="Delete post"
-      :model-value="dialog.openedName.value === 'deletePost'"
+      :model-value="dialog.isOpened('deletePost')"
       :confirm-loading="dialog.loading.value"
       @close="dialog.close"
       @confirm="deletePost(dialog.openedItem.value.id)"
@@ -72,30 +72,30 @@
       Are you sure you want to delete this post?
     </BaseDialog>
     <FeedPostDialogEdit
-      :model-value="dialog.openedName.value === 'editPost'"
+      :model-value="dialog.isOpened('editPost')"
       :post="dialog.openedItem.value"
       @close="dialog.close"
     />
 
     <FeedPostDialogLikes
-      :model-value="dialog.openedName.value === 'postLikes'"
+      :model-value="dialog.isOpened('postLikes')"
       :post="dialog.openedItem.value"
       @close="dialog.close"
     />
 
     <FeedPostDialogShare
-      :model-value="dialog.openedName.value === 'share'"
+      :model-value="dialog.isOpened('share')"
       :post="dialog.openedItem.value"
       @close="dialog.close"
     />
     <FeedPostDialogShareToUser
-      :model-value="dialog.openedName.value === 'shareToUser'"
+      :model-value="dialog.isOpened('shareToUser')"
       :post-id="dialog.openedItem.value?.id"
       @close="dialog.close"
     />
 
     <FeedPostDialogReport
-      :model-value="dialog.openedName.value === 'report'"
+      :model-value="dialog.isOpened('report')"
       :post="dialog.openedItem.value"
       @close="dialog.close"
     />

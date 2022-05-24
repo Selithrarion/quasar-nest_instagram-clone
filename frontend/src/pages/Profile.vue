@@ -18,14 +18,14 @@
 
       <ProfileDialogEdit
         v-if="isOwnProfile"
-        :model-value="dialog.openedName.value === 'editProfile'"
+        :model-value="dialog.isOpened('editProfile')"
         :profile="profile"
         @updated="updateProfile"
         @close="dialog.close"
       />
 
       <FeedPostDetail
-        :model-value="dialog.openedName.value === 'postDetail'"
+        :model-value="dialog.isOpened('postDetail')"
         mode="profile"
         @close="dialog.close"
         @toggle-follow="profile.isViewerFollowed = !profile.isViewerFollowed"

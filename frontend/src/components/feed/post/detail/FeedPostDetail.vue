@@ -139,7 +139,7 @@
   <BaseDialog
     type="delete"
     title="Delete post"
-    :model-value="dialog.openedName.value === 'deletePost'"
+    :model-value="dialog.isOpened('deletePost')"
     :confirm-loading="dialog.loading.value"
     @close="dialog.close"
     @confirm="deletePost(post.id)"
@@ -147,22 +147,22 @@
     Are you sure you want to delete this post?
   </BaseDialog>
   <FeedPostDialogEdit
-    :model-value="dialog.openedName.value === 'editPost'"
+    :model-value="dialog.isOpened('editPost')"
     :post="post"
     @edit="$emit('edit', $event)"
     @close="dialog.close"
   />
 
-  <FeedPostDialogLikes :model-value="dialog.openedName.value === 'postLikes'" :post="post" @close="dialog.close" />
+  <FeedPostDialogLikes :model-value="dialog.isOpened('postLikes')" :post="post" @close="dialog.close" />
 
-  <FeedPostDialogShare :model-value="dialog.openedName.value === 'share'" :post="post" @close="dialog.close" />
+  <FeedPostDialogShare :model-value="dialog.isOpened('share')" :post="post" @close="dialog.close" />
   <FeedPostDialogShareToUser
-    :model-value="dialog.openedName.value === 'shareToUser'"
+    :model-value="dialog.isOpened('shareToUser')"
     :post-id="post?.id"
     @close="dialog.close"
   />
 
-  <FeedPostDialogReport :model-value="dialog.openedName.value === 'report'" :post="post" @close="dialog.close" />
+  <FeedPostDialogReport :model-value="dialog.isOpened('report')" :post="post" @close="dialog.close" />
 </template>
 
 <script lang="ts">

@@ -1,10 +1,11 @@
 import { ref, Ref } from 'vue';
 
 interface DialogInterface {
-  openedName: Ref<string | null>;
+  opened: Ref<string[]>;
   openedItem: Ref<unknown | null>;
   open: (name: string, options?: DialogOpenOptionsInterface) => void;
   close: () => void;
+  isOpened: (name: string) => boolean;
 
   loading: Ref<boolean>;
   startLoading: () => void;
@@ -15,15 +16,20 @@ interface DialogOpenOptionsInterface {
   item?: unknown;
 }
 
+const opened = ref<string[]>([]);
+const openedItem = ref<unknown | null>({});
+
 export default function useDialog(): DialogInterface {
-  const openedName = ref<string | null>(null);
-  const openedItem = ref<unknown | null>({});
   function open(name: string, options: DialogOpenOptionsInterface = {}) {
-    openedName.value = name;
+    opened.value.push(name);
     openedItem.value = options.item;
   }
   function close() {
-    openedName.value = null;
+    opened.value.pop();
+    openedItem.value = {};
+  }
+  function isOpened(name: string): boolean {
+    return Boolean(opened.value.find((m) => m === name));
   }
 
   const loading = ref<boolean>(false);
@@ -35,10 +41,11 @@ export default function useDialog(): DialogInterface {
   }
 
   return {
-    openedName,
+    opened,
     openedItem,
     open,
     close,
+    isOpened,
 
     loading,
     startLoading,

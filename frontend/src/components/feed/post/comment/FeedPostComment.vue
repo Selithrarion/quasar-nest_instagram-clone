@@ -42,7 +42,7 @@
     </div>
 
     <BaseDialog
-      :model-value="dialog.openedName.value === 'commentActions'"
+      :model-value="dialog.isOpened('commentActions')"
       small
       @close="closeDialog"
       @click="closeDialog"
@@ -58,7 +58,7 @@
 
     <BaseDialog
       title="Edit comment"
-      :model-value="dialog.openedName.value === 'editComment'"
+      :model-value="dialog.isOpened('editComment')"
       :confirm-loading="dialog.loading.value"
       @close="closeDialog"
       @confirm="updateComment"
@@ -68,7 +68,7 @@
     <BaseDialog
       type="delete"
       title="Delete comment"
-      :model-value="dialog.openedName.value === 'deleteComment'"
+      :model-value="dialog.isOpened('deleteComment')"
       :confirm-loading="dialog.loading.value"
       @close="closeDialog"
       @confirm="deleteComment"
