@@ -1,5 +1,8 @@
 # Instagram clone with Vue 3 and Nest
 
+next project - [audio tools](https://github.com/Selithrarion/quasar-nest_audio-tools)  
+prev project - [jira clone](https://github.com/Selithrarion/quasar-nest_jira-clone)
+
 ### Content
 - [Video ](#video)
 - [Project structure](#project-structure)
@@ -117,6 +120,6 @@ Github actions CI pipeline
 Invalid login: 535-5.7.8 Username and Password not accepted - https://myaccount.google.com/lesssecureapps
 
 ### Notes
-- it was planned as 3-month pet project but it lasted for 4 and even with +1 month deadline i couldn't do lots of things that i wanted. although of course i spent only a couple of hours a day on it, i think it's ok haha
+- it was planned as 3-month pet-project from december 2021 to end of march 2022 but it lasted for 4 and even with +1 month deadline i couldn't do lots of things that i wanted. although of course i spent only a couple of hours a day on it, i think it's ok haha
 - also i wanted to add some caching and queues but at this rate it'll drag on for another couple of weeks
 - in the video logo on the top left disappeared from 0:36. it's cuz i took image source directly from instagram but it was blocked in russia lolll. before that i reseted browser cache behind the frame
