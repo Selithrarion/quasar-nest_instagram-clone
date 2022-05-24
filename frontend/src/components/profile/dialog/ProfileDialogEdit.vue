@@ -2,7 +2,7 @@
   <BaseDialog
     title="Edit profile"
     :model-value="modelValue"
-    :confirm-loading="loading.isActive()"
+    :confirm-loading="loading.getIsActive()"
     large
     @confirm="confirm"
   >

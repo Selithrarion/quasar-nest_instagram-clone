@@ -2,7 +2,7 @@
   <BaseButton icon="favorite" size="18px" :tooltip="t('notification.notifications')" unelevated dense round>
     <BaseMenu style="height: 360px" :offset="[0, 16]">
       <q-list class="layout-notifications">
-        <BaseLoader v-if="loading.isActive()" center />
+        <BaseLoader v-if="loading.getIsActive()" center />
 
         <div v-else-if="!filteredNotifications.length" class="layout-notifications__empty">
           <div v-if="isShowOnlyUnread">

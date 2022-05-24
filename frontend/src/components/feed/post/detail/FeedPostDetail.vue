@@ -36,7 +36,7 @@
       <FeedPostInfo
         :post="post"
         :comments="postComments"
-        :comments-loading="loading.isActive('comments')"
+        :comments-loading="loading.getIsActive('comments')"
         hide-view-all-comments
         use-scroll
         @open-post="focusCommentInput"
@@ -103,7 +103,7 @@
           <FeedPostInfo
             :post="post"
             :comments="postComments"
-            :comments-loading="loading.isActive('comments')"
+            :comments-loading="loading.getIsActive('comments')"
             hide-view-all-comments
             use-scroll
             @open-post="focusCommentInput"
@@ -140,7 +140,7 @@
     type="delete"
     title="Delete post"
     :model-value="dialog.getIsOpened('deletePost')"
-    :confirm-loading="dialog.loading.value"
+    :confirm-loading="dialog.getIsLoading()"
     @confirm="deletePost(post.id)"
   >
     Are you sure you want to delete this post?

@@ -1,6 +1,6 @@
 <template>
   <q-page class="profile q-pa-xl">
-    <BaseLoader v-if="loading.isActive()" page-margin />
+    <BaseLoader v-if="loading.getIsActive()" page-margin />
     <template v-else>
       <ExploreHeader
         mode="userProfile"

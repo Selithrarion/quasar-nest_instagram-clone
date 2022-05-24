@@ -22,7 +22,7 @@
       <BaseMenu style="width: 300px" :offset="[0, 16]" :auto-close="false">
         <q-list>
           <BaseItem v-close-popup label="Profile" @click="openProfilePage" />
-          <BaseItem label="Sign out" :loading="loading.isActive('logout')" @click="logout" />
+          <BaseItem label="Sign out" :loading="loading.getIsActive('logout')" @click="logout" />
         </q-list>
       </BaseMenu>
     </BaseButton>

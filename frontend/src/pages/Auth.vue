@@ -2,7 +2,7 @@
   <q-page class="column flex-center gap-6 q-pa-lg">
     <q-form class="row items-center full-width" @submit="authTypes[type].action">
       <q-card class="col-xs-12 col-sm-8 col-md-4 col-lg-3 shadow-0" bordered>
-        <q-card-section v-if="loading.isActive()">
+        <q-card-section v-if="loading.getIsActive()">
           <BaseLoader class="q-my-xl" />
         </q-card-section>
 
@@ -93,7 +93,7 @@
                 type="submit"
                 color="primary"
                 :label="authTypes[type].actionWord"
-                :loading="loading.isActive()"
+                :loading="loading.getIsActive()"
                 unelevated
               />
               <div v-if="type === 'login'" class="flex-center gap-2 q-mt-sm">
@@ -144,7 +144,7 @@
                 :label="t('common.code')"
                 :error="is2FaError"
                 :hint="qrCode ? undefined : t('auth.enter2FaCode')"
-                :loading="loading.isActive('twoFaValidation')"
+                :loading="loading.getIsActive('twoFaValidation')"
                 hide-bottom-space
                 unmasked-value
                 autofocus
@@ -169,7 +169,7 @@
         </div>
       </q-card>
 
-      <div v-show="step === AuthStepEnum.AUTH && !loading.isActive()" class="column flex-center text-blue-grey-5">
+      <div v-show="step === AuthStepEnum.AUTH && !loading.getIsActive()" class="column flex-center text-blue-grey-5">
         {{ t('common.or') }}
         <BaseButton
           v-if="authTypes[type].buttons.includes('register')"

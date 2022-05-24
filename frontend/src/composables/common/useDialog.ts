@@ -12,6 +12,7 @@ interface DialogInterface {
   resetLocal: () => void;
 
   loading: Ref<boolean>;
+  getIsLoading: () => void;
   startLoading: () => void;
   stopLoading: () => void;
 }
@@ -52,12 +53,16 @@ export default function useDialog(): DialogInterface {
     const isLocal = Boolean(openedLocal.value.find((d) => d.name === name));
     return isGlobal || isLocal;
   }
+
   function resetLocal(): void {
     openedLocal.value = [];
     isAnyLocal.value = false;
   }
 
   const loading = ref<boolean>(false);
+  function getIsLoading(): boolean {
+    return loading.value
+  }
   function startLoading() {
     loading.value = true;
   }
@@ -77,6 +82,7 @@ export default function useDialog(): DialogInterface {
     resetLocal,
 
     loading,
+    getIsLoading,
     startLoading,
     stopLoading,
   };

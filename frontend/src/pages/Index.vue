@@ -63,7 +63,7 @@
       type="delete"
       title="Delete post"
       :model-value="dialog.getIsOpened('deletePost')"
-      :confirm-loading="dialog.loading.value"
+      :confirm-loading="dialog.getIsLoading()"
       @confirm="deletePost(dialog.openedItem.value.id)"
     >
       Are you sure you want to delete this post?
@@ -189,7 +189,7 @@ export default defineComponent({
     const isLastPostsPage = computed(() => postsMeta.value && postsPagination.value.page >= postsMeta.value.totalPages);
     async function loadNextPostsPage(isVisible: boolean) {
       if (!isVisible) return;
-      if (loading.isActive()) return;
+      if (loading.getIsActive()) return;
 
       loading.start();
 

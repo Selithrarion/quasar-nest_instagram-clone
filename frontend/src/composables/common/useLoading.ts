@@ -5,7 +5,7 @@ interface LoadingInterface {
   active: Ref<boolean>;
   custom: Record<string, boolean>;
 
-  isActive: (name?: string) => boolean
+  getIsActive: (name?: string) => boolean
   start: (name?: string) => void;
   stop: (name?: string) => void;
 }
@@ -24,7 +24,7 @@ export default function useLoading(options: LoadingOptionsInterface = {}): Loadi
     });
   }
 
-  function isActive(name?: string): boolean {
+  function getIsActive(name?: string): boolean {
     if (name) return custom[name]
     return active.value
   }
@@ -41,7 +41,7 @@ export default function useLoading(options: LoadingOptionsInterface = {}): Loadi
     active,
     custom,
 
-    isActive,
+    getIsActive,
     start,
     stop,
   };

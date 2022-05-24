@@ -34,13 +34,13 @@
       <div>
         <div class="text-subtitle2 q-pb-sm">Suggested</div>
 
-        <template v-if="loading.isActive() || suggestedUsers.length">
+        <template v-if="loading.getIsActive() || suggestedUsers.length">
           <CommonUser
-            v-for="user in loading.isActive() ? 3 : suggestedUsers"
+            v-for="user in loading.getIsActive() ? 3 : suggestedUsers"
             :key="user.id"
             size="48px"
             :user="user"
-            :use-skeleton="loading.isActive()"
+            :use-skeleton="loading.getIsActive()"
             use-skeleton-username
             @click="toggleUserSelection(user.id, user.username)"
           >
@@ -59,7 +59,7 @@
         class="full-width"
         label="Send"
         color="primary"
-        :loading="loading.isActive('send')"
+        :loading="loading.getIsActive('send')"
         :disabled="!selectedUsersArray.length"
         @click="share"
       />

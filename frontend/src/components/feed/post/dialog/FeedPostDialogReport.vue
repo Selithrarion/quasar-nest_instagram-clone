@@ -2,7 +2,7 @@
   <BaseDialog
     title="Report post"
     :model-value="modelValue"
-    :confirm-loading="loading.isActive()"
+    :confirm-loading="loading.getIsActive()"
     :actions="step === ReportSteps.DONE"
     hide-confirm-button
   >
@@ -13,7 +13,7 @@
           v-for="report in availableReports"
           :key="report.value"
           :label="report.label"
-          :loading="loading.isActive() && selectedReportID === report.value"
+          :loading="loading.getIsActive() && selectedReportID === report.value"
           @click="selectReason(report.value)"
         />
       </q-list>

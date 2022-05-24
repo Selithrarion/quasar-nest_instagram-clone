@@ -6,7 +6,7 @@
         v-if="!isOwnPost"
         :label="isViewerFollowed ? 'Unfollow' : 'Follow'"
         :danger="isViewerFollowed"
-        :loading="isViewerFollowed ? loading.isActive('follow') : loading.isActive('unfollow')"
+        :loading="isViewerFollowed ? loading.getIsActive('follow') : loading.getIsActive('unfollow')"
         @click="isViewerFollowed ? unfollow() : follow()"
       />
 

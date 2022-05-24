@@ -13,7 +13,7 @@ export interface UserModel extends BaseModel {
   gender: string;
   phone: string;
 
-  isActive: boolean;
+  getIsActive: boolean;
   isEmailConfirmed: boolean;
   isOAuthAccount: boolean;
   isTwoFactorEnabled: boolean;

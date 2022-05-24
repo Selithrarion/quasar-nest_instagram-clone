@@ -1,6 +1,6 @@
 <template>
   <q-page class="column gap-16 q-pa-xl">
-    <BaseLoader v-if="loading.isActive()" page-margin />
+    <BaseLoader v-if="loading.getIsActive()" page-margin />
     <template v-else>
       <FeedPostDetail :model-value="true" mode="page" :post="post" />
     </template>

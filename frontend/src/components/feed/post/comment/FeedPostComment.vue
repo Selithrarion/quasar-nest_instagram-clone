@@ -64,7 +64,7 @@
     <BaseDialog
       title="Edit comment"
       :model-value="dialog.getIsOpened('editComment')"
-      :confirm-loading="dialog.loading.value"
+      :confirm-loading="dialog.getIsLoading()"
       :close-on-loading-stop="false"
       @close="dialog.resetLocal"
       @confirm="updateComment"
@@ -75,7 +75,7 @@
       type="delete"
       title="Delete comment"
       :model-value="dialog.getIsOpened('deleteComment')"
-      :confirm-loading="dialog.loading.value"
+      :confirm-loading="dialog.getIsLoading()"
       :close-on-loading-stop="false"
       @close="dialog.resetLocal"
       @confirm="deleteComment"
