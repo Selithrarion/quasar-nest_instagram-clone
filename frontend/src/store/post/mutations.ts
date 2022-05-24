@@ -11,15 +11,17 @@ const mutation: MutationTree<PostStateInterface> = {
     state.postsMeta = posts.meta;
   },
   UPDATE_POST(state, post: PostModel) {
-    if (!state.posts) return;
-    const index = state.posts.findIndex((p) => p.id === post.id);
-    state.posts[index].description = post.description;
+    if (state.posts) {
+      const index = state.posts.findIndex((p) => p.id === post.id);
+      state.posts[index].description = post.description;
+    }
     if (state.postDetail?.id === post.id) state.postDetail.description = post.description;
   },
   DELETE_POST(state, id: number) {
-    if (!state.posts) return;
-    const index = state.posts.findIndex((p) => p.id === id);
-    state.posts.splice(index, 1);
+    if (state.posts) {
+      const index = state.posts.findIndex((p) => p.id === id);
+      state.posts.splice(index, 1);
+    }
   },
   SET_POST_DETAIL(state, post: PostModel) {
     state.postDetail = post;
@@ -43,8 +45,7 @@ const mutation: MutationTree<PostStateInterface> = {
   },
 
   CREATE_COMMENT(state, comment: CommentModel) {
-    if (!state.posts) return;
-    const post = state.posts.find((p) => p.id === comment.postID);
+    const post = state.posts?.find((p) => p?.id === comment.postID);
     if (post) {
       post.comments?.unshift(comment);
       post.commentsNumber++;
@@ -55,36 +56,37 @@ const mutation: MutationTree<PostStateInterface> = {
     }
   },
   UPDATE_COMMENT(state, comment: CommentModel) {
-    if (!state.posts) return;
-    const post = state.posts.find((p) => p.id === comment.postID);
-    if (!post) return;
-
-    const index = post.comments?.findIndex((c) => c.id === comment.id);
-    if (index === undefined || index === -1) return;
-    post.comments[index] = comment;
-    if (state.postDetail && state.postDetail.comments) state.postDetail.comments[index] = comment;
+    const post = state.posts?.find((p) => p?.id === comment.postID);
+    if (post && post.comments) {
+      const index = post.comments.findIndex((c) => c.id === comment.id);
+      if (index === undefined || index === -1) return;
+      post.comments[index] = comment;
+    }
+    if (state.postDetail && state.postDetail.comments) {
+      const index = state.postDetail.comments?.findIndex((c) => c.id === comment.id);
+      if (index === undefined || index === -1) return;
+      state.postDetail.comments[index] = comment;
+    }
   },
   DELETE_COMMENT(state, { commentID, postID }: { commentID: number; postID: number }) {
-    if (!state.posts) return;
-    const post = state.posts.find((p) => p.id === postID);
-    if (!post) return;
-
-    const index = post.comments.findIndex((c) => c.id === commentID);
-    post.comments.splice(index, 1);
-    post.commentsNumber--;
-
+    const post = state.posts?.find((p) => p?.id === postID);
+    if (post && post.comments) {
+      const index = post.comments.findIndex((c) => c.id === commentID);
+      post.comments.splice(index, 1);
+      post.commentsNumber--;
+    }
     if (state.postDetail && state.postDetail.comments) {
+      const index = state.postDetail.comments.findIndex((c) => c.id === commentID);
       state.postDetail.comments.splice(index, 1);
       state.postDetail.commentsNumber--;
     }
   },
   TOGGLE_COMMENT_LIKE(state, { commentID, postID }: { commentID: number; postID: number }) {
     const post = state.posts?.find((p) => p.id === postID);
-    if (!post) return;
-
-    const comment = post.comments?.find((c) => c.id === commentID);
-    if (comment) comment.isViewerLiked = !comment.isViewerLiked;
-
+    if (post) {
+      const comment = post.comments?.find((c) => c.id === commentID);
+      if (comment) comment.isViewerLiked = !comment.isViewerLiked;
+    }
     if (state.postDetail && state.postDetail.comments) {
       const comment = state.postDetail.comments?.find((c) => c.id === commentID);
       if (comment) comment.isViewerLiked = !comment.isViewerLiked;
